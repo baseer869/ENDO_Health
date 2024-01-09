@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* native_endo_healthTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* native_endo_healthTests.m */; };
+		0BC633EF2B49905000EA298C /* RTCMyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC633EE2B49905000EA298C /* RTCMyNativeModule.m */; };
+		0BC633F02B49905000EA298C /* RTCMyNativeModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BC633EE2B49905000EA298C /* RTCMyNativeModule.m */; };
 		0C80B921A6F3F58F76C31292 /* libPods-native_endo_health.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-native_endo_health.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -30,6 +32,9 @@
 		00E356EE1AD99517003FC87E /* native_endo_healthTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = native_endo_healthTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* native_endo_healthTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = native_endo_healthTests.m; sourceTree = "<group>"; };
+		0B0061A52B45A45E00CC3272 /* native_endo_health.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = native_endo_health.entitlements; path = native_endo_health/native_endo_health.entitlements; sourceTree = "<group>"; };
+		0BC633EE2B49905000EA298C /* RTCMyNativeModule.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = RTCMyNativeModule.m; path = native_endo_health/RTCMyNativeModule.m; sourceTree = "<group>"; };
+		0BC633F12B49907D00EA298C /* RCTMyNativeModule.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCTMyNativeModule.h; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* native_endo_health.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = native_endo_health.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = native_endo_health/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = native_endo_health/AppDelegate.mm; sourceTree = "<group>"; };
@@ -86,12 +91,15 @@
 		13B07FAE1A68108700A75B9A /* native_endo_health */ = {
 			isa = PBXGroup;
 			children = (
+				0B0061A52B45A45E00CC3272 /* native_endo_health.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				0BC633EE2B49905000EA298C /* RTCMyNativeModule.m */,
+				0BC633F12B49907D00EA298C /* RCTMyNativeModule.h */,
 			);
 			name = native_endo_health;
 			sourceTree = "<group>";
@@ -203,10 +211,11 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
+						LastSwiftMigration = 1510;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1510;
 					};
 				};
 			};
@@ -384,6 +393,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BC633F02B49905000EA298C /* RTCMyNativeModule.m in Sources */,
 				00E356F31AD99517003FC87E /* native_endo_healthTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -394,6 +404,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				0BC633EF2B49905000EA298C /* RTCMyNativeModule.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,6 +424,7 @@
 			baseConfigurationReference = 5B7EB9410499542E8C5724F5 /* Pods-native_endo_health-native_endo_healthTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -431,6 +443,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "native_endo_healthTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/native_endo_health.app/native_endo_health";
 			};
 			name = Debug;
@@ -440,6 +455,7 @@
 			baseConfigurationReference = 89C6BE57DB24E9ADA2F236DE /* Pods-native_endo_health-native_endo_healthTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = native_endo_healthTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
@@ -455,6 +471,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "native_endo_healthTests-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/native_endo_health.app/native_endo_health";
 			};
 			name = Release;
@@ -465,7 +483,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = native_endo_health/native_endo_health.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X72843F3YK;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = native_endo_health/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -478,8 +500,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.endohealth.endo;
 				PRODUCT_NAME = native_endo_health;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "native_endo_health-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -492,7 +516,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = native_endo_health/native_endo_health.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = X72843F3YK;
 				INFOPLIST_FILE = native_endo_health/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -504,8 +532,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = ai.endohealth.endo;
 				PRODUCT_NAME = native_endo_health;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "native_endo_health-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
