@@ -1,11 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import NfcManager, {NfcEvents, NfcTech} from 'react-native-nfc-manager';
+import NfcManager, {
+  Nfc15693RequestFlagIOS,
+  NfcAdapter,
+  NfcEvents,
+  NfcTech,
+  nfcManager,
+} from 'react-native-nfc-manager';
 import {NativeModules} from 'react-native';
 import {Platform} from 'react-native';
 import {toHexStringWithOffset} from '../../utils/strings';
 import {toHexNumber} from '../../utils/numbers';
-import {rawGlucoseDataParseToReadingData} from '../../utils/nfc/data';
+import {rawGlucoseDataParseToReadingData, readRaw} from '../../utils/nfc/data';
 
 // Define a type for your component's props if needed
 type HomeProps = {
@@ -65,7 +71,25 @@ const Home: React.FC<HomeProps> = () => {
         console.log('tag found');
         const tag = await NfcManager.getTag();
         console.log('tag', tag);
+        // const cmd = [0x02, 0xa1, 0x07];
+
+        const readResponse = await readRaw(0x00, 64, nfcManager);
+        console.log('readResponse', readResponse);
+
+        const {customCommand} = NfcManager.iso15693HandlerIOS;
+        console.log(
+          `customCommandCode : ${0xa3}, customRequestParameters : ${[
+            0xc2, 0xad, 0x75, 0x21, 0x00, 0x1a, 0xc,
+          ]}`,
+        );
+        const patchInfo = await customCommand({
+          flags: Nfc15693RequestFlagIOS.HighDataRate,
+          customCommandCode: 0xa3,
+          customRequestParameters: [0xc2, 0xad, 0x75, 0x21, 0x00, 0x1a, 0xc],
+        });
+        console.log('patchInfo', patchInfo);
       }
+
       if (Platform.OS === 'android') {
         let data = new Array<number>(43 * 8).fill(0);
         await NfcManager.requestTechnology(NfcTech.NfcV);
@@ -128,7 +152,7 @@ const Home: React.FC<HomeProps> = () => {
         return data;
       }
     } catch (ex: any) {
-      console.warn('ex', ex);
+      console.warn(JSON.stringify(ex));
     }
 
     await NfcManager.cancelTechnologyRequest();
