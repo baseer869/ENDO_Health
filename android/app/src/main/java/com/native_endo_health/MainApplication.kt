@@ -1,5 +1,5 @@
 package com.native_endo_health
-
+import com.microsoft.codepush.react.CodePush
 import android.app.Application
 import com.facebook.react.PackageList
 import com.facebook.react.ReactApplication
@@ -13,8 +13,8 @@ import com.facebook.react.flipper.ReactNativeFlipper
 import com.facebook.soloader.SoLoader
 
 class MainApplication : Application(), ReactApplication {
-
   override val reactNativeHost: ReactNativeHost =
+
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> {
           // Packages that cannot be autolinked yet can be added manually here, for example:
@@ -30,6 +30,10 @@ class MainApplication : Application(), ReactApplication {
 
         override val isNewArchEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
         override val isHermesEnabled: Boolean = BuildConfig.IS_HERMES_ENABLED
+
+        override fun getJSBundleFile(): String {
+          return CodePush.getJSBundleFile()
+        }
       }
 
   override val reactHost: ReactHost

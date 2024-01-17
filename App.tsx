@@ -19,6 +19,9 @@ import {
 
 import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
 import Home from './src/pages/Home';
+import CodePush, {CodePushOptions} from 'react-native-code-push';
+import {useCodePush} from './src/hooks/useCodepush';
+import i18n from './src/language/i18n';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -52,6 +55,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
+  const codepushState = useCodePush();
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -59,13 +63,12 @@ function App(): React.JSX.Element {
 
   return (
     <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
+        <Text>codepushState:{String(codepushState.updating)}</Text>
+        <Text>codepushError:{String(codepushState.error)}</Text>
+        <Text>i18ntest:{i18n.t('Home.title')}</Text>
         <Header />
         <Home />
       </ScrollView>
@@ -92,4 +95,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+const codePushOptions: CodePushOptions = {
+  checkFrequency: CodePush.CheckFrequency.MANUAL,
+};
+
+export default CodePush(codePushOptions)(App);
