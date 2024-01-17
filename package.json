@@ -16,11 +16,13 @@
     "appcenter": "^5.0.0",
     "appcenter-analytics": "^5.0.0",
     "appcenter-crashes": "^5.0.0",
+    "i18n-js": "^4.3.2",
     "patch-package": "^8.0.0",
     "postinstall-postinstall": "^2.1.0",
     "react": "18.2.0",
     "react-native": "0.73.1",
     "react-native-code-push": "^8.1.1",
+    "react-native-localize": "^3.0.6",
     "react-native-nfc-manager": "^3.14.11"
   },
   "devDependencies": {

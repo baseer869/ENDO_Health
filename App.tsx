@@ -21,6 +21,7 @@ import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
 import Home from './src/pages/Home';
 import CodePush, {CodePushOptions} from 'react-native-code-push';
 import {useCodePush} from './src/hooks/useCodepush';
+import i18n from './src/language/i18n';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -67,6 +68,7 @@ function App(): React.JSX.Element {
         style={backgroundStyle}>
         <Text>codepushState:{String(codepushState.updating)}</Text>
         <Text>codepushError:{String(codepushState.error)}</Text>
+        <Text>i18ntest:{i18n.t('Home.title')}</Text>
         <Header />
         <Home />
       </ScrollView>
