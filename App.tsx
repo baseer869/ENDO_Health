@@ -26,6 +26,9 @@ import CodePush, {CodePushOptions} from 'react-native-code-push';
 import {useCodePush} from './src/hooks/useCodepush';
 import i18n from './src/language/i18n';
 import messaging from '@react-native-firebase/messaging';
+import {Provider} from 'react-redux';
+import {store} from './src/stores/rootStore';
+import {setUserInfo} from './src/stores/UserInfoStore';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -68,6 +71,7 @@ function App(): React.JSX.Element {
   const firebaseMessaging = messaging();
 
   useEffect(() => {
+    store.dispatch(setUserInfo({name: 'sm'}));
     Platform.OS === 'android'
       ? androidRequestPermission()
       : iosRequestPermission();
@@ -115,16 +119,14 @@ function App(): React.JSX.Element {
           if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             console.log('Android 13이상 , 알림권한 허용.');
             if (fcmToken) {
-              //토큰 수집
-              NativeModules.DotReactBridge.setPushToken(fcmToken);
+              //TODO: 서버에 토큰전송
             }
           }
         }
         // API 레벨 32 이하일 때
         try {
           if (fcmToken) {
-            //토큰 수집
-            NativeModules.DotReactBridge.setPushToken(fcmToken);
+            //TODO: 서버에 토큰전송
           }
         } catch (e) {
           console.log('android token API level 32 이하 error:', e);
@@ -136,17 +138,19 @@ function App(): React.JSX.Element {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Text>codepushState:{String(codepushState.updating)}</Text>
-        <Text>codepushError:{String(codepushState.error)}</Text>
-        <Text>i18ntest:{i18n.t('Home.title')}</Text>
-        <Header />
-        <Home />
-      </ScrollView>
-    </SafeAreaView>
+    <Provider store={store}>
+      <SafeAreaView style={backgroundStyle}>
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={backgroundStyle}>
+          <Text>codepushState:{String(codepushState.updating)}</Text>
+          <Text>codepushError:{String(codepushState.error)}</Text>
+          <Text>i18ntest:{i18n.t('Home.title')}</Text>
+          <Header />
+          <Home />
+        </ScrollView>
+      </SafeAreaView>
+    </Provider>
   );
 }
 

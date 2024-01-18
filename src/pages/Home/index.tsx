@@ -12,6 +12,8 @@ import {Platform} from 'react-native';
 import {toHexStringWithOffset} from '../../utils/strings';
 import {toHexNumber} from '../../utils/numbers';
 import {rawGlucoseDataParseToReadingData, readRaw} from '../../utils/nfc/data';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../reducers';
 
 // Define a type for your component's props if needed
 type HomeProps = {
@@ -22,7 +24,7 @@ const {MyNativeModule} = NativeModules;
 
 const Home: React.FC<HomeProps> = () => {
   const [hasNfc, setHasNFC] = useState<boolean | null>(null);
-
+  const userInfo = useSelector((state: RootState) => state.userInfoStore);
   useEffect(() => {
     const checkIsSupported = async () => {
       const deviceIsSupported = await NfcManager.isSupported();
@@ -173,7 +175,7 @@ const Home: React.FC<HomeProps> = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Hello world</Text>
+      <Text>Hello world usename:{userInfo.userInfo?.name}</Text>
       <TouchableOpacity onPress={readTag}>
         <Text>Scan Tag</Text>
       </TouchableOpacity>
