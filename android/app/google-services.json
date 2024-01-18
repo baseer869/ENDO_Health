@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "766777205347",
+    "project_id": "endo-411207",
+    "storage_bucket": "endo-411207.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766777205347:android:c2aa585eed89be8d300e56",
+        "android_client_info": {
+          "package_name": "ai.endohealth.endo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766777205347-tptaossdb0hlclfcq8jcer6eut4251l7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsrrwgnH43cr04YoSTn4G_WEabgJHK9VI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766777205347-tptaossdb0hlclfcq8jcer6eut4251l7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766777205347:android:9b1fead5f4e3192b300e56",
+        "android_client_info": {
+          "package_name": "com.native_endo_health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766777205347-tptaossdb0hlclfcq8jcer6eut4251l7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsrrwgnH43cr04YoSTn4G_WEabgJHK9VI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766777205347-tptaossdb0hlclfcq8jcer6eut4251l7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

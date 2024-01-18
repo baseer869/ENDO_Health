@@ -13,6 +13,8 @@
     "codepush:ios": "appcenter codepush release-react -a Endo-Health/endo-ios-prod -d Production"
   },
   "dependencies": {
+    "@react-native-firebase/app": "^18.7.3",
+    "@react-native-firebase/messaging": "^18.7.3",
     "appcenter": "^5.0.0",
     "appcenter-analytics": "^5.0.0",
     "appcenter-crashes": "^5.0.0",
