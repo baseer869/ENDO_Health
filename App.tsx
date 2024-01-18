@@ -6,21 +6,17 @@
  */
 
 import React, {useEffect} from 'react';
-import type {PropsWithChildren} from 'react';
 import {
   NativeModules,
   PermissionsAndroid,
   Platform,
   SafeAreaView,
   ScrollView,
-  StatusBar,
-  StyleSheet,
   Text,
   useColorScheme,
-  View,
 } from 'react-native';
 
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Home from './src/pages/Home';
 import CodePush, {CodePushOptions} from 'react-native-code-push';
 import {useCodePush} from './src/hooks/useCodepush';
@@ -29,36 +25,10 @@ import messaging from '@react-native-firebase/messaging';
 import {Provider} from 'react-redux';
 import {store} from './src/stores/rootStore';
 import {setUserInfo} from './src/stores/UserInfoStore';
+import {styled, withExpoSnack} from 'nativewind';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+const StyledText = styled(Text);
+const StyledSafeAreaView = styled(SafeAreaView);
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -139,42 +109,25 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <SafeAreaView style={backgroundStyle}>
+      <StyledSafeAreaView className="flex flex-row w-screen h-screen font-sans">
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={backgroundStyle}>
           <Text>codepushState:{String(codepushState.updating)}</Text>
           <Text>codepushError:{String(codepushState.error)}</Text>
           <Text>i18ntest:{i18n.t('Home.title')}</Text>
-          <Header />
           <Home />
+          <StyledText className="text-primary-purple text-2xl p-2 m-5">
+            {i18n.t('Home.hello-world')}
+          </StyledText>
         </ScrollView>
-      </SafeAreaView>
+      </StyledSafeAreaView>
     </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 const codePushOptions: CodePushOptions = {
   checkFrequency: CodePush.CheckFrequency.MANUAL,
 };
 
-export default CodePush(codePushOptions)(App);
+export default CodePush(codePushOptions)(withExpoSnack(App));

@@ -1,11 +1,13 @@
 import {I18n} from 'i18n-js';
 import ko from './ko.json';
+import en from './en.json';
 import * as Localize from 'react-native-localize';
 
 const locales = Localize.getLocales();
 
 const i18n = new I18n({
   ko,
+  en,
 });
 
 if (Array.isArray(locales)) {
