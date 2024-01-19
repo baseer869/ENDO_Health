@@ -26,8 +26,8 @@ import {Provider} from 'react-redux';
 import {store} from './src/stores/rootStore';
 import {setUserInfo} from './src/stores/UserInfoStore';
 import {styled, withExpoSnack} from 'nativewind';
+import { StyledText } from './src/components/common';
 
-const StyledText = styled(Text);
 const StyledSafeAreaView = styled(SafeAreaView);
 
 function App(): React.JSX.Element {
@@ -109,7 +109,7 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <StyledSafeAreaView className="flex flex-row w-screen h-screen font-sans">
+      <StyledSafeAreaView className="flex flex-row w-screen h-screen">
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={backgroundStyle}>

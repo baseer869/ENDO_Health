@@ -1,3 +1,5 @@
+const {platformSelect} = require('nativewind/dist/theme-functions');
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./App.{js,jsx,ts,tsx}', './src/**/*.{js,jsx,ts,tsx}'],
@@ -87,7 +89,12 @@ module.exports = {
         'alpha-white-20': '#FFFFFF33',
       },
       fontFamily: {
-        sans: ['Pretendard', 'Inter', 'sans-serif'],
+        pretendard: ['Pretendard-Regular'],
+        system: platformSelect({
+          ios: 'Pretendard-Regular',
+          android: ['Pretendard-Regular'],
+          default: 'Pretendard-Regular',
+        }),
       },
     },
   },
