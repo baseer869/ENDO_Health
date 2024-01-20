@@ -26,7 +26,9 @@ import {Provider} from 'react-redux';
 import {store} from './src/stores/rootStore';
 import {setUserInfo} from './src/stores/UserInfoStore';
 import {styled, withExpoSnack} from 'nativewind';
-import { StyledText } from './src/components/common';
+import {StyledText} from './src/components/common';
+import {NavigationContainer} from '@react-navigation/native';
+import Navigator from 'navigation/rootNavigation';
 
 const StyledSafeAreaView = styled(SafeAreaView);
 
@@ -109,19 +111,9 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <StyledSafeAreaView className="flex flex-row w-screen h-screen">
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-          <Text>codepushState:{String(codepushState.updating)}</Text>
-          <Text>codepushError:{String(codepushState.error)}</Text>
-          <Text>i18ntest:{i18n.t('Home.title')}</Text>
-          <Home />
-          <StyledText className="text-primary-purple text-2xl p-2 m-5">
-            {i18n.t('Home.hello-world')}
-          </StyledText>
-        </ScrollView>
-      </StyledSafeAreaView>
+      <NavigationContainer>
+        <Navigator />
+      </NavigationContainer>
     </Provider>
   );
 }
