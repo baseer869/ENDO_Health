@@ -11,12 +11,16 @@ import {colors} from 'assets/colors';
 import Home from 'pages/Home';
 import Main from 'pages/Main';
 import Login from 'pages/Login';
+import GenderSelectPage from 'pages/Login/GenderSelectPage';
+import BirthdaySelectPage from 'pages/Login/BirthdaySelectPage';
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   Main: undefined;
   Tabs: undefined;
+  GenderSelect: {name: string};
+  BirthdaySelect: {name: string; gender: string};
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -153,16 +157,25 @@ const AuthGroup = () => (
 const NotAuthGroup = () => (
   <Stack.Group>
     <Stack.Screen name="Login" component={Login} />
+    <Stack.Screen
+      name="GenderSelect"
+      component={GenderSelectPage}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="BirthdaySelect"
+      component={BirthdaySelectPage}
+      options={{headerShown: false}}
+    />
   </Stack.Group>
 );
 
 const Navigator = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
 
   return (
     <Stack.Navigator
       screenOptions={{
-        // headerBackImage: () => <HeaderBackIcon />,
         headerTitle: '',
         headerBackTitleVisible: false,
         headerShadowVisible: false,

@@ -2,5 +2,11 @@
   "Home": {
     "title": "Home",
     "hello-world": "Hello World...!"
+  },
+  "Login": {
+    "login_title": "Let’s say hi\nWhat’s your name?",
+    "login_placeholder": "Enter your name",
+    "gender_title": "How do you see yourself?",
+    "birthday_title": "Tell us your\nbirthday"
   }
 }

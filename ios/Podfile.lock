@@ -1040,6 +1040,8 @@ PODS:
   - React-Mapbuffer (0.73.1):
     - glog
     - React-debug
+  - react-native-date-picker (4.3.5):
+    - React-Core
   - react-native-nfc-manager (3.14.11):
     - React-Core
   - react-native-safe-area-context (4.8.2):
@@ -1213,6 +1215,8 @@ PODS:
     - React-perflogger (= 0.73.1)
   - RNCAsyncStorage (1.21.0):
     - React-Core
+  - RNDeviceInfo (10.12.0):
+    - React-Core
   - RNFBApp (18.7.3):
     - Firebase/CoreOnly (= 10.19.0)
     - React-Core
@@ -1237,6 +1241,12 @@ PODS:
   - RNLocalize (3.0.6):
     - React-Core
   - RNScreens (3.29.0):
+    - glog
+    - RCT-Folly (= 2022.05.16.00)
+    - React-Core
+  - RNSVG (14.1.0):
+    - React-Core
+  - RNVectorIcons (10.0.3):
     - glog
     - RCT-Folly (= 2022.05.16.00)
     - React-Core
@@ -1304,6 +1314,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-nfc-manager (from `../node_modules/react-native-nfc-manager`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-nativeconfig (from `../node_modules/react-native/ReactCommon`)
@@ -1327,12 +1338,15 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - RNSVG (from `../node_modules/react-native-svg`)
+  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -1431,6 +1445,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-date-picker:
+    :path: "../node_modules/react-native-date-picker"
   react-native-nfc-manager:
     :path: "../node_modules/react-native-nfc-manager"
   react-native-safe-area-context:
@@ -1477,6 +1493,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNCAsyncStorage:
     :path: "../node_modules/@react-native-async-storage/async-storage"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBMessaging:
@@ -1489,6 +1507,10 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-localize"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSVG:
+    :path: "../node_modules/react-native-svg"
+  RNVectorIcons:
+    :path: "../node_modules/react-native-vector-icons"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -1550,6 +1572,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 369048694e39942063c5d08e9580b43e2edd379a
   React-logger: e0c1e918d9588a9f39c9bc62d9d6bfe9ca238d9d
   React-Mapbuffer: 9731a0a63ebaf8976014623c4d637744d7353a7c
+  react-native-date-picker: 90d1d60802a20085125657940b944f2bb4e5c113
   react-native-nfc-manager: 250424ac5f6b2827f98bec7a1ed7f27615852ed4
   react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
   React-nativeconfig: 37aecd26d64b79327c3f10e43b2e9a6c425e0a60
@@ -1573,12 +1596,15 @@ SPEC CHECKSUMS:
   React-utils: debda2c206770ee2785bdebb7f16d8db9f18838a
   ReactCommon: ddb128564dcbfa0287d3d1a2d10f8c7457c971f6
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
+  RNDeviceInfo: db5c64a060e66e5db3102d041ebe3ef307a85120
   RNFBApp: c21258de1485419a845efbba9c09ec946c89891d
   RNFBMessaging: e52a76a97ec5ff75e186c150e2bfab86c9e655d1
   RNGestureHandler: 25b969a1ffc806b9f9ad2e170d4a3b049c6af85e
   RNImageCropPicker: d9616a0cb9b72e8551ff94a7a5021fbd29050aa5
   RNLocalize: 4222a3756cdbe2dc9a5bdf445765a4d2572107cb
   RNScreens: b582cb834dc4133307562e930e8fa914b8c04ef2
+  RNSVG: ba3e7232f45e34b7b47e74472386cf4e1a676d0a
+  RNVectorIcons: 210f910e834e3485af40693ad4615c1ec22fc02b
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863

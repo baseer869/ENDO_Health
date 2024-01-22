@@ -1,6 +1,7 @@
 {
   "Home": {
     "title": "Home",
-    "hello-world": "Hello World...!"
+    "hello-world": "Hello World...!",
+    "login_placeholder": "Enter your name"
   }
 }
