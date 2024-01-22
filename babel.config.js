@@ -8,7 +8,7 @@ module.exports = {
         extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
       },
     ],
-
     'nativewind/babel',
+    'react-native-paper/babel',
   ],
 };

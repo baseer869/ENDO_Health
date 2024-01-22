@@ -11,8 +11,6 @@ import {
   PermissionsAndroid,
   Platform,
   SafeAreaView,
-  ScrollView,
-  Text,
   useColorScheme,
 } from 'react-native';
 
@@ -26,11 +24,21 @@ import {Provider} from 'react-redux';
 import {store} from './src/stores/rootStore';
 import {setUserInfo} from './src/stores/UserInfoStore';
 import {styled, withExpoSnack} from 'nativewind';
-import {StyledText} from './src/components/common';
-import {NavigationContainer} from '@react-navigation/native';
+import {Text} from './src/components/common';
+import {NavigationContainer, ThemeProvider} from '@react-navigation/native';
 import Navigator from 'navigation/rootNavigation';
+import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
 
 const StyledSafeAreaView = styled(SafeAreaView);
+
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: 'tomato',
+    secondary: 'yellow',
+  },
+};
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -111,9 +119,11 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Navigator />
-      </NavigationContainer>
+      <PaperProvider theme={theme}>
+        <NavigationContainer>
+          <Navigator />
+        </NavigationContainer>
+      </PaperProvider>
     </Provider>
   );
 }
