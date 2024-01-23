@@ -1,7 +1,17 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {Ethnicity, Gender} from 'apis/userApi';
 
 interface Profile {
-  name: string;
+  id?: number;
+  username: string;
+  email: string;
+  birthDay?: Date;
+  gender?: Gender;
+  height?: string;
+  weight?: string;
+  ethnicity?: Ethnicity;
+  completed?: boolean;
+  accessToken?: string;
 }
 
 export interface UserInfoStore {

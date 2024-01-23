@@ -13,9 +13,11 @@ import Main from 'pages/Main';
 import Login from 'pages/Login';
 import GenderSelectPage from 'pages/Login/GenderSelectPage';
 import BirthdaySelectPage from 'pages/Login/BirthdaySelectPage';
+import EntrancePage from 'pages/Login/EntrancePage';
 
 export type RootStackParamList = {
   Home: undefined;
+  Entrance: undefined;
   Login: undefined;
   Main: undefined;
   Tabs: undefined;
@@ -156,6 +158,7 @@ const AuthGroup = () => (
 );
 const NotAuthGroup = () => (
   <Stack.Group>
+    <Stack.Screen name="Entrance" component={EntrancePage} />
     <Stack.Screen name="Login" component={Login} />
     <Stack.Screen
       name="GenderSelect"

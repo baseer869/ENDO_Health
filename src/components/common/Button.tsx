@@ -1,6 +1,9 @@
 import {StyledCommonProps, Text, View, Image} from '.';
 import {colors} from 'assets/colors';
+import {styled} from 'nativewind';
 import {Button as OriginalButton} from 'react-native-paper';
+
+const Btn = styled(OriginalButton);
 
 const typeStyles: Record<string, any> = {
   solid: {
@@ -74,18 +77,23 @@ const sizeStyles = {
 
 type StyledButtonProps = {
   size?: '48' | '44' | '34' | '30';
+  width?: 'fit' | 'full';
   type?: 'solid' | 'sub' | 'sub_gray' | 'sub_white' | 'sub_border' | 'disabled';
   icon?: string;
   title: string;
   subTitle?: string;
+  onPress?: () => void;
 };
 
 export function Button({
+  className,
   children,
   size,
   type,
   icon,
+  width,
   title,
+  onPress,
 }: StyledCommonProps & StyledButtonProps) {
   const {buttonColor, textColor, borderColor, borderWidth} =
     typeStyles[type || 'solid'];
@@ -100,7 +108,8 @@ export function Button({
   if (type == 'sub_border') buttonType = 'outlined';
 
   return (
-    <OriginalButton
+    <Btn
+      className={className}
       disabled={disabled}
       icon={icon}
       mode="contained"
@@ -111,25 +120,20 @@ export function Button({
         textAlign: 'center',
       }}
       style={{
-        width: 'auto',
+        width: 'full' === width ? '100%' : 'auto',
         borderRadius: 50,
-        alignSelf: 'flex-start',
         borderColor,
         borderWidth,
         gap,
-        alignItems: 'center',
-        justifyContent: 'center',
+        zIndex: 0,
       }}
       contentStyle={{
         paddingHorizontal,
         paddingVertical,
-
-        alignItems: 'center',
-        justifyContent: 'center',
       }}
-      onPress={() => console.log('Pressed')}>
-      <Text className="font-bold">{title}qjwdio</Text>
+      onPress={onPress}>
+      <Text className="font-bold">{title}</Text>
       {children}
-    </OriginalButton>
+    </Btn>
   );
 }

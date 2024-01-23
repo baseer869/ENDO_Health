@@ -1040,6 +1040,10 @@ PODS:
   - React-Mapbuffer (0.73.1):
     - glog
     - React-debug
+  - react-native-config (1.5.1):
+    - react-native-config/App (= 1.5.1)
+  - react-native-config/App (1.5.1):
+    - React-Core
   - react-native-date-picker (4.3.5):
     - React-Core
   - react-native-nfc-manager (3.14.11):
@@ -1314,6 +1318,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-config (from `../node_modules/react-native-config`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-nfc-manager (from `../node_modules/react-native-nfc-manager`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -1445,6 +1450,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-config:
+    :path: "../node_modules/react-native-config"
   react-native-date-picker:
     :path: "../node_modules/react-native-date-picker"
   react-native-nfc-manager:
@@ -1572,6 +1579,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 369048694e39942063c5d08e9580b43e2edd379a
   React-logger: e0c1e918d9588a9f39c9bc62d9d6bfe9ca238d9d
   React-Mapbuffer: 9731a0a63ebaf8976014623c4d637744d7353a7c
+  react-native-config: 86038147314e2e6d10ea9972022aa171e6b1d4d8
   react-native-date-picker: 90d1d60802a20085125657940b944f2bb4e5c113
   react-native-nfc-manager: 250424ac5f6b2827f98bec7a1ed7f27615852ed4
   react-native-safe-area-context: 0ee144a6170530ccc37a0fd9388e28d06f516a89
@@ -1608,7 +1616,7 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
-  Yoga: 2b33a7ac96c58cdaa7b810948fc6a2a76ed2d108
+  Yoga: 4f53dc50008d626fa679c7a1cb4bed898f8c0bde
 
 PODFILE CHECKSUM: da309ea959218c62ef902e488f5871f763198f7e
 
