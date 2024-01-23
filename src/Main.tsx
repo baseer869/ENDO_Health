@@ -22,7 +22,6 @@ function Main() {
   const firebaseMessaging = messaging();
 
   useEffect(() => {
-    store.dispatch(setUserInfo({name: 'sm'}));
     Platform.OS === 'android'
       ? androidRequestPermission()
       : iosRequestPermission();

@@ -7,12 +7,30 @@ import DatePicker from 'react-native-date-picker';
 import CircleButton from 'components/common/CircleArrowButton';
 import {Alert} from 'react-native';
 import {useRoute, RouteProp} from '@react-navigation/core';
-import {RootStackParamList} from 'navigation/rootNavigation';
+import {
+  RootStackParamList,
+  RootStackScreenProps,
+} from 'navigation/rootNavigation';
+import {postSignup} from 'apis/userApi';
+import {useNavigation} from '@react-navigation/native';
 
 const BirthdaySelectPage = () => {
   const [changeDateState, setChangeDateState] = useState<Date>(new Date());
   const route = useRoute<RouteProp<RootStackParamList, 'BirthdaySelect'>>();
-  const {name, gender} = route.params;
+  const navigation = useNavigation<RootStackScreenProps>();
+  const {email, password, name, gender} = route.params;
+
+  const onNext = async () => {
+    navigation.push('SignupDone', {
+      name,
+      email: email,
+      birthday: changeDateState,
+      gender,
+
+      password: password,
+    });
+  };
+
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <BackHeader />
@@ -49,16 +67,7 @@ const BirthdaySelectPage = () => {
           paddingBottom: 20,
           paddingHorizontal: 28,
         }}>
-        <CircleButton
-          disabled={false}
-          onPress={() => {
-            //TODO APi연동
-            Alert.alert(
-              '정보',
-              name + ':' + gender + ':' + changeDateState?.toISOString(),
-            );
-          }}
-        />
+        <CircleButton disabled={false} onPress={onNext} />
       </View>
     </View>
   );

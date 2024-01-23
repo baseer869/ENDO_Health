@@ -8,44 +8,41 @@ import useKeyboard from 'hooks/useKeyboard';
 import {Platform, StyleSheet} from 'react-native';
 import CancelTextInput from 'components/common/CancelTextInput';
 import {useNavigation} from '@react-navigation/core';
-import {RootStackScreenProps} from 'navigation/rootNavigation';
+import {
+  RootStackParamList,
+  RootStackScreenProps,
+} from 'navigation/rootNavigation';
 import {colors} from 'assets/colors';
+import {RouteProp, useRoute} from '@react-navigation/native';
 
-const EmailInputPage = () => {
+const PasswordInputPage = () => {
   const [keyboardHeight] = useKeyboard();
-  const [email, setEmail] = useState<string>('');
-  const [emailError, setEmailError] = useState('');
-  const [idValid, setIdValid] = useState<boolean>(true);
+  const [password, setPassword] = useState<string>('');
+  const [passwordError, setPasswordError] = useState('');
+  const [isValid, setIsValid] = useState<boolean>(true);
   const navigation = useNavigation<RootStackScreenProps>();
+  const route = useRoute<RouteProp<RootStackParamList, 'PasswordInput'>>();
 
-  const checkEmail = (text?: string): boolean => {
-    const emailReg =
-      /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+  const checkPassword = (text?: string): boolean => {
+    console.log('checkpasword', text);
     if (!text) {
-      setEmailError('Please enter your e-mail');
+      setPasswordError('Please enter your password');
       return false;
     }
-    const lastText = text?.slice(text.length - 1, text.length);
-    if (
-      emailReg.test(text) &&
-      (lastText === 'r' ||
-        lastText === 't' ||
-        lastText === 'g' ||
-        lastText === 'm')
-    ) {
-      setEmailError('');
+    if (password.length > 4) {
+      setPasswordError('');
       return true;
     }
-    setEmailError('Please enter correct email format.');
+    setPasswordError('Please enter correct password format.');
 
     return false;
   };
 
-  const onChangeEmail = (text: string) => {
-    setEmail(text);
+  const onChangePw = (text: string) => {
+    setPassword(text);
 
-    const check = checkEmail(text);
-    setIdValid(check);
+    const check = checkPassword(text);
+    setIsValid(check);
   };
 
   return (
@@ -59,22 +56,25 @@ const EmailInputPage = () => {
             color: 'black',
           }}
           className="font-bold text-[28px] pb-16 text-black">
-          {'Let’s say hi\nWhat’s your email?'}
+          {'Let’s say hi\nWhat’s your password?'}
         </Text>
         <CancelTextInput
-          value={email}
-          onChangeText={onChangeEmail}
-          placeholder={'Enter your email'}
+          value={password}
+          onChangeText={onChangePw}
+          placeholder={'Enter your password'}
           placeholderTextColor={colors.GRAY_30}
-          isValid={idValid}
+          isValid={isValid}
+          secureTextEntry
         />
 
-        {!idValid && <Text style={styles.errorText}>{emailError}</Text>}
+        {!isValid && <Text style={styles.errorText}>{passwordError}</Text>}
       </View>
       <View className="w-full items-end pb-5">
         <CircleButton
-          disabled={!idValid}
-          onPress={() => navigation.push('PasswordInput', {email})}
+          disabled={!isValid}
+          onPress={() =>
+            navigation.push('NameInput', {email: route.params.email, password})
+          }
         />
       </View>
       {Platform.OS === 'ios' && <View style={{height: keyboardHeight}} />}
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EmailInputPage;
+export default PasswordInputPage;

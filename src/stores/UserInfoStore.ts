@@ -28,13 +28,14 @@ const userInfoSlice = createSlice({
   reducers: {
     clearUserInfo(state: UserInfoStore) {
       // axios.defaults.headers.common.Authorization = ''; // 헤더초기화 or 로그인 토큰초기화
+      console.log('STATE', state);
       return {
         ...state,
         userInfo: undefined,
         platform: '',
       };
     },
-    setUserInfo(state: UserInfoStore, {payload: data}: PayloadAction<any>) {
+    setUserInfo(state: UserInfoStore, {payload: data}: PayloadAction<Profile>) {
       return {...state, userInfo: data};
     },
     setPlatform(state: UserInfoStore, {payload: data}: PayloadAction<string>) {

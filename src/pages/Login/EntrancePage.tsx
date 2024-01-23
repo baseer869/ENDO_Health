@@ -61,7 +61,7 @@ const EntrancePage = () => {
           alignItems: 'center',
           backgroundColor: 'white',
           paddingHorizontal: 5,
-          paddingTop: '30%',
+          paddingTop: '50%',
         }}>
         <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <LoginLogo />
@@ -78,13 +78,18 @@ const EntrancePage = () => {
             {`One-liner description goes here`}
           </Text>
         </View>
-
+      </View>
+      <View
+        style={{
+          marginBottom: '20%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
         <TouchableOpacity
           style={{
             backgroundColor: colors.PRIMARY_BLUE,
             borderRadius: 24,
             paddingHorizontal: 5,
-            paddingVertical: 3,
             width: '100%',
             marginTop: '100%',
           }}

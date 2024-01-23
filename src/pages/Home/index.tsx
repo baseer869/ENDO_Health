@@ -12,9 +12,10 @@ import {Platform} from 'react-native';
 import {toHexStringWithOffset} from '../../utils/strings';
 import {toHexNumber} from '../../utils/numbers';
 import {rawGlucoseDataParseToReadingData, readRaw} from '../../utils/nfc/data';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
 import {Button, Text, View} from 'components/common';
+import {clearUserInfo} from 'stores/UserInfoStore';
 
 // Define a type for your component's props if needed
 type HomeProps = {
@@ -26,6 +27,7 @@ const {MyNativeModule} = NativeModules;
 const Home: React.FC<HomeProps> = () => {
   const [hasNfc, setHasNFC] = useState<boolean | null>(null);
   const userInfo = useSelector((state: RootState) => state.userInfoStore);
+  const dispatch = useDispatch();
   useEffect(() => {
     const checkIsSupported = async () => {
       const deviceIsSupported = await NfcManager.isSupported();
@@ -168,14 +170,50 @@ const Home: React.FC<HomeProps> = () => {
 
   if (!hasNfc) {
     return (
-      <View className='flex flex-col justify-around w-full h-5/6 pl-10'>
+      <View className="flex flex-col justify-around w-full h-5/6 pl-10">
         <Text>NFC not supported</Text>
-        <Button title='HIHI' type='solid' size='48' icon={require('../../assets/icons/icon_reload_line_30.png')}> </Button>
-        <Button title='HIHI' type='sub' size='44' icon={require('../../assets/icons/icon_reload_line_30.png')}> </Button>
-        <Button title='HIHI' type='sub_gray' size='34' icon={require('../../assets/icons/icon_reload_line_30.png')}> </Button>
-        <Button title='HIHI' type='sub_white' size='30' icon={require('../../assets/icons/icon_reload_line_30.png')}> </Button>
-        <Button title='HIHI' type='sub_border' size='30' icon={require('../../assets/icons/icon_reload_line_30.png')}> </Button>
-        <Button title='HIHI' type='disabled' size='30' icon={require('../../assets/icons/icon_reload_line_30.png')}> </Button>
+        <Button
+          title="HIHI"
+          type="solid"
+          size="48"
+          icon={require('../../assets/icons/icon_reload_line_30.png')}>
+          {' '}
+        </Button>
+        <Button
+          title="HIHI"
+          type="sub"
+          size="44"
+          icon={require('../../assets/icons/icon_reload_line_30.png')}>
+          {' '}
+        </Button>
+        <Button
+          title="HIHI"
+          type="sub_gray"
+          size="34"
+          icon={require('../../assets/icons/icon_reload_line_30.png')}>
+          {' '}
+        </Button>
+        <Button
+          title="HIHI"
+          type="sub_white"
+          size="30"
+          icon={require('../../assets/icons/icon_reload_line_30.png')}>
+          {' '}
+        </Button>
+        <Button
+          title="HIHI"
+          type="sub_border"
+          size="30"
+          icon={require('../../assets/icons/icon_reload_line_30.png')}>
+          {' '}
+        </Button>
+        <Button
+          title="HIHI"
+          type="disabled"
+          size="30"
+          icon={require('../../assets/icons/icon_reload_line_30.png')}>
+          {' '}
+        </Button>
       </View>
     );
   }
@@ -188,6 +226,12 @@ const Home: React.FC<HomeProps> = () => {
       </TouchableOpacity>
       <TouchableOpacity onPress={cancelReadTag}>
         <Text>Cancel Scan</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => dispatch(clearUserInfo())}>
+        <Text style={{color: 'black'}}>
+          로그아웃
+          {JSON.stringify(userInfo.userInfo, null, 2)}
+        </Text>
       </TouchableOpacity>
     </View>
   );

@@ -6,9 +6,9 @@ export const userPatchPreference = async (
   accessToken: string,
   requestBody: UserPreferenceRequestDto,
 ): Promise<UserResponseDto> => {
-  Platform.OS === 'android'
-    ? setBaseUrl('http://10.0.2.2:3000')
-    : setBaseUrl('http://localhost:3000');
+  // Platform.OS === 'android'
+  //   ? setBaseUrl('http://10.0.2.2:3000')
+  //   : setBaseUrl('http://localhost:3000');
   const options: AxiosRequestConfig = {
     url: `${api.users.preference}`,
     headers: {
@@ -41,6 +41,31 @@ export const userPatchPreference = async (
   }
 };
 
+export const postSignup = async (
+  data: SignupRequest,
+): Promise<UserResponseDto> => {
+  const options: AxiosRequestConfig = {
+    url: `${api.users.signup}`,
+    method: 'POST',
+    data,
+  };
+  try {
+    const result = await axios.request(options);
+    console.debug('result : ' + JSON.stringify(result.data));
+    return result.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Error Response Status:', error.response.status);
+      // console.log('Error Response Headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error Request:', error.request);
+    } else {
+      console.error('Error Message:', error.message);
+    }
+    return Promise.resolve(error);
+  }
+};
+
 export type UserResponseDto = {
   id?: number;
   username: string;
@@ -64,6 +89,14 @@ export class UserPreferenceRequestDto {
   fcmToken?: string;
   agreeTermsPolicy?: AgreeTermsPolicy[] = [];
 }
+
+export type SignupRequest = {
+  username: string;
+  email: string;
+  password: string;
+  birthDay: Date;
+  gender: string;
+};
 
 export type Gender = 'Male' | 'Female' | 'Non-binary' | 'Other';
 export type Ethnicity =

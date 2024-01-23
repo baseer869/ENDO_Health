@@ -26,7 +26,7 @@ const GenderSelectPage = () => {
   const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const navigation = useNavigation<RootStackScreenProps>();
   const route = useRoute<RouteProp<RootStackParamList, 'GenderSelect'>>();
-
+  const {email, password, name} = route.params;
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <BackHeader />
@@ -65,7 +65,9 @@ const GenderSelectPage = () => {
           disabled={selectedIndex === -1}
           onPress={() => {
             navigation.push('BirthdaySelect', {
-              name: route.params.name,
+              name,
+              email,
+              password,
               gender: GenderArray[selectedIndex].text,
             });
           }}

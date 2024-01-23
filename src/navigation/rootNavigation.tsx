@@ -13,8 +13,14 @@ import Main from 'pages/Main';
 import Login from 'pages/Login';
 import GenderSelectPage from 'pages/Signup/GenderSelectPage';
 import BirthdaySelectPage from 'pages/Signup/BirthdaySelectPage';
-import Signup from 'pages/Signup';
 import EntrancePage from 'pages/Login/EntrancePage';
+import NameInputPage from 'pages/Signup/NameInput';
+import EmailInputPage from 'pages/Signup';
+import PasswordInputPage from 'pages/Signup/PasswordInputPage';
+import SignupDonePage from 'pages/Signup/SignupDonePage';
+import {useSelector} from 'react-redux';
+import {RootState} from 'reducers';
+import TermWebView from 'pages/TermWebView';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -22,9 +28,24 @@ export type RootStackParamList = {
   Login: undefined;
   Main: undefined;
   Tabs: undefined;
-  GenderSelect: {name: string};
-  BirthdaySelect: {name: string; gender: string};
   Signup: undefined;
+  PasswordInput: {email: string};
+  NameInput: {email: string; password: string};
+  GenderSelect: {email: string; password: string; name: string};
+  BirthdaySelect: {
+    email: string;
+    password: string;
+    name: string;
+    gender: string;
+  };
+  SignupDone: {
+    email: string;
+    password: string;
+    name: string;
+    gender: string;
+    birthday: Date;
+  };
+  TermWebView: undefined;
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -162,7 +183,9 @@ const NotAuthGroup = () => (
   <Stack.Group>
     <Stack.Screen name="Entrance" component={EntrancePage} />
     <Stack.Screen name="Login" component={Login} />
-    <Stack.Screen name="Signup" component={Signup} />
+    <Stack.Screen name="Signup" component={EmailInputPage} />
+    <Stack.Screen name="PasswordInput" component={PasswordInputPage} />
+    <Stack.Screen name="NameInput" component={NameInputPage} />
     <Stack.Screen
       name="GenderSelect"
       component={GenderSelectPage}
@@ -173,11 +196,24 @@ const NotAuthGroup = () => (
       component={BirthdaySelectPage}
       options={{headerShown: false}}
     />
+    <Stack.Screen
+      name="SignupDone"
+      component={SignupDonePage}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="TermWebView"
+      component={TermWebView}
+      options={{headerShown: false}}
+    />
   </Stack.Group>
 );
 
 const Navigator = () => {
   const [isLogin, setIsLogin] = useState(false);
+  const userInfo = useSelector(
+    (state: RootState) => state.userInfoStore.userInfo,
+  );
 
   return (
     <Stack.Navigator
@@ -189,7 +225,7 @@ const Navigator = () => {
           paddingLeft: Platform.OS === 'ios' ? 24 : 10,
         },
       }}>
-      {isLogin ? AuthGroup() : NotAuthGroup()}
+      {userInfo ? AuthGroup() : NotAuthGroup()}
     </Stack.Navigator>
   );
 };

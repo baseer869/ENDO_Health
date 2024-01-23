@@ -21,6 +21,7 @@ interface Props extends TextInputProps {
   backgroundColor?: ColorValue;
   RightComponent?: React.ReactNode;
   containerStyle?: ViewStyle;
+  isValid?: boolean;
 }
 const defaultProps = {backgroundColor: colors.GRAY_40};
 
@@ -32,6 +33,7 @@ const CancelTextInput: React.FC<Props> = props => {
     RightComponent,
     containerStyle,
     editable,
+    isValid = true,
   } = props;
   const sendProps = {...props, backgroundColor: undefined};
   const ref = useRef<TextInput>(null);
@@ -60,7 +62,11 @@ const CancelTextInput: React.FC<Props> = props => {
           width: '100%',
 
           borderBottomWidth: 2,
-          borderColor: isFocus ? colors.PRIMARY_BLUE : colors.GRAY_30,
+          borderColor: !isValid
+            ? colors.PRIMARY_RED
+            : isFocus
+            ? colors.PRIMARY_BLUE
+            : colors.GRAY_30,
           paddingBottom: 8,
         },
         containerStyle,
@@ -71,6 +77,7 @@ const CancelTextInput: React.FC<Props> = props => {
         {...sendProps}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        isValid={isValid}
       />
       {!!RightComponent && RightComponent}
       {Boolean(value) && editable !== false && (
