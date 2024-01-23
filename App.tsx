@@ -27,10 +27,11 @@ import {styled, withExpoSnack} from 'nativewind';
 import {Text} from './src/components/common';
 import {NavigationContainer, ThemeProvider} from '@react-navigation/native';
 import Navigator from 'navigation/rootNavigation';
-import { MD3LightTheme as DefaultTheme, PaperProvider } from 'react-native-paper';
+import {MD3LightTheme as DefaultTheme, PaperProvider} from 'react-native-paper';
+import {setBaseUrl} from 'apis/apiConstants';
 
 const StyledSafeAreaView = styled(SafeAreaView);
-
+setBaseUrl('https://api.endohealth.co');
 const theme = {
   ...DefaultTheme,
   colors: {

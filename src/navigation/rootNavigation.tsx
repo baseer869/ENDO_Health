@@ -13,6 +13,7 @@ import Main from 'pages/Main';
 import Login from 'pages/Login';
 import GenderSelectPage from 'pages/Login/GenderSelectPage';
 import BirthdaySelectPage from 'pages/Login/BirthdaySelectPage';
+import Signup from 'pages/Signup';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   Tabs: undefined;
   GenderSelect: {name: string};
   BirthdaySelect: {name: string; gender: string};
+  Signup: undefined;
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -157,6 +159,7 @@ const AuthGroup = () => (
 const NotAuthGroup = () => (
   <Stack.Group>
     <Stack.Screen name="Login" component={Login} />
+    <Stack.Screen name="Signup" component={Signup} />
     <Stack.Screen
       name="GenderSelect"
       component={GenderSelectPage}

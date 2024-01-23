@@ -12,7 +12,7 @@ export const api = {
     version: '/api/v1/version',
   },
   users: {
-    signup: '/api/v1/user/signup',
+    signup: '/auth/registration',
     signIn: '/api/v1/user/signin',
   },
   alarm: {},

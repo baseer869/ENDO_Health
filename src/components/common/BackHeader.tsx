@@ -2,10 +2,7 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-
-import {images} from 'assets/images/images';
 import {colors} from 'assets/colors';
-import icons from 'components/icons';
 import {BackArrow} from 'assets/svgIcons';
 
 interface Props {

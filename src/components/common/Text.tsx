@@ -9,8 +9,9 @@ export function Text({
   children,
   ...props
 }: StyledCommonProps & TextProps) {
+  const css = `font-pretendard ${className}`;
   return (
-    <OriginalText className={`font-pretendard ${className} `} {...props}>
+    <OriginalText className={css} {...props}>
       {children}
     </OriginalText>
   );

@@ -14,7 +14,7 @@ const BasicInput = forwardRef<any, TextInputProps>((props, ref) => {
   };
   return (
     <TextInput
-      className="text-[22px] text-gray-90"
+      className="text-[20px] text-gray-90"
       style={{
         borderBottomWidth: 2,
         borderColor: isFocus ? colors.PRIMARY_BLUE : colors.GRAY_30,

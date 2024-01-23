@@ -8,7 +8,10 @@ module.exports = {
         extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
       },
     ],
-    'nativewind/babel',
+    [
+      'nativewind/babel',
+      {allowModuleTransform: ['react-native-svg-transformer']},
+    ],
     'react-native-paper/babel',
   ],
 };
