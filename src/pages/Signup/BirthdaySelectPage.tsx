@@ -14,13 +14,24 @@ const BirthdaySelectPage = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'BirthdaySelect'>>();
   const {name, gender} = route.params;
   return (
-    <View className=" bg-white flex-1">
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <BackHeader />
-      <View className="flex-1 px-7 mt-4">
-        <Text className="font-bold text-[28px] pb-16 text-black">
+      <View style={{flex: 1, paddingHorizontal: 28, marginTop: 16}}>
+        <Text
+          style={{
+            fontWeight: '700',
+            fontSize: 28,
+            paddingBottom: 64,
+            color: 'black',
+          }}>
           {i18n.t('Login.birthday_title')}
         </Text>
-        <View className=" w-full justify-center items-center">
+        <View
+          style={{
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <DatePicker
             textColor="black"
             mode="date"
@@ -31,7 +42,13 @@ const BirthdaySelectPage = () => {
           />
         </View>
       </View>
-      <View className="w-full items-end pb-5 px-7">
+      <View
+        style={{
+          width: '100%',
+          alignItems: 'flex-end',
+          paddingBottom: 20,
+          paddingHorizontal: 28,
+        }}>
         <CircleButton
           disabled={false}
           onPress={() => {

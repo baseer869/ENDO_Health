@@ -28,10 +28,16 @@ const GenderSelectPage = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'GenderSelect'>>();
 
   return (
-    <View className=" bg-white flex-1">
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <BackHeader />
-      <View className="flex-1 px-7 mt-4">
-        <Text className="font-bold text-[28px] pb-16 text-black">
+      <View style={{flex: 1, paddingHorizontal: 28, marginTop: 16}}>
+        <Text
+          style={{
+            fontWeight: '700',
+            fontSize: 28,
+            marginBottom: 64,
+            color: 'black',
+          }}>
           {i18n.t('Login.gender_title')}
         </Text>
         {GenderArray.map((data, index) => {
@@ -43,12 +49,18 @@ const GenderSelectPage = () => {
                 selected={index === selectedIndex}
                 onPress={() => setSelectedIndex(index)}
               />
-              <View className="h-4" />
+              <View style={{height: 16}} />
             </View>
           );
         })}
       </View>
-      <View className="w-full items-end pb-5 px-7">
+      <View
+        style={{
+          width: '100%',
+          alignItems: 'flex-end',
+          paddingBottom: 20,
+          paddingHorizontal: 28,
+        }}>
         <CircleButton
           disabled={selectedIndex === -1}
           onPress={() => {

@@ -66,8 +66,7 @@ const CancelTextInput: React.FC<Props> = props => {
         containerStyle,
       ]}>
       <BasicInput
-        className="p-0"
-        style={{flex: 1}}
+        style={{flex: 1, padding: 0, fontSize: 20, color: colors.GRAY_90}}
         ref={ref}
         {...sendProps}
         onFocus={handleFocus}

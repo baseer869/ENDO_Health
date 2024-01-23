@@ -14,13 +14,23 @@ export default function GenderButton(props: {
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={onPress}
-      className="bg-gray-5 flex-row items-center justify-center px-5 py-6 rounded-[10px]"
-      style={{backgroundColor: selected ? colors.PRIMARY_BLUE : colors.GRAY_5}}>
-      <View className="flex-row items-center gap-x-1.5">
-        <Text className="text-2xl">{emoji}</Text>
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 24,
+        borderRadius: 10,
+        backgroundColor: selected ? colors.PRIMARY_BLUE : colors.GRAY_5,
+      }}>
+      <View style={{flexDirection: 'row', alignItems: 'center', rowGap: 6}}>
+        <Text style={{fontSize: 24}}>{emoji}</Text>
         <Text
-          className="text-xl font-bold"
-          style={{color: selected ? colors.GRAY_0 : colors.GRAY_100}}>
+          style={{
+            color: selected ? colors.GRAY_0 : colors.GRAY_100,
+            fontWeight: '700',
+            fontSize: 20,
+          }}>
           {text}
         </Text>
       </View>

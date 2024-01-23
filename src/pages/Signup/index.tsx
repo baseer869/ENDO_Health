@@ -17,9 +17,16 @@ const Login = () => {
   const navigation = useNavigation<RootStackScreenProps>();
 
   return (
-    <View className="px-7 bg-white flex-1">
-      <View className="flex-1">
-        <Text className="font-bold text-[28px] pb-16 text-black">
+    <View style={{paddingHorizontal: 28, backgroundColor: 'white', flex: 1}}>
+      <View style={{flex: 1}}>
+        <Text
+          style={{
+            fontWeight: '700',
+            fontSize: 28,
+            paddingBottom: 64,
+            color: 'black',
+          }}
+          className="font-bold text-[28px] pb-16 text-black">
           {i18n.t('Login.login_title')}
         </Text>
         <CancelTextInput

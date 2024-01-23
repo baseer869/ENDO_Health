@@ -11,8 +11,8 @@ import {colors} from 'assets/colors';
 import Home from 'pages/Home';
 import Main from 'pages/Main';
 import Login from 'pages/Login';
-import GenderSelectPage from 'pages/Login/GenderSelectPage';
-import BirthdaySelectPage from 'pages/Login/BirthdaySelectPage';
+import GenderSelectPage from 'pages/Signup/GenderSelectPage';
+import BirthdaySelectPage from 'pages/Signup/BirthdaySelectPage';
 import Signup from 'pages/Signup';
 import EntrancePage from 'pages/Login/EntrancePage';
 

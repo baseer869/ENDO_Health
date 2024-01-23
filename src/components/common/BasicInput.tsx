@@ -14,10 +14,12 @@ const BasicInput = forwardRef<any, TextInputProps>((props, ref) => {
   };
   return (
     <TextInput
-      className="text-[20px] text-gray-90"
       style={{
         borderBottomWidth: 2,
         borderColor: isFocus ? colors.PRIMARY_BLUE : colors.GRAY_30,
+        fontSize: 20,
+        color: colors.GRAY_90,
+        padding: 0,
       }}
       onFocus={handleFocus}
       onBlur={handleBlur}
