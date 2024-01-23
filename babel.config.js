@@ -13,5 +13,6 @@ module.exports = {
       {allowModuleTransform: ['react-native-svg-transformer']},
     ],
     'react-native-paper/babel',
+    'react-native-reanimated/plugin',
   ],
 };
