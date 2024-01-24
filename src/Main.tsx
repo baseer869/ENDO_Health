@@ -13,6 +13,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import Navigator from 'navigation/rootNavigation';
 import {RootState} from 'reducers';
 import {userPatchPreference} from 'apis/userApi';
+import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 function Main() {
   const {userInfo, platform} = useSelector(
@@ -95,9 +97,13 @@ function Main() {
   };
 
   return (
-    <NavigationContainer>
-      <Navigator />
-    </NavigationContainer>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <NavigationContainer>
+        <BottomSheetModalProvider>
+          <Navigator />
+        </BottomSheetModalProvider>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
 

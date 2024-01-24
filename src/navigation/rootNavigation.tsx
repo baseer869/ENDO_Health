@@ -21,6 +21,7 @@ import SignupDonePage from 'pages/Signup/SignupDonePage';
 import {useSelector} from 'react-redux';
 import {RootState} from 'reducers';
 import TermWebView from 'pages/TermWebView';
+import MedicalInfo from 'pages/MedicalInfo';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -46,6 +47,7 @@ export type RootStackParamList = {
     birthday: Date;
   };
   TermWebView: undefined;
+  MedicalInfo: undefined;
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -179,6 +181,13 @@ const AuthGroup = () => (
     <Stack.Screen name="Main" component={Main} />
   </Stack.Group>
 );
+
+const AuthGroupNotMedicalInfo = () => (
+  <Stack.Group>
+    <Stack.Screen name="MedicalInfo" component={MedicalInfo} />
+  </Stack.Group>
+);
+
 const NotAuthGroup = () => (
   <Stack.Group>
     <Stack.Screen name="Entrance" component={EntrancePage} />
@@ -210,7 +219,6 @@ const NotAuthGroup = () => (
 );
 
 const Navigator = () => {
-  const [isLogin, setIsLogin] = useState(false);
   const userInfo = useSelector(
     (state: RootState) => state.userInfoStore.userInfo,
   );
@@ -225,7 +233,11 @@ const Navigator = () => {
           paddingLeft: Platform.OS === 'ios' ? 24 : 10,
         },
       }}>
-      {userInfo ? AuthGroup() : NotAuthGroup()}
+      {userInfo
+        ? userInfo.completed
+          ? AuthGroup()
+          : AuthGroupNotMedicalInfo()
+        : NotAuthGroup()}
     </Stack.Navigator>
   );
 };
