@@ -1,7 +1,7 @@
 import {SafeAreaView, Text, View} from 'components/common';
 import BasicInput from 'components/common/BasicInput';
 import i18n from 'language/i18n';
-import Home from 'pages/Home';
+import Home from 'pages/Home/Home';
 import React, {useState} from 'react';
 import CircleButton from '../../components/common/CircleArrowButton';
 import useKeyboard from 'hooks/useKeyboard';
