@@ -1,6 +1,13 @@
 import {colors} from 'assets/colors';
 import React, {useEffect, useRef, useState} from 'react';
-import {View, StyleSheet, Dimensions, Button, Platform} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  Button,
+  Platform,
+  ScrollView,
+} from 'react-native';
 import {} from 'react-native-svg';
 import MedicalInfoHeader from './components/MedicalInfoHeader';
 import CancelTextInput from 'components/common/CancelTextInput';
@@ -10,14 +17,29 @@ import ButtonSwitch from './components/ButtonSwitch';
 import CircleButton from 'components/common/CircleArrowButton';
 
 import BottomModal from 'components/common/BottomModal';
-import {BottomSheetModal} from '@gorhom/bottom-sheet';
+import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import CheckboxListItem from 'components/common/CheckboxListItem';
+import SelectButton from 'components/common/SelectButton';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackScreenProps} from 'navigation/rootNavigation';
+
+const EthnicityArray = [
+  'White/Caucasian',
+  'Black',
+  'Asian',
+  'Indigenous/Polynesian',
+  'Hispanic',
+  'Other',
+];
 
 export default function MedicalInfo() {
+  const navigation = useNavigation<RootStackScreenProps>();
   const [weight, setWeight] = useState<string>();
   const [weightUnit, setWeightUnit] = useState<string>('lb');
   const [height, setHeight] = useState<string>();
   const [heightUnit, setHeightUnit] = useState<string>('in');
+
+  const [selectedEthnicity, setSelectedEthnicity] = useState<string[]>([]);
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
@@ -37,6 +59,17 @@ export default function MedicalInfo() {
     bottomSheetRef.current?.close();
   };
 
+  const onPressListItem = (ethnicity: string) => {
+    const temp = [...selectedEthnicity];
+    const findIndex = temp?.findIndex(d => ethnicity === d);
+    if (findIndex === -1) {
+      temp.push(ethnicity);
+    } else {
+      temp.splice(findIndex, 1);
+    }
+    setSelectedEthnicity(temp);
+  };
+
   return (
     <View style={styles.container}>
       <MedicalInfoHeader currentIndex={0} />
@@ -53,6 +86,7 @@ export default function MedicalInfo() {
                 value={weight}
                 onChangeText={onChangeWeight}
                 placeholderTextColor={colors.GRAY_30}
+                keyboardType="number-pad"
               />
             </View>
             <ButtonSwitch
@@ -71,6 +105,7 @@ export default function MedicalInfo() {
                 value={height}
                 onChangeText={onChangeHeight}
                 placeholderTextColor={colors.GRAY_30}
+                keyboardType="number-pad"
               />
             </View>
             <ButtonSwitch
@@ -82,7 +117,11 @@ export default function MedicalInfo() {
         </View>
         <View style={styles.textInputContainer}>
           <Label text="Ethnicity" />
-          <CancelTextInput />
+          <SelectButton
+            placeholder={'Choose yours'}
+            text={selectedEthnicity.join(', ')}
+            onPress={handleSheetOpen}
+          />
         </View>
       </View>
 
@@ -92,8 +131,18 @@ export default function MedicalInfo() {
         snapPoints={[Platform.OS === 'ios' ? '38%' : '42%']}
         ref={bottomSheetRef}>
         <View style={{flex: 1}}>
-          <CheckboxListItem title={'d.text'} isSelected={true} />
-          <CheckboxListItem title={'d.text'} />
+          <BottomSheetScrollView>
+            {EthnicityArray.map(ethnicity => {
+              const isSelected = selectedEthnicity.includes(ethnicity);
+              return (
+                <CheckboxListItem
+                  title={ethnicity}
+                  isSelected={isSelected}
+                  onPress={() => onPressListItem(ethnicity)}
+                />
+              );
+            })}
+          </BottomSheetScrollView>
         </View>
       </BottomModal>
 
@@ -104,7 +153,18 @@ export default function MedicalInfo() {
           paddingBottom: 20,
           paddingHorizontal: 28,
         }}>
-        <CircleButton disabled={false} onPress={handleSheetOpen} />
+        <CircleButton
+          disabled={!(weight && height && selectedEthnicity.length > 0)}
+          onPress={() => {
+            if (selectedEthnicity.length > 0) {
+              navigation.push('MedicalInfoStep2', {
+                height: height + heightUnit,
+                weight: weight + weightUnit,
+                ethnicity: selectedEthnicity,
+              });
+            }
+          }}
+        />
       </View>
     </View>
   );

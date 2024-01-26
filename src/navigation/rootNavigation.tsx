@@ -22,6 +22,8 @@ import {useSelector} from 'react-redux';
 import {RootState} from 'reducers';
 import TermWebView from 'pages/TermWebView';
 import MedicalInfo from 'pages/MedicalInfo';
+import MedicalInfoStep2 from 'pages/MedicalInfo/MedicalInfoStep2';
+import MedicalInfoStep3 from 'pages/MedicalInfo/MedicalInfoStep3';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -48,6 +50,20 @@ export type RootStackParamList = {
   };
   TermWebView: undefined;
   MedicalInfo: undefined;
+  MedicalInfoStep2: {
+    height: string;
+    weight: string;
+    ethnicity: string[];
+  };
+  MedicalInfoStep3: {
+    height: string;
+    weight: string;
+    ethnicity: string[];
+    diagnosed: string;
+    familyMemberHistory: string[];
+    currentMedication: string[];
+    dailyMedicationCount: number;
+  };
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -185,6 +201,8 @@ const AuthGroup = () => (
 const AuthGroupNotMedicalInfo = () => (
   <Stack.Group>
     <Stack.Screen name="MedicalInfo" component={MedicalInfo} />
+    <Stack.Screen name="MedicalInfoStep2" component={MedicalInfoStep2} />
+    <Stack.Screen name="MedicalInfoStep3" component={MedicalInfoStep3} />
   </Stack.Group>
 );
 

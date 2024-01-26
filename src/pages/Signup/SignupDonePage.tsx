@@ -1,7 +1,9 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {setToken} from 'apis/apiConstants';
 import {postSignup} from 'apis/userApi';
 import {colors} from 'assets/colors';
 import {RightArrow} from 'assets/svgIcons';
+import axios from 'axios';
 import {Text} from 'components/common';
 import BackHeader from 'components/common/BackHeader';
 import {
@@ -29,6 +31,7 @@ export default function SignupDonePage() {
       password: password,
     });
     dispatch(setUserInfo(res));
+    if (res.accessToken) setToken(res.accessToken);
   };
 
   return (

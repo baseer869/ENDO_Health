@@ -66,6 +66,57 @@ export const postSignup = async (
   }
 };
 
+export const getMoreInfo = async (): Promise<{currentMedication: string[]}> => {
+  const options: AxiosRequestConfig = {
+    url: `${api.users.moreInfo}`,
+    method: 'GET',
+  };
+  try {
+    const result = await axios.request(options);
+
+    return result.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Error Response Status:', error.response);
+      // console.log('Error Response Headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error Request:', error.request);
+    } else {
+      console.error('Error Message:', error.message);
+    }
+    return Promise.resolve(error);
+  }
+};
+
+export const patchMoreInfo = async (data: MoreInfoRequest): Promise<any> => {
+  const options: AxiosRequestConfig = {
+    url: `${api.users.moreInfo}`,
+    method: 'PATCH',
+    data,
+  };
+  try {
+    const result = await axios.request(options);
+
+    return result.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Error Response Status:', error.response);
+      // console.log('Error Response Headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error Request:', error.request);
+    } else {
+      console.error('Error Message:', error.message);
+    }
+    return Promise.resolve(error);
+  }
+};
+
+axios.interceptors.request.use(function (config) {
+  console.log('interpecec', JSON.stringify(config, null, 2));
+
+  return config;
+});
+
 export type UserResponseDto = {
   id?: number;
   username: string;
@@ -106,3 +157,14 @@ export type Ethnicity =
   | 'Indigenous/Polynesian'
   | 'Hispanic'
   | 'Other';
+
+export type MoreInfoRequest = {
+  height: string;
+  weight: string;
+  ethnicity: string[];
+  diagnosed: string;
+  familyMemberHistory: string[];
+  currentMedication: string[];
+  dailyMedicationCount: number;
+  cgmDevice: string[];
+};

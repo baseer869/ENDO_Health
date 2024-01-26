@@ -15,6 +15,7 @@ import {RootState} from 'reducers';
 import {userPatchPreference} from 'apis/userApi';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {setToken} from 'apis/apiConstants';
 
 function Main() {
   const {userInfo, platform} = useSelector(
@@ -28,6 +29,12 @@ function Main() {
       ? androidRequestPermission()
       : iosRequestPermission();
   }, []);
+
+  useEffect(() => {
+    if (userInfo?.accessToken) {
+      setToken(userInfo.accessToken);
+    }
+  }, [userInfo, userInfo?.accessToken]);
 
   // ios 사용자에게 알림권한 요청
   const iosRequestPermission = async () => {
