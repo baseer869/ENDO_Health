@@ -1,15 +1,16 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {postSignup} from 'apis/userApi';
 import {colors} from 'assets/colors';
-import {RightArrow} from 'assets/svgIcons';
+import { fonst } from 'assets/fonts';
 import {Text} from 'components/common';
+import CustomButton from 'components/common/ActionButton';
 import BackHeader from 'components/common/BackHeader';
 import {
   RootStackParamList,
   RootStackScreenProps,
 } from 'navigation/rootNavigation';
 import React from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, SafeAreaView} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {setUserInfo} from 'stores/UserInfoStore';
 
@@ -30,9 +31,9 @@ export default function SignupDonePage() {
     });
     dispatch(setUserInfo(res));
   };
-
+// Re- style by Baseer 
   return (
-    <View style={{flex: 1}}>
+    <SafeAreaView style={{flex: 1}}>
       <BackHeader />
       <View style={styles.container}>
         <Text style={styles.title1}>{`Looks great\n${name} 👏🏻`}</Text>
@@ -52,34 +53,12 @@ export default function SignupDonePage() {
           onPress={() => {
             navigation.push('TermWebView');
           }}>
-          <Text style={styles.read}>Read</Text> what we do to keep you private
+          <Text style={{textDecorationLine:'underline'}}>Read</Text> what we do to keep you private
         </Text>
-
-        <TouchableOpacity
-          style={{
-            backgroundColor: colors.PRIMARY_BLUE,
-            borderRadius: 24,
-            paddingHorizontal: 5,
-            marginTop: 40,
-            width: '100%',
-          }}
-          onPress={signup}>
-          <View
-            style={{
-              flexDirection: 'row',
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: 12,
-            }}>
-            <Text style={{color: 'white', fontWeight: '700', fontSize: 17}}>
-              Continue
-            </Text>
-            <RightArrow style={{marginLeft: 8}} />
-          </View>
-        </TouchableOpacity>
+        {/* Common Button */}
+        <CustomButton label="Continue" arrow={true} onPress={signup} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -91,23 +70,23 @@ const styles = StyleSheet.create({
   },
   title1: {
     color: colors.PRIMARY_BLUE,
-    fontFamily: 'Pretendard',
+    fontFamily: fonst.Pretendard_Bold,
     fontSize: 28,
-    fontWeight: '700',
     letterSpacing: 0,
     lineHeight: 35,
   },
   title2: {
     color: colors.GRAY_100,
-    fontFamily: 'Pretendard',
+    fontFamily: fonst.Pretendard_Bold,
     fontSize: 28,
-    fontWeight: '700',
     letterSpacing: 0,
     lineHeight: 35,
     marginTop: 30,
   },
-  subText: {color: colors.GRAY_60},
-  read: {
-    textDecorationLine: 'underline',
+  subText: {
+    color: colors.GRAY_60,
+    fontFamily: fonst.Pretendard_Regular,
+    fontSize: 15,
+    lineHeight: 21.7,
   },
 });
