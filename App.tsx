@@ -9,7 +9,6 @@ import React from 'react';
 import CodePush, {CodePushOptions} from 'react-native-code-push';
 import {Provider} from 'react-redux';
 import {store} from './src/stores/rootStore';
-import {setUserInfo} from './src/stores/UserInfoStore';
 import {styled, withExpoSnack} from 'nativewind';
 import {Text} from './src/components/common';
 import {NavigationContainer, ThemeProvider} from '@react-navigation/native';

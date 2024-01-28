@@ -15,7 +15,7 @@ interface Props {
   items: string[];
 }
 
-export default function FamilyBottomSheet(props: Props) {
+export default function MedicationBottomSheet(props: Props) {
   const {onPressListItem, selectedItem, onNextButton, items} = props;
 
   return (
@@ -34,7 +34,7 @@ export default function FamilyBottomSheet(props: Props) {
         })}
       </BottomSheetScrollView>
       <View style={{marginHorizontal: 20, marginBottom: 30}}>
-        <RoundButton text="Next" onPress={onNextButton} />
+        <RoundButton text="Done" onPress={onNextButton} isRightArrow={false} />
       </View>
     </SafeAreaView>
   );

@@ -24,6 +24,7 @@ import TermWebView from 'pages/TermWebView';
 import MedicalInfo from 'pages/MedicalInfo';
 import MedicalInfoStep2 from 'pages/MedicalInfo/MedicalInfoStep2';
 import MedicalInfoStep3 from 'pages/MedicalInfo/MedicalInfoStep3';
+import RecommendSelectPage from 'pages/MedicalInfo/RecommendSelectPage';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -64,6 +65,7 @@ export type RootStackParamList = {
     currentMedication: string[];
     dailyMedicationCount: number;
   };
+  RecommendSelectPage: undefined;
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -203,6 +205,7 @@ const AuthGroupNotMedicalInfo = () => (
     <Stack.Screen name="MedicalInfo" component={MedicalInfo} />
     <Stack.Screen name="MedicalInfoStep2" component={MedicalInfoStep2} />
     <Stack.Screen name="MedicalInfoStep3" component={MedicalInfoStep3} />
+    <Stack.Screen name="RecommendSelectPage" component={RecommendSelectPage} />
   </Stack.Group>
 );
 

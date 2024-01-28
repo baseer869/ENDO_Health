@@ -4,10 +4,11 @@ import {TouchableOpacity, View, Text} from 'react-native';
 interface Props {
   onPress: () => void;
   text: string;
+  isRightArrow?: boolean;
 }
 
 const RoundButton = (props: Props) => {
-  const {onPress, text} = props;
+  const {onPress, text, isRightArrow = true} = props;
 
   return (
     <TouchableOpacity
@@ -15,7 +16,7 @@ const RoundButton = (props: Props) => {
       onPress={onPress}>
       <View className="flex-row w-full justify-center items-center">
         <Text className=" text-white font-bold text-[17px]">{text}</Text>
-        <RightArrow className="ml-2 " />
+        {isRightArrow && <RightArrow className="ml-2 " />}
       </View>
     </TouchableOpacity>
   );

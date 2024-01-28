@@ -7,8 +7,6 @@ import {
 } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import {useSelector} from 'react-redux';
-import {store} from './stores/rootStore';
-import {setUserInfo} from 'stores/UserInfoStore';
 import {NavigationContainer} from '@react-navigation/native';
 import Navigator from 'navigation/rootNavigation';
 import {RootState} from 'reducers';

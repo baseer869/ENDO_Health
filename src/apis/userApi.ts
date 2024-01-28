@@ -62,7 +62,7 @@ export const postSignup = async (
     } else {
       console.error('Error Message:', error.message);
     }
-    return Promise.resolve(error);
+    return Promise.reject(error);
   }
 };
 
@@ -93,6 +93,28 @@ export const patchMoreInfo = async (data: MoreInfoRequest): Promise<any> => {
     url: `${api.users.moreInfo}`,
     method: 'PATCH',
     data,
+  };
+  try {
+    const result = await axios.request(options);
+
+    return result.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Error Response Status:', error.response);
+      // console.log('Error Response Headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error Request:', error.request);
+    } else {
+      console.error('Error Message:', error.message);
+    }
+    return Promise.reject(error);
+  }
+};
+
+export const getUserInfo = async (): Promise<UserResponseDto> => {
+  const options: AxiosRequestConfig = {
+    url: `${api.users.user}`,
+    method: 'GET',
   };
   try {
     const result = await axios.request(options);
@@ -166,5 +188,5 @@ export type MoreInfoRequest = {
   familyMemberHistory: string[];
   currentMedication: string[];
   dailyMedicationCount: number;
-  cgmDevice: string[];
+  cgmDevice: string;
 };

@@ -23,6 +23,7 @@ export const api = {
     signIn: '/api/v1/user/signin',
     preference: '/user/preference',
     moreInfo: '/user/more-info',
+    user: '/user',
   },
   alarm: {},
 };

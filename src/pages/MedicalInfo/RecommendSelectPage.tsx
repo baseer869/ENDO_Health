@@ -33,29 +33,26 @@ import {
 } from 'navigation/rootNavigation';
 import {TouchableOpacity} from 'react-native';
 import {setUserInfo} from 'stores/UserInfoStore';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import LoadingModal from './components/LoadingModal';
+import {RootState} from 'reducers';
 
-const CgmArray = [
-  'Abott Freestyle Libre 1/2/3',
-  'Dexcom G6/G7',
-  'Medtronic Guardian',
+const RecommendArray = [
+  {text: 'Got here on my own', subText: ''},
+  {text: 'A friend recommended me', subText: ''},
+  {text: 'Saw on social channels', subText: 'Instagram, Facebook, etc.'},
+  {text: 'Saw an advertisement', subText: ''},
+  {text: 'Searched online', subText: 'Google search etc.'},
+  {text: 'Found on App marketplace', subText: 'iOS Appstore, Google Playstore'},
+  {text: 'Other', subText: 'Please tell us'},
 ];
 
-export default function MedicalInfoStep3() {
+export default function RecommendSelectPage() {
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState<string>();
+  const userInfo = useSelector((state: RootState) => state.userInfoStore);
 
   const navigation = useNavigation<RootStackScreenProps>();
-  const route = useRoute<RouteProp<RootStackParamList, 'MedicalInfoStep3'>>();
-  const {
-    ethnicity,
-    height,
-    weight,
-    currentMedication,
-    dailyMedicationCount,
-    diagnosed,
-    familyMemberHistory,
-  } = route.params;
 
   const onPressListItem = (item: string) => {
     setSelectedItem(item);
@@ -63,36 +60,25 @@ export default function MedicalInfoStep3() {
 
   const onNextMove = async () => {
     if (selectedItem) {
-      await patchMoreInfo({
-        ethnicity,
-        height,
-        weight,
-        currentMedication,
-        dailyMedicationCount,
-        diagnosed,
-        familyMemberHistory,
-        cgmDevice: selectedItem,
-      });
+      const res = await getUserInfo();
+      dispatch(setUserInfo(res));
     }
-    navigation.push('RecommendSelectPage');
-    // const res = await getUserInfo();
-    // dispatch(setUserInfo(res));
-    // Alert.alert('', JSON.stringify(res, null, 2));
   };
   return (
     <View style={styles.container}>
       <MedicalInfoHeader currentIndex={2} />
       <View style={styles.mainPadding}>
-        <Text style={styles.title}>Choose your CGM Device</Text>
+        <Text style={styles.title}>How did you get to know us?</Text>
 
-        {CgmArray.map(item => {
-          const isSelected = selectedItem === item;
+        {RecommendArray.map(({text, subText}) => {
+          const isSelected = selectedItem === text;
           return (
             <RadioListItem
-              key={item}
-              title={item}
+              key={text}
+              title={text}
+              subText={subText}
               isSelected={isSelected}
-              onPress={() => onPressListItem(item)}
+              onPress={() => onPressListItem(text)}
             />
           );
         })}
@@ -105,8 +91,13 @@ export default function MedicalInfoStep3() {
           paddingBottom: 20,
           paddingHorizontal: 28,
         }}>
-        <CircleButton onPress={onNextMove} disabled={!selectedItem} />
+        <CircleButton onPress={onNextMove} disabled={false} />
       </View>
+      <LoadingModal
+        visible
+        onClose={() => {}}
+        name={userInfo.userInfo?.username ?? ''}
+      />
     </View>
   );
 }

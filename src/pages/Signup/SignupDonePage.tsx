@@ -22,16 +22,18 @@ export default function SignupDonePage() {
   const dispatch = useDispatch();
 
   const signup = async () => {
-    const res = await postSignup({
-      username: name,
-      email: email,
-      birthDay: birthday,
-      gender,
+    try {
+      const res = await postSignup({
+        username: name,
+        email: email,
+        birthDay: birthday,
+        gender,
 
-      password: password,
-    });
-    dispatch(setUserInfo(res));
-    if (res.accessToken) setToken(res.accessToken);
+        password: password,
+      });
+      dispatch(setUserInfo(res));
+      if (res.accessToken) setToken(res.accessToken);
+    } catch (e) {}
   };
 
   return (

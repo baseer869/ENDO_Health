@@ -260,7 +260,7 @@ export default function MedicalInfoStep2() {
               items={medicationArray}
               onPressListItem={onPressListItemByMedication}
               selectedItem={selectedMedication ?? []}
-              onNextButton={onNextMove}
+              onNextButton={() => bottomSheetRef.current?.close()}
             />
           )}
         </View>
