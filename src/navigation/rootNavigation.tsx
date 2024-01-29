@@ -212,7 +212,11 @@ const AuthGroupNotMedicalInfo = () => (
 const NotAuthGroup = () => (
   <Stack.Group>
     <Stack.Screen name="Entrance" component={EntrancePage} />
-    <Stack.Screen name="Login" component={Login} />
+    <Stack.Screen
+      name="Login"
+      component={Login}
+      options={{headerShown: false}}
+    />
     <Stack.Screen name="Signup" component={EmailInputPage} />
     <Stack.Screen name="PasswordInput" component={PasswordInputPage} />
     <Stack.Screen name="NameInput" component={NameInputPage} />

@@ -36,7 +36,10 @@ const userInfoSlice = createSlice({
       };
     },
     setUserInfo(state: UserInfoStore, {payload: data}: PayloadAction<Profile>) {
-      return {...state, userInfo: data};
+      return {
+        ...state,
+        userInfo: {accessToken: state.userInfo?.accessToken, ...data},
+      };
     },
     setPlatform(state: UserInfoStore, {payload: data}: PayloadAction<string>) {
       return {...state, platform: data};

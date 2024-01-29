@@ -55,7 +55,7 @@ export const postSignup = async (
     return result.data;
   } catch (error: any) {
     if (error.response) {
-      console.error('Error Response Status:', error.response.status);
+      console.error('Error Response Status:', JSON.stringify(error.response));
       // console.log('Error Response Headers:', error.response.headers);
     } else if (error.request) {
       console.error('Error Request:', error.request);
@@ -130,6 +130,57 @@ export const getUserInfo = async (): Promise<UserResponseDto> => {
       console.error('Error Message:', error.message);
     }
     return Promise.resolve(error);
+  }
+};
+
+export const getUserReferral = async (data: {
+  referral: string;
+}): Promise<any> => {
+  const options: AxiosRequestConfig = {
+    url: `${api.users.referral}`,
+    method: 'POST',
+    data,
+  };
+  try {
+    const result = await axios.request(options);
+
+    return result.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Error Response Status:', error.response);
+      // console.log('Error Response Headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error Request:', error.request);
+    } else {
+      console.error('Error Message:', error.message);
+    }
+    return Promise.resolve(error);
+  }
+};
+
+export const postLogin = async (data: {
+  email: string;
+  password: string;
+}): Promise<any> => {
+  const options: AxiosRequestConfig = {
+    url: `${api.users.signIn}`,
+    method: 'POST',
+    data,
+  };
+  try {
+    const result = await axios.request(options);
+
+    return result.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Error Response Status:', error.response);
+      // console.log('Error Response Headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error Request:', error.request);
+    } else {
+      console.error('Error Message:', error.message);
+    }
+    return Promise.reject(error);
   }
 };
 

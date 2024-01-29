@@ -20,10 +20,11 @@ export const api = {
   },
   users: {
     signup: '/auth/registration',
-    signIn: '/api/v1/user/signin',
+    signIn: '/auth/login',
     preference: '/user/preference',
     moreInfo: '/user/more-info',
     user: '/user',
+    referral: '/user/referral',
   },
   alarm: {},
 };

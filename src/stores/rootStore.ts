@@ -32,7 +32,7 @@ import rootReducer, {RootState} from '../reducers/index';
 const persistConfig: PersistConfig<RootState> = {
   key: 'root',
   storage: AsyncStorage,
-  blacklist: ['feedVideoUpload', ''], // persist 하지 않을 것
+  blacklist: [''], // persist 하지 않을 것
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

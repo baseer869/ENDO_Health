@@ -25,12 +25,13 @@ const LoadingModal = (props: {
   visible: boolean;
   onClose: () => void;
   name: string;
+  mainText: string;
 }) => {
-  const {visible, onClose, name} = props;
-  const [mainText, setMainText] = useState<string>();
+  const {visible, onClose, name, mainText} = props;
   const width = Dimensions.get('screen').width / 1.2;
   const rotation = useSharedValue(0);
   const dispatch = useDispatch();
+
   useEffect(() => {
     rotation.value = withRepeat(
       withTiming(360, {
@@ -40,17 +41,6 @@ const LoadingModal = (props: {
       -1,
       false,
     );
-  }, []);
-
-  useEffect(() => {
-    //TODO API연동
-    setTimeout(() => {
-      setMainText('It’s all set Let’s begin!');
-      setTimeout(async () => {
-        const res = await getUserInfo();
-        dispatch(setUserInfo(res));
-      }, 1000);
-    }, 2000);
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => {

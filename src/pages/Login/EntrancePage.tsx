@@ -19,13 +19,12 @@ import {LoginLogo, LoginLogoText, RightArrow} from 'assets/svgIcons';
 const EntrancePage = () => {
   const navigation = useNavigation<RootStackScreenProps>();
   const route = useRoute<RouteProp<RootStackParamList, 'Login'>>();
-
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const loginBottomSheetRef = useRef<BottomSheet>(null);
+  const signUpBottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['1%', '30%'], []);
+  const snapPoints = useMemo(() => ['1%', '15%'], []);
 
   const opacity = useRef(new Animated.Value(0)).current;
 
@@ -44,7 +43,7 @@ const EntrancePage = () => {
   };
 
   const openBottomSheet = () => {
-    bottomSheetRef.current?.snapToIndex(1);
+    loginBottomSheetRef.current?.snapToIndex(1);
   };
 
   return (
@@ -93,7 +92,7 @@ const EntrancePage = () => {
             width: '100%',
             marginTop: '100%',
           }}
-          onPress={() => navigation.push('Signup')}>
+          onPress={() => signUpBottomSheetRef.current?.snapToIndex(1)}>
           <View
             style={{
               flexDirection: 'row',
@@ -132,29 +131,66 @@ const EntrancePage = () => {
             style={StyleSheet.absoluteFill}
             activeOpacity={1}
             onPress={() =>
-              bottomSheetRef.current?.snapToIndex(0)
+              loginBottomSheetRef.current?.snapToIndex(0)
             }></TouchableOpacity>
         </Animated.View>
       )}
+
       <BottomSheet
-        ref={bottomSheetRef}
+        ref={signUpBottomSheetRef}
         index={0}
         style={styles.bottomSheet}
         snapPoints={snapPoints}
         onChange={handleSheetChanges}>
-        <View className="bg-white flex-1 w-full justify-start items-center mt-5">
-          <Button
+        <View
+          style={{
+            backgroundColor: 'white',
+            flex: 1,
+            width: '100%',
+
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            marginTop: 20,
+          }}>
+          {/* <Button
             className="my-3"
             width="full"
             type="sub_gray"
             title="Continue with Google"
             onPress={() => {
               navigation.push('Login');
-            }}></Button>
+            }}></Button> */}
           <Button
             width="full"
             type="sub_white"
-            title="Use email address"></Button>
+            title="Use email address"
+            onPress={() => {
+              navigation.push('Signup');
+            }}></Button>
+        </View>
+      </BottomSheet>
+      <BottomSheet
+        ref={loginBottomSheetRef}
+        index={0}
+        style={[styles.bottomSheet, {paddingHorizontal: 0}]}
+        onClose={() => console.log('close')}
+        snapPoints={snapPoints}
+        enableOverDrag
+        enableHandlePanningGesture
+        onChange={handleSheetChanges}>
+        <View
+          style={{
+            backgroundColor: 'white',
+            flex: 1,
+            marginTop: 20,
+          }}>
+          <Button
+            width="full"
+            type="sub_white"
+            title="Use email address"
+            onPress={() => {
+              navigation.push('Login');
+            }}></Button>
         </View>
       </BottomSheet>
     </View>

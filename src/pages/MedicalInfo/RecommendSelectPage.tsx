@@ -25,7 +25,12 @@ import RadioListItem from 'components/common/RadioListItem';
 import DiagnosedBottomSheet from './components/DiagnosedBottomSheet';
 import FamilyBottomSheet from './components/FamilyBottomSheet';
 import MedicationBottomSheet from './components/MedicationBottomSheet';
-import {getMoreInfo, getUserInfo, patchMoreInfo} from 'apis/userApi';
+import {
+  getMoreInfo,
+  getUserInfo,
+  getUserReferral,
+  patchMoreInfo,
+} from 'apis/userApi';
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {
   RootStackParamList,
@@ -50,6 +55,8 @@ const RecommendArray = [
 export default function RecommendSelectPage() {
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState<string>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingText, setLoadingText] = useState('');
   const userInfo = useSelector((state: RootState) => state.userInfoStore);
 
   const navigation = useNavigation<RootStackScreenProps>();
@@ -60,10 +67,25 @@ export default function RecommendSelectPage() {
 
   const onNextMove = async () => {
     if (selectedItem) {
-      const res = await getUserInfo();
-      dispatch(setUserInfo(res));
+      await getUserReferral({referral: selectedItem});
+      setIsLoading(true);
+      setLoadingText(
+        `Now building ${userInfo.userInfo?.username} home screens`,
+      );
+
+      setTimeout(() => {
+        setLoadingText('It’s all set Let’s begin!');
+        setTimeout(async () => {
+          const res = await getUserInfo();
+          dispatch(setUserInfo(res));
+        }, 1000);
+      }, 2000);
+
+      //   const res = await getUserInfo();
+      //   dispatch(setUserInfo(res));
     }
   };
+
   return (
     <View style={styles.container}>
       <MedicalInfoHeader currentIndex={2} />
@@ -94,9 +116,10 @@ export default function RecommendSelectPage() {
         <CircleButton onPress={onNextMove} disabled={false} />
       </View>
       <LoadingModal
-        visible
+        visible={isLoading}
         onClose={() => {}}
         name={userInfo.userInfo?.username ?? ''}
+        mainText={loadingText}
       />
     </View>
   );
