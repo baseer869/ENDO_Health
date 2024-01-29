@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet,Image, TouchableOpacity} from 'react-native';
 import NfcManager, {
   Nfc15693RequestFlagIOS,
   NfcEvents,
@@ -24,6 +24,8 @@ import {
 } from 'apis/userApi';
 import {InsightOverviewCard} from './components/InsightOverviewCard';
 import {InsightCard} from './components/InsightCard';
+import { colors } from 'assets/colors';
+import icons from 'components/icons';
 
 // Define a type for your component's props if needed
 type HomeProps = {
@@ -32,7 +34,8 @@ type HomeProps = {
 
 const {MyNativeModule} = NativeModules;
 
-const Home: React.FC<HomeProps> = () => {
+const 
+Home: React.FC<HomeProps> = () => {
   const navigation = useNavigation<RootStackScreenProps>();
 
   useEffect(() => {
@@ -64,6 +67,11 @@ const Home: React.FC<HomeProps> = () => {
           description: '89%',
         },
         {
+          type: 'OVERVIEW',
+          title: 'Time in Range',
+          description: '89%',
+        },
+        {
           type: 'INSIGHT_CARD',
           title: 'Glucose Improved!',
           description:
@@ -71,7 +79,13 @@ const Home: React.FC<HomeProps> = () => {
         },
         {
           type: 'INSIGHT_CARD',
-          title: 'Glucose Improved222!',
+          title: 'Glucose Improved!',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        },
+        {
+          type: 'INSIGHT_CARD',
+          title: 'Glucose Improved22!',
           description:
             '222 Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
         },
@@ -213,41 +227,54 @@ const Home: React.FC<HomeProps> = () => {
     await NfcManager.cancelTechnologyRequest();
     await NfcManager.unregisterTagEvent();
   };
-
+  const onSortByDate = () =>{};
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.insightContainer}>
+      <ScrollView 
+      horizontal={true} 
+      showsHorizontalScrollIndicator={false} 
+      contentContainerStyle={styles.insightContainer}
+      >
         {glucoseInsights?.insightCards
           ?.filter(v => v.type === 'OVERVIEW')
-          .map((insightCard, index) => {
+          .map((insightCard, index, array) => {
             return (
               <InsightOverviewCard
-                key={index}
+                index={index}
                 title={insightCard.title}
                 description={insightCard.description}
                 graph={insightCard.graph}
+                length={array.length}
               />
             );
           })}
-      </View>
-      <View>
-        <Text>Jan 24</Text>
-        <Text>Doing Great</Text>
+      </ScrollView>
+      <View style={styles.dateView}>
+        <View style={{flexDirection:'row', alignItems:'center',}}>
+          <Image source={icons.icon_calendar_solid} style={styles.icon} />
+          <Text style={styles.date}>Jan 24</Text>
+          <TouchableOpacity onPress={onSortByDate} activeOpacity={0.7} style={{paddingLeft:4}}>
+            <Image source={icons.icon_arrow_down_line_30} style={styles.icon} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.InSight}>
+          <View style={styles.dot}/>
+          <Text style={styles.inSightText}>Doing Great</Text>
+        </View>
       </View>
       <GlucoseLineChart />
       <ScrollView
-        style={styles.cardContainer}
+        contentContainerStyle={styles.cardContainer}
         horizontal={true}
         showsHorizontalScrollIndicator={false}>
         {glucoseInsights?.insightCards
           ?.filter(v => v.type === 'INSIGHT_CARD')
-          .map((insightCard, index) => {
+          .map((insightCard, index, array) => {
             return (
-              <InsightCard
-                key={index}
-                title={insightCard.title}
-                description={insightCard.description}
-              />
+               <InsightCard
+                 title={insightCard.title}
+                 description={insightCard.description}
+               />
             );
           })}
       </ScrollView>
@@ -275,25 +302,64 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   insightContainer: {
-    width: '100%',
-    height: 60,
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'flex-start',
     alignItems: 'center',
     overflow: 'scroll',
+    paddingHorizontal:20,
+    paddingTop:33,
   },
   cardContainer: {
-    flex: 1,
     flexDirection: 'row',
-    width: '100%',
-    height: 200,
     overflow: 'scroll',
+    paddingHorizontal:20,
   },
   text: {
     fontSize: 20,
     marginBottom: 10,
   },
+  dateView:{
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-between',
+    paddingHorizontal:20,
+    paddingTop:25
+  },
+  InSight:{
+    backgroundColor: colors.GREEN_10,
+    paddingHorizontal:10,
+    paddingVertical:5,
+    flexDirection:'row',
+    alignItems:'center',
+    display:'flex',
+    borderRadius:28,
+    columnGap:7,
+  },
+  dot:{
+    width:10,
+    height:10,
+    backgroundColor: colors.PRIMARY_GREEN,
+    borderRadius:10
+  },
+  inSightText:{
+    fontSize: 13,
+    color: colors.PRIMARY_GREEN,
+    lineHeight:15.6,
+    textAlign:'center',
+    fontWeight: "700"
+  },
+  icon:{
+    width:16,
+    height:16
+  },
+  date:{
+    fontSize:17,
+    fontStyle:'normal',
+    fontWeight:'700',
+    lineHeight:20.4,
+    color: colors.GRAY_50,
+    // fontFamily:"",
+    paddingLeft:6
+  }
 });
 
 export default Home;
