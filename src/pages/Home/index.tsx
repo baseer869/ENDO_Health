@@ -218,7 +218,7 @@ const Home: React.FC<HomeProps> = () => {
       <TouchableOpacity onPress={() => dispatch(clearUserInfo())}>
         <Text style={{color: 'black'}}>
           로그아웃
-          {JSON.stringify(userInfo.userInfo, null, 2)}
+          {'' + userInfo.userInfo?.accessToken}
         </Text>
       </TouchableOpacity>
     </View>

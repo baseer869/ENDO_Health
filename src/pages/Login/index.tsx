@@ -1,48 +1,139 @@
-import {useNavigation} from '@react-navigation/native';
-import {colors} from 'assets/colors';
-import {BackArrow, LoginLogo, LoginLogoText, RightArrow} from 'assets/svgIcons';
-import {Image, Text, Button} from 'components/common';
+import {SafeAreaView, Text, View} from 'components/common';
+
+import React, {useState} from 'react';
+import CircleButton from '../../components/common/CircleArrowButton';
+import useKeyboard from 'hooks/useKeyboard';
+import {Platform, StyleSheet} from 'react-native';
+import CancelTextInput from 'components/common/CancelTextInput';
+import {useNavigation} from '@react-navigation/core';
 import {RootStackScreenProps} from 'navigation/rootNavigation';
+import {colors} from 'assets/colors';
+import BackHeader from 'components/common/BackHeader';
+import RoundButton from 'components/common/RoundButton';
+import {postLogin} from 'apis/userApi';
+import {useDispatch} from 'react-redux';
+import {setUserInfo} from 'stores/UserInfoStore';
+import {setToken} from 'apis/apiConstants';
 
-import React from 'react';
-import {View, StyleSheet, TouchableOpacity} from 'react-native';
-
-export default function Login() {
+const Login = () => {
+  const dispatch = useDispatch();
+  const [keyboardHeight] = useKeyboard();
+  const [email, setEmail] = useState<string>('');
+  const [emailError, setEmailError] = useState('');
+  const [password, setPassword] = useState<string>('');
+  const [passwordError, setPasswordError] = useState('');
+  const [idValid, setIdValid] = useState<boolean>(true);
+  const [pwValid, setPwValid] = useState<boolean>(true);
   const navigation = useNavigation<RootStackScreenProps>();
+
+  const checkEmail = (text?: string): boolean => {
+    const emailReg =
+      /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    if (!text) {
+      setEmailError('Please enter your e-mail');
+      return false;
+    }
+    const lastText = text?.slice(text.length - 1, text.length);
+    if (
+      emailReg.test(text) &&
+      (lastText === 'r' ||
+        lastText === 't' ||
+        lastText === 'g' ||
+        lastText === 'm')
+    ) {
+      setEmailError('');
+      return true;
+    }
+    setEmailError('Please enter correct email format.');
+
+    return false;
+  };
+
+  const onChangeEmail = (text: string) => {
+    setEmail(text);
+
+    const check = checkEmail(text);
+    setIdValid(check);
+  };
+
+  const checkPassword = (text?: string): boolean => {
+    if (!text) {
+      setPasswordError('Please enter your password');
+      return false;
+    }
+    if (password.length > 4) {
+      setPasswordError('');
+      return true;
+    }
+    setPasswordError('Please enter correct password format.');
+
+    return false;
+  };
+
+  const onChangePw = (text: string) => {
+    setPassword(text);
+
+    const check = checkPassword(text);
+    setPwValid(check);
+  };
+
+  const login = async () => {
+    const res = await postLogin({email, password});
+    dispatch(setUserInfo(res));
+    if (res.accessToken) setToken(res.accessToken);
+  };
+
   return (
-    <View className="flex-1 items-center bg-white px-5 pt-[30%]">
-      <View className="items-center justify-center ">
-        <LoginLogo />
-      </View>
+    <View style={{backgroundColor: 'white', flex: 1}}>
+      <BackHeader />
+      <View style={{paddingHorizontal: 28, backgroundColor: 'white', flex: 1}}>
+        <View style={{}}>
+          <Text style={{fontSize: 13, color: colors.GRAY_60}}>Email</Text>
+          <CancelTextInput
+            value={email}
+            onChangeText={onChangeEmail}
+            placeholder={'name@example.com'}
+            placeholderTextColor={colors.GRAY_30}
+            isValid={idValid}
+          />
 
-      <View className="items-center mr-4 mt-10">
-        <View className="mb-1">
-          <LoginLogoText />
+          {!idValid && <Text style={styles.errorText}>{emailError}</Text>}
         </View>
-        <Text className="font-bold text-[18px] text-gray-80">
-          {`One-liner description goes here`}
-        </Text>
-      </View>
 
-      <TouchableOpacity
-        className="bg-primary-blue rounded-[24px] px-5 py-3 w-full mt-[100%]"
-        onPress={() => navigation.push('Signup')}>
-        <View className="flex-row w-full justify-center items-center">
-          <Text className=" text-white font-bold text-[17px]">Get start</Text>
-          <RightArrow className="ml-2 " />
+        <View style={{marginTop: 34}}>
+          <Text style={{fontSize: 13, color: colors.GRAY_60}}>Password</Text>
+          <CancelTextInput
+            value={password}
+            onChangeText={onChangePw}
+            placeholder={'Enter password'}
+            placeholderTextColor={colors.GRAY_30}
+            isValid={pwValid}
+          />
+
+          {!pwValid && <Text style={styles.errorText}>{passwordError}</Text>}
         </View>
-      </TouchableOpacity>
-
-      <View className="mt-2">
-        <Text className="font-bold text-[16px] text-gray-60">
-          Already a member?{' '}
-          <Text
-            className="font-bold text-[16px] text-primary-blue"
-            style={{color: colors.PRIMARY_BLUE}}>
-            Sign in
-          </Text>
-        </Text>
       </View>
+      <View style={{marginHorizontal: 20, marginBottom: 30}}>
+        <RoundButton
+          text="Sign in"
+          onPress={login}
+          isRightArrow={false}
+          disabled={!idValid || !pwValid || !email || !password}
+        />
+      </View>
+
+      {Platform.OS === 'ios' && <View style={{height: keyboardHeight}} />}
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  errorText: {
+    color: colors.PRIMARY_RED,
+    fontSize: 12,
+    marginTop: 8,
+    paddingLeft: 2,
+  },
+});
+
+export default Login;

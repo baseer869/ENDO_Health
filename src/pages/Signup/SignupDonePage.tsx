@@ -1,7 +1,9 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {setToken} from 'apis/apiConstants';
 import {postSignup} from 'apis/userApi';
 import {colors} from 'assets/colors';
 import {RightArrow} from 'assets/svgIcons';
+import axios from 'axios';
 import {Text} from 'components/common';
 import BackHeader from 'components/common/BackHeader';
 import {
@@ -20,15 +22,18 @@ export default function SignupDonePage() {
   const dispatch = useDispatch();
 
   const signup = async () => {
-    const res = await postSignup({
-      username: name,
-      email: email,
-      birthDay: birthday,
-      gender,
+    try {
+      const res = await postSignup({
+        username: name,
+        email: email,
+        birthDay: birthday,
+        gender,
 
-      password: password,
-    });
-    dispatch(setUserInfo(res));
+        password: password,
+      });
+      dispatch(setUserInfo(res));
+      if (res.accessToken) setToken(res.accessToken);
+    } catch (e) {}
   };
 
   return (

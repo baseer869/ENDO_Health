@@ -66,7 +66,7 @@ const CancelTextInput: React.FC<Props> = props => {
             ? colors.PRIMARY_RED
             : isFocus
             ? colors.PRIMARY_BLUE
-            : colors.GRAY_30,
+            : colors.GRAY_20,
           paddingBottom: 8,
         },
         containerStyle,
