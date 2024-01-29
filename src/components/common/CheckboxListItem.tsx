@@ -1,5 +1,4 @@
 import {colors} from 'assets/colors';
-import { fonts } from 'assets/fonts';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Svg, Path} from 'react-native-svg';
@@ -88,8 +87,10 @@ const selectedStyles = StyleSheet.create({
   ...commomStyle,
   title: {
     color: colors.GRAY_100,
-    fontSize: 18,
-    fontFamily: fonts.Pretendard_Bold,
+
+    fontSize: 16,
+    fontWeight: '600',
+
     lineHeight: 24,
   },
 });

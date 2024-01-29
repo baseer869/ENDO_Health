@@ -10,7 +10,6 @@ import CancelTextInput from 'components/common/CancelTextInput';
 import {useNavigation} from '@react-navigation/core';
 import {RootStackScreenProps} from 'navigation/rootNavigation';
 import {colors} from 'assets/colors';
-import { fonts } from 'assets/fonts';
 
 const EmailInputPage = () => {
   const [keyboardHeight] = useKeyboard();
@@ -52,10 +51,14 @@ const EmailInputPage = () => {
   return (
     <View style={{paddingHorizontal: 28, backgroundColor: 'white', flex: 1}}>
       <View style={{flex: 1}}>
-        {/* Re-style by Baseer */}
         <Text
-          style={styles.title}
-         >
+          style={{
+            fontWeight: '700',
+            fontSize: 28,
+            paddingBottom: 64,
+            color: 'black',
+          }}
+          className="font-bold text-[28px] pb-16 text-black">
           {'Let’s say hi\nWhat’s your email?'}
         </Text>
         <CancelTextInput
@@ -82,20 +85,10 @@ const EmailInputPage = () => {
 const styles = StyleSheet.create({
   errorText: {
     color: colors.PRIMARY_RED,
-    fontSize: 14,
+    fontSize: 12,
     marginTop: 8,
     paddingLeft: 2,
-    lineHeight:21,
-    fontFamily: fonts.Pretendard_Regular
   },
-  title:{
-    fontSize: 28,
-    lineHeight:35,
-    color: 'black',
-    fontFamily: fonts.Pretendard_Bold,
-    paddingTop:12,
-    paddingBottom: 64,
-  }
 });
 
 export default EmailInputPage;

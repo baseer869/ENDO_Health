@@ -1,5 +1,4 @@
 import {colors} from 'assets/colors';
-import { fonts } from 'assets/fonts';
 import {Text} from 'components/common';
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
@@ -54,8 +53,9 @@ const styles = StyleSheet.create({
   text_on: {
     textAlign: 'center',
     color: 'black',
-    fontFamily: fonts.Pretendard_Bold,
+    fontFamily: 'Pretendard',
     fontSize: 15,
+    fontWeight: '700',
     lineHeight: 18,
   },
   off: {
@@ -66,8 +66,9 @@ const styles = StyleSheet.create({
   text_off: {
     textAlign: 'center',
     color: colors.GRAY_50,
-    fontFamily: fonts.Pretendard_Bold,
+    fontFamily: 'Pretendard',
     fontSize: 15,
+    fontWeight: '700',
     lineHeight: 18,
   },
 });

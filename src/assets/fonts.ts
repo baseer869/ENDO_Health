@@ -1,5 +1,5 @@
 //added fonts by Baseer 
-export const fonts = {
+export const fonst = {
     Pretendard_Black:'Pretendard-Black',
     Pretendard_Bold:'Pretendard-Bold',
     Pretendard_Medium:'Pretendard-Medium',

@@ -1,9 +1,10 @@
-import {Text, View} from 'components/common';
+import {SafeAreaView, Text, View} from 'components/common';
 import i18n from 'language/i18n';
 import React, {useState} from 'react';
 
 import useKeyboard from 'hooks/useKeyboard';
-import {Platform, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {Platform} from 'react-native';
+import CancelTextInput from 'components/common/CancelTextInput';
 import BackHeader from 'components/common/BackHeader';
 import CircleButton from 'components/common/CircleArrowButton';
 import GenderButton from './components/GenderButton';
@@ -12,8 +13,6 @@ import {
   RootStackParamList,
   RootStackScreenProps,
 } from 'navigation/rootNavigation';
-import { fonts } from 'assets/fonts';
-import { colors } from 'assets/colors';
 
 const GenderArray = [
   {emoji: '🙋‍♂️', text: 'Male'},
@@ -28,13 +27,17 @@ const GenderSelectPage = () => {
   const navigation = useNavigation<RootStackScreenProps>();
   const route = useRoute<RouteProp<RootStackParamList, 'GenderSelect'>>();
   const {email, password, name} = route.params;
-  // Re-style by Baseer //
   return (
-    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
+    <View style={{backgroundColor: 'white', flex: 1}}>
       <BackHeader />
-      <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1, paddingHorizontal: 28,}}>
+      <View style={{flex: 1, paddingHorizontal: 28, marginTop: 16}}>
         <Text
-          style={styles.title}>
+          style={{
+            fontWeight: '700',
+            fontSize: 28,
+            marginBottom: 64,
+            color: 'black',
+          }}>
           {i18n.t('Login.gender_title')}
         </Text>
         {GenderArray.map((data, index) => {
@@ -50,7 +53,7 @@ const GenderSelectPage = () => {
             </View>
           );
         })}
-      </ScrollView>
+      </View>
       <View
         style={{
           width: '100%',
@@ -71,19 +74,8 @@ const GenderSelectPage = () => {
         />
       </View>
       {Platform.OS === 'ios' && <View style={{height: keyboardHeight}} />}
-    </SafeAreaView>
+    </View>
   );
 };
 
 export default GenderSelectPage;
-
-const styles = StyleSheet.create({
-  title:{
-    fontSize: 28,
-    lineHeight:35,
-    color: colors.GRAY_100,
-    fontFamily: fonts.Pretendard_Bold,
-    paddingTop:12,
-    paddingBottom: 64,
-  }
-});

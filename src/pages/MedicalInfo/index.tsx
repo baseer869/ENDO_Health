@@ -1,19 +1,17 @@
-import { colors } from 'assets/colors';
-import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Dimensions, Button, Platform } from 'react-native';
-import { } from 'react-native-svg';
+import {colors} from 'assets/colors';
+import React, {useEffect, useRef, useState} from 'react';
+import {View, StyleSheet, Dimensions, Button, Platform} from 'react-native';
+import {} from 'react-native-svg';
 import MedicalInfoHeader from './components/MedicalInfoHeader';
 import CancelTextInput from 'components/common/CancelTextInput';
 import Label from 'components/common/Label';
-import { Text } from 'components/common';
+import {Text} from 'components/common';
 import ButtonSwitch from './components/ButtonSwitch';
 import CircleButton from 'components/common/CircleArrowButton';
 
 import BottomModal from 'components/common/BottomModal';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import {BottomSheetModal} from '@gorhom/bottom-sheet';
 import CheckboxListItem from 'components/common/CheckboxListItem';
-import { fonts } from 'assets/fonts';
-import CustomButton from 'components/common/ActionButton';
 
 export default function MedicalInfo() {
   const [weight, setWeight] = useState<string>();
@@ -48,8 +46,8 @@ export default function MedicalInfo() {
         </Text>
         <View style={styles.textInputContainer}>
           <Label text="Weight" />
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1, marginRight: 20 }}>
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flex: 1, marginRight: 20}}>
               <CancelTextInput
                 placeholder="Enter weight"
                 value={weight}
@@ -66,8 +64,8 @@ export default function MedicalInfo() {
         </View>
         <View style={styles.textInputContainer}>
           <Label text="Height" />
-          <View style={{ flexDirection: 'row' }}>
-            <View style={{ flex: 1, marginRight: 20 }}>
+          <View style={{flexDirection: 'row'}}>
+            <View style={{flex: 1, marginRight: 20}}>
               <CancelTextInput
                 placeholder="Enter height"
                 value={height}
@@ -84,9 +82,7 @@ export default function MedicalInfo() {
         </View>
         <View style={styles.textInputContainer}>
           <Label text="Ethnicity" />
-          <CancelTextInput
-            placeholder="Choose yours"
-          />
+          <CancelTextInput />
         </View>
       </View>
 
@@ -95,13 +91,9 @@ export default function MedicalInfo() {
         onDismiss={handleSheetCloseReset}
         snapPoints={[Platform.OS === 'ios' ? '38%' : '42%']}
         ref={bottomSheetRef}>
-        <View style={{ flex: 1 }}>
+        <View style={{flex: 1}}>
           <CheckboxListItem title={'d.text'} isSelected={true} />
           <CheckboxListItem title={'d.text'} />
-          {/* Add a custom button as per dsign by Baseer */}
-          <View style={{ paddingHorizontal:20}}>
-            <CustomButton arrow={false} label={'done'} onPress={handleSheetCloseReset} />
-          </View>
         </View>
       </BottomModal>
 
@@ -124,7 +116,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   title: {
-    fontFamily: fonts.Pretendard_Bold,
+    fontWeight: '700',
     fontSize: 28,
     color: colors.GRAY_100,
     marginTop: 20,
