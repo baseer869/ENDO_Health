@@ -4,18 +4,17 @@ import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
-import { Button, Text, View } from 'components/common';
+import {Button, Text, View} from 'components/common';
 import {
   RootStackParamList,
   RootStackScreenProps,
 } from 'navigation/rootNavigation';
-import { Path, Svg } from 'react-native-svg';
+import {Path, Svg} from 'react-native-svg';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { Animated, StyleSheet, TouchableHighlight, TouchableOpacity } from 'react-native';
-import { colors } from 'assets/colors';
-import { LoginLogo, LoginLogoText, RightArrow } from 'assets/svgIcons';
-import { fonst } from 'assets/fonts';
+import {useEffect, useMemo, useRef, useState} from 'react';
+import {Animated, StyleSheet, TouchableOpacity} from 'react-native';
+import {colors} from 'assets/colors';
+import {LoginLogo, LoginLogoText, RightArrow} from 'assets/svgIcons';
 
 const EntrancePage = () => {
   const navigation = useNavigation<RootStackScreenProps>();
@@ -31,7 +30,7 @@ const EntrancePage = () => {
   const opacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    navigation.setOptions({ headerShown: false });
+    navigation.setOptions({headerShown: false});
   }, []);
 
   // callbacks
@@ -47,7 +46,6 @@ const EntrancePage = () => {
   const openBottomSheet = () => {
     bottomSheetRef.current?.snapToIndex(1);
   };
-  const onSignIn = () => { };
 
   return (
     <View
@@ -63,57 +61,72 @@ const EntrancePage = () => {
           alignItems: 'center',
           backgroundColor: 'white',
           paddingHorizontal: 5,
-          paddingTop: '45%',
+          paddingTop: '50%',
         }}>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
           <LoginLogo />
         </View>
-        {/* Re-styles baseeer */}
+
         <View
-          style={{ alignItems: 'center', marginRight: 16, marginTop: 40 }}
+          style={{alignItems: 'center', marginRight: 16, marginTop: 40}}
           className="items-center mr-4 mt-10">
-          <View style={{ marginBottom: 4 }}>
+          <View style={{marginBottom: 4}}>
             <LoginLogoText />
           </View>
           <Text
-            style={styles.appSlogan}>
+            style={{fontWeight: '700', fontSize: 18, color: colors.GRAY_80}}>
             {`One-liner description goes here`}
           </Text>
         </View>
       </View>
       <View
         style={{
-          marginBottom: '10%',
+          marginBottom: '20%',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
         <TouchableOpacity
-          style={styles.buttonContainer}
+          style={{
+            backgroundColor: colors.PRIMARY_BLUE,
+            borderRadius: 24,
+            paddingHorizontal: 5,
+            width: '100%',
+            marginTop: '100%',
+          }}
           onPress={() => navigation.push('Signup')}>
-          <Text style={styles.buttonText}>
-            Get start
-          </Text>
-          <RightArrow style={{ marginLeft: 8 }} />
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 12,
+            }}>
+            <Text style={{color: 'white', fontWeight: '700', fontSize: 17}}>
+              Get start
+            </Text>
+            <RightArrow style={{marginLeft: 8}} />
+          </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={{ marginVertical: 20 }} onPress={openBottomSheet}>
+        <TouchableOpacity style={{marginTop: 8}} onPress={openBottomSheet}>
           <Text
-            style={styles.text}>
+            style={{fontWeight: '700', fontSize: 16, color: colors.GRAY_60}}>
             Already a member?{' '}
-            <TouchableHighlight
-              underlayColor="#DDDDDD" // Color when the touch is active
-              onPress={() => onSignIn()}>
-              <Text
-                style={{ ...styles.text, color: colors.PRIMARY_BLUE, textDecorationLine: 'underline', paddingLeft: 5 }}>
-                Sign in
-              </Text>
-            </TouchableHighlight>
+            <Text
+              style={{
+                color: colors.PRIMARY_BLUE,
+                fontWeight: '700',
+                fontSize: 16,
+              }}>
+              Sign in
+            </Text>
           </Text>
         </TouchableOpacity>
       </View>
       {isSheetOpen && (
         <Animated.View
-          style={[styles.overlay, { opacity }]}
+          style={[styles.overlay, {opacity}]}
           pointerEvents={isSheetOpen ? 'auto' : 'none'}>
           <TouchableOpacity
             style={StyleSheet.absoluteFill}
@@ -167,38 +180,6 @@ const styles = StyleSheet.create({
   logoText: {
     marginTop: 40,
   },
-  appSlogan: {
-    fontSize: 18,
-    lineHeight: 21.6,
-    color: colors.GRAY_80,
-    paddingVertical: 10,
-    textAlign: 'center',
-    fontFamily: fonst.Pretendard_Bold
-  },
-  buttonContainer: {
-    backgroundColor: colors.PRIMARY_BLUE,
-    borderRadius: 24,
-    width: '100%',
-    marginTop: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    minHeight: 48,
-    columnGap: 8,
-  },
-  buttonText: {
-    fontSize: 18,
-    lineHeight: 20.4,
-    color: colors.GRAY_0,
-    textAlign: 'center',
-    fontFamily: fonst.Pretendard_Bold
-  },
-  text: {
-    fontSize: 16,
-    fontFamily: fonst.Pretendard_Bold,
-    lineHeight: 19.2,
-    color: colors.GRAY_50,
-  }
 });
 
 export default EntrancePage;

@@ -1,16 +1,15 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {postSignup} from 'apis/userApi';
 import {colors} from 'assets/colors';
-import { fonst } from 'assets/fonts';
+import {RightArrow} from 'assets/svgIcons';
 import {Text} from 'components/common';
-import CustomButton from 'components/common/ActionButton';
 import BackHeader from 'components/common/BackHeader';
 import {
   RootStackParamList,
   RootStackScreenProps,
 } from 'navigation/rootNavigation';
 import React from 'react';
-import {View, StyleSheet, SafeAreaView} from 'react-native';
+import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {setUserInfo} from 'stores/UserInfoStore';
 
@@ -31,9 +30,9 @@ export default function SignupDonePage() {
     });
     dispatch(setUserInfo(res));
   };
-// Re- style by Baseer 
+
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <View style={{flex: 1}}>
       <BackHeader />
       <View style={styles.container}>
         <Text style={styles.title1}>{`Looks great\n${name} 👏🏻`}</Text>
@@ -53,12 +52,34 @@ export default function SignupDonePage() {
           onPress={() => {
             navigation.push('TermWebView');
           }}>
-          <Text style={{textDecorationLine:'underline'}}>Read</Text> what we do to keep you private
+          <Text style={styles.read}>Read</Text> what we do to keep you private
         </Text>
-        {/* Common Button */}
-        <CustomButton label="Continue" arrow={true} onPress={signup} />
+
+        <TouchableOpacity
+          style={{
+            backgroundColor: colors.PRIMARY_BLUE,
+            borderRadius: 24,
+            paddingHorizontal: 5,
+            marginTop: 40,
+            width: '100%',
+          }}
+          onPress={signup}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingVertical: 12,
+            }}>
+            <Text style={{color: 'white', fontWeight: '700', fontSize: 17}}>
+              Continue
+            </Text>
+            <RightArrow style={{marginLeft: 8}} />
+          </View>
+        </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -70,23 +91,23 @@ const styles = StyleSheet.create({
   },
   title1: {
     color: colors.PRIMARY_BLUE,
-    fontFamily: fonst.Pretendard_Bold,
+    fontFamily: 'Pretendard',
     fontSize: 28,
+    fontWeight: '700',
     letterSpacing: 0,
     lineHeight: 35,
   },
   title2: {
     color: colors.GRAY_100,
-    fontFamily: fonst.Pretendard_Bold,
+    fontFamily: 'Pretendard',
     fontSize: 28,
+    fontWeight: '700',
     letterSpacing: 0,
     lineHeight: 35,
     marginTop: 30,
   },
-  subText: {
-    color: colors.GRAY_60,
-    fontFamily: fonst.Pretendard_Regular,
-    fontSize: 15,
-    lineHeight: 21.7,
+  subText: {color: colors.GRAY_60},
+  read: {
+    textDecorationLine: 'underline',
   },
 });

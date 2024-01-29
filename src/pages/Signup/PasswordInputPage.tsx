@@ -14,7 +14,6 @@ import {
 } from 'navigation/rootNavigation';
 import {colors} from 'assets/colors';
 import {RouteProp, useRoute} from '@react-navigation/native';
-import { fonst } from 'assets/fonts';
 
 const PasswordInputPage = () => {
   const [keyboardHeight] = useKeyboard();
@@ -50,7 +49,13 @@ const PasswordInputPage = () => {
     <View style={{paddingHorizontal: 28, backgroundColor: 'white', flex: 1}}>
       <View style={{flex: 1}}>
         <Text
-          style={styles.title}>
+          style={{
+            fontWeight: '700',
+            fontSize: 28,
+            paddingBottom: 64,
+            color: 'black',
+          }}
+          className="font-bold text-[28px] pb-16 text-black">
           {'Let’s say hi\nWhat’s your password?'}
         </Text>
         <CancelTextInput
@@ -84,14 +89,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     paddingLeft: 2,
   },
-  title:{
-    fontSize: 28,
-    lineHeight:35,
-    color: 'black',
-    fontFamily: fonst.Pretendard_Bold,
-    paddingTop:12,
-    paddingBottom: 64,
-  }
 });
 
 export default PasswordInputPage;

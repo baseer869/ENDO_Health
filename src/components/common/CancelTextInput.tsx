@@ -1,20 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, {useRef, useState} from 'react';
 import {
   ColorValue,
   Image,
   Platform,
-  StyleSheet,
   TextInput,
   TextInputProps,
   TouchableOpacity,
   View,
   ViewStyle,
 } from 'react-native';
-import { images } from 'assets/images/images';
+import {images} from 'assets/images/images';
 import BasicInput from './BasicInput';
-import { colors } from 'assets/colors';
+import {colors} from 'assets/colors';
 import icons from 'components/icons';
-import { fonst } from 'assets/fonts';
 
 interface Props extends TextInputProps {
   value?: string;
@@ -25,7 +23,7 @@ interface Props extends TextInputProps {
   containerStyle?: ViewStyle;
   isValid?: boolean;
 }
-const defaultProps = { backgroundColor: colors.GRAY_40 };
+const defaultProps = {backgroundColor: colors.GRAY_40};
 
 const CancelTextInput: React.FC<Props> = props => {
   const {
@@ -37,7 +35,7 @@ const CancelTextInput: React.FC<Props> = props => {
     editable,
     isValid = true,
   } = props;
-  const sendProps = { ...props, backgroundColor: undefined };
+  const sendProps = {...props, backgroundColor: undefined};
   const ref = useRef<TextInput>(null);
 
   const [isFocus, setIsFocus] = useState(false);
@@ -67,15 +65,14 @@ const CancelTextInput: React.FC<Props> = props => {
           borderColor: !isValid
             ? colors.PRIMARY_RED
             : isFocus
-              ? colors.PRIMARY_BLUE
-              : colors.GRAY_30,
+            ? colors.PRIMARY_BLUE
+            : colors.GRAY_30,
           paddingBottom: 8,
         },
         containerStyle,
       ]}>
-        {/* Re-style by Baseer */}
       <BasicInput
-        style={styles.inputStyle}
+        style={{flex: 1, padding: 0, fontSize: 20, color: colors.GRAY_90}}
         ref={ref}
         {...sendProps}
         onFocus={handleFocus}
@@ -86,7 +83,7 @@ const CancelTextInput: React.FC<Props> = props => {
       {Boolean(value) && editable !== false && (
         <TouchableOpacity onPress={onPressClear}>
           <Image
-            style={{ width: 22, height: 22 }}
+            style={{width: 22, height: 22}}
             source={icons.icon_cancel_circle_solid}
             tintColor={colors.GRAY_30}
           />
@@ -98,14 +95,3 @@ const CancelTextInput: React.FC<Props> = props => {
 
 // CancelTextInput.defaultProps = defaultProps;
 export default CancelTextInput;
-
-const styles = StyleSheet.create({
-  inputStyle: {
-    flex: 1,
-    padding: 0,
-    fontSize: 20,
-    color: colors.GRAY_90,
-    lineHeight: 24,
-    fontFamily: fonst.Pretendard_Regular
-  }
-});
