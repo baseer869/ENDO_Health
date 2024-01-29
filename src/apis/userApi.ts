@@ -6,9 +6,6 @@ export const userPatchPreference = async (
   accessToken: string,
   requestBody: UserPreferenceRequestDto,
 ): Promise<UserResponseDto> => {
-  // Platform.OS === 'android'
-  //   ? setBaseUrl('http://10.0.2.2:3000')
-  //   : setBaseUrl('http://localhost:3000');
   const options: AxiosRequestConfig = {
     url: `${api.users.preference}`,
     headers: {
@@ -64,6 +61,49 @@ export const postSignup = async (
     }
     return Promise.resolve(error);
   }
+};
+
+export const getUserGlucoseInsights = async () => {
+  // Platform.OS === 'android'
+  //   ? setBaseUrl('http://10.0.2.2:3000')
+  //   : setBaseUrl('http://localhost:3000');
+  const options: AxiosRequestConfig = {
+    url: `${api.users.glucose_insights}`,
+    method: 'GET',
+  };
+  try {
+    const result = await axios.request(options);
+    console.debug('result : ' + JSON.stringify(result.data));
+    return result.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Error Response Status:', error.response.status);
+      // console.log('Error Response Headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error Request:', error.request);
+    } else {
+      console.error('Error Message:', error.message);
+    }
+    return Promise.resolve(error);
+  }
+};
+
+export type UserGlucoseInsightResponseDto = {
+  insightCards: InsightCard[];
+};
+
+export type InsightCard = {
+  type: 'OVERVIEW' | 'INSIGHT_CARD';
+  graph?: InsightCardGraph;
+  title: string;
+  description: string;
+  image?: string;
+  link?: string;
+};
+
+export type InsightCardGraph = {
+  type: 'PROGRESS_CIRCLE';
+  value: number;
 };
 
 export type UserResponseDto = {

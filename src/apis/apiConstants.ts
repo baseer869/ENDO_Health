@@ -18,6 +18,7 @@ export const api = {
     signup: '/auth/registration',
     signIn: '/api/v1/user/signin',
     preference: '/user/preference',
+    glucose_insights: '/user/glucose-insights',
   },
   alarm: {},
 };

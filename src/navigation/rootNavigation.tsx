@@ -177,7 +177,14 @@ const Tabs = () => {
 const AuthGroup = () => (
   <Stack.Group>
     <Stack.Screen name="Tabs" component={Tabs} options={{headerShown: false}} />
-    <Stack.Screen name="Home" component={Home} />
+    <Stack.Screen
+      name="Home"
+      component={Home}
+      options={{
+        headerShown: true,
+        headerTitle: 'Home',
+      }}
+    />
     <Stack.Screen name="Main" component={Main} />
   </Stack.Group>
 );
@@ -236,7 +243,7 @@ const Navigator = () => {
       {userInfo
         ? userInfo.completed
           ? AuthGroup()
-          : AuthGroupNotMedicalInfo()
+          : AuthGroup()
         : NotAuthGroup()}
     </Stack.Navigator>
   );

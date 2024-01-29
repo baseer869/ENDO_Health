@@ -1,15 +1,6 @@
-import {
-  Link,
-  RouteProp,
-  useNavigation,
-  useRoute,
-} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {Button, Text, View} from 'components/common';
-import {
-  RootStackParamList,
-  RootStackScreenProps,
-} from 'navigation/rootNavigation';
-import {Path, Svg} from 'react-native-svg';
+import {RootStackScreenProps} from 'navigation/rootNavigation';
 import BottomSheet from '@gorhom/bottom-sheet';
 import {useEffect, useMemo, useRef, useState} from 'react';
 import {Animated, StyleSheet, TouchableOpacity} from 'react-native';
@@ -18,7 +9,6 @@ import {LoginLogo, LoginLogoText, RightArrow} from 'assets/svgIcons';
 
 const EntrancePage = () => {
   const navigation = useNavigation<RootStackScreenProps>();
-  const route = useRoute<RouteProp<RootStackParamList, 'Login'>>();
 
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 

@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 import NfcManager, {
   Nfc15693RequestFlagIOS,
-  NfcAdapter,
   NfcEvents,
   NfcTech,
   nfcManager,
@@ -14,10 +13,17 @@ import {toHexNumber} from '../../utils/numbers';
 import {rawGlucoseDataParseToReadingData, readRaw} from '../../utils/nfc/data';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import {Button, Text, View} from 'components/common';
-import {clearUserInfo} from 'stores/UserInfoStore';
-import {LineChart} from 'react-native-wagmi-charts';
-import {colors} from 'assets/colors';
+import {Text, View} from 'components/common';
+import GlucoseLineChart from 'components/charts/GlucoseLineChart';
+import {RootStackScreenProps} from 'navigation/rootNavigation';
+import {useNavigation} from '@react-navigation/native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {
+  UserGlucoseInsightResponseDto,
+  getUserGlucoseInsights,
+} from 'apis/userApi';
+import {InsightOverviewCard} from './components/InsightOverviewCard';
+import {InsightCard} from './components/InsightCard';
 
 // Define a type for your component's props if needed
 type HomeProps = {
@@ -27,9 +33,57 @@ type HomeProps = {
 const {MyNativeModule} = NativeModules;
 
 const Home: React.FC<HomeProps> = () => {
+  const navigation = useNavigation<RootStackScreenProps>();
+
+  useEffect(() => {
+    navigation.setOptions({headerShown: true});
+  });
+
   const [hasNfc, setHasNFC] = useState<boolean | null>(null);
+  const [glucoseInsights, setGlucoseInsights] =
+    useState<UserGlucoseInsightResponseDto | null>(null);
   const userInfo = useSelector((state: RootState) => state.userInfoStore);
   const dispatch = useDispatch();
+
+  const getGlucoseInsights = async () => {
+    // const res = await getUserGlucoseInsights();
+    const res: UserGlucoseInsightResponseDto = {
+      insightCards: [
+        {
+          type: 'OVERVIEW',
+          graph: {
+            type: 'PROGRESS_CIRCLE',
+            value: 0.5,
+          },
+          title: 'Daily Score',
+          description: 'Awesome',
+        },
+        {
+          type: 'OVERVIEW',
+          title: 'Time in Range',
+          description: '89%',
+        },
+        {
+          type: 'INSIGHT_CARD',
+          title: 'Glucose Improved!',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        },
+        {
+          type: 'INSIGHT_CARD',
+          title: 'Glucose Improved222!',
+          description:
+            '222 Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        },
+      ],
+    };
+    setGlucoseInsights(res);
+  };
+
+  useEffect(() => {
+    getGlucoseInsights();
+  }, []);
+
   useEffect(() => {
     const checkIsSupported = async () => {
       const deviceIsSupported = await NfcManager.isSupported();
@@ -160,68 +214,56 @@ const Home: React.FC<HomeProps> = () => {
     await NfcManager.unregisterTagEvent();
   };
 
-  const data = [
-    {
-      timestamp: 1,
-      value: 33575.25,
-    },
-    {
-      timestamp: 2,
-      value: 33545.25,
-    },
-    {
-      timestamp: 3,
-      value: 33510.25,
-    },
-    {
-      timestamp: 4,
-      value: 33345.84,
-    },
-    {
-      timestamp: 5,
-      value: 33215.25,
-    },
-  ];
-
-  if (!hasNfc) {
-    return (
-      <View className="flex flex-col justify-around w-full h-5/6 pl-10">
-        <Text>NFC not supported</Text>
-        <LineChart.Provider data={data}>
-          <LineChart width={300} height={300}>
-            <LineChart.Path>
-              <LineChart.Highlight color="red" from={0} to={1} />
-              <LineChart.Highlight color="red" from={3} to={4} />
-              <LineChart.HorizontalLine at={{value: 33545.84}} />
-              <LineChart.HorizontalLine at={{value: 33345.84}} />
-            </LineChart.Path>
-            <LineChart.CursorCrosshair>
-              <LineChart.Tooltip />
-            </LineChart.CursorCrosshair>
-          </LineChart>
-          <LineChart.PriceText />
-          <LineChart.DatetimeText />
-        </LineChart.Provider>
-      </View>
-    );
-  }
-
   return (
-    <View style={styles.container}>
-      <Text>Hello world usename:{userInfo.userInfo?.name}</Text>
-      <TouchableOpacity onPress={readTag}>
+    <ScrollView style={styles.container}>
+      <View style={styles.insightContainer}>
+        {glucoseInsights?.insightCards
+          ?.filter(v => v.type === 'OVERVIEW')
+          .map((insightCard, index) => {
+            return (
+              <InsightOverviewCard
+                key={index}
+                title={insightCard.title}
+                description={insightCard.description}
+                graph={insightCard.graph}
+              />
+            );
+          })}
+      </View>
+      <View>
+        <Text>Jan 24</Text>
+        <Text>Doing Great</Text>
+      </View>
+      <GlucoseLineChart />
+      <ScrollView
+        style={styles.cardContainer}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}>
+        {glucoseInsights?.insightCards
+          ?.filter(v => v.type === 'INSIGHT_CARD')
+          .map((insightCard, index) => {
+            return (
+              <InsightCard
+                key={index}
+                title={insightCard.title}
+                description={insightCard.description}
+              />
+            );
+          })}
+      </ScrollView>
+      {/* <TouchableOpacity onPress={readTag}>
         <Text>Scan Tag</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={cancelReadTag}>
         <Text>Cancel Scan</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => dispatch(clearUserInfo())}>
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity onPress={() => dispatch(clearUserInfo())}>
         <Text style={{color: 'black'}}>
           로그아웃
           {JSON.stringify(userInfo.userInfo, null, 2)}
         </Text>
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+    </ScrollView>
   );
 };
 
@@ -229,8 +271,24 @@ const Home: React.FC<HomeProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    alignContent: 'center',
+    backgroundColor: 'white',
+  },
+  insightContainer: {
+    width: '100%',
+    height: 60,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    overflow: 'scroll',
+  },
+  cardContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    width: '100%',
+    height: 200,
+    overflow: 'scroll',
   },
   text: {
     fontSize: 20,
