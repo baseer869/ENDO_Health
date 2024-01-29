@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { RightArrow } from 'assets/svgIcons';
 import { colors } from 'assets/colors';
-import { fonst } from 'assets/fonts';
+import { fonts } from 'assets/fonts';
 
 // Common Action Button, by Baseer //
 interface CustomButtonProps extends TouchableOpacityProps {
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontFamily: fonst.Pretendard_Bold,
+    fontFamily: fonts.Pretendard_Bold,
     lineHeight:20.4,
     fontSize: 17,
   },

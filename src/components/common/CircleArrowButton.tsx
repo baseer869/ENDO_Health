@@ -10,13 +10,12 @@ export default function CircleButton(props: {
   const {disabled, onPress} = props;
 
   return (
+    // Re-style by Baseeer 
     <TouchableOpacity
       onPress={onPress}
       disabled={disabled}
-      className="bg-gray-300 items-center justify-center px-4 py-3 rounded-full w-12 h-12"
-      style={{
-        backgroundColor: disabled ? colors.GRAY_10 : colors.PRIMARY_BLUE,
-      }}>
+      style={disabled ? [styles.nextButton, { backgroundColor: colors.GRAY_10 }]:[styles.nextButton, { backgroundColor: colors.PRIMARY_BLUE }] }
+      >
       <Svg width="20" height="16" viewBox="0 0 20 16" fill="none">
         <Path
           fillRule="evenodd"
@@ -28,3 +27,15 @@ export default function CircleButton(props: {
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  nextButton: {
+    paddingTop:12,
+    padding:13,
+    borderRadius:24,
+    height:48,
+    width:48,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+});

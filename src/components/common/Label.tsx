@@ -1,3 +1,4 @@
+import { fonts } from 'assets/fonts';
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
@@ -23,7 +24,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: 'rgba(98, 112, 121, 1)',
-    fontFamily: 'Pretendard',
+    fontFamily: fonts.Pretendard_Regular,
+    lineHeight:18,
     fontSize: 15,
   },
 });

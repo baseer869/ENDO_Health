@@ -5,7 +5,6 @@ import React, {useState} from 'react';
 import BackHeader from 'components/common/BackHeader';
 import DatePicker from 'react-native-date-picker';
 import CircleButton from 'components/common/CircleArrowButton';
-import {Alert} from 'react-native';
 import {useRoute, RouteProp} from '@react-navigation/core';
 import {
   RootStackParamList,
@@ -13,6 +12,9 @@ import {
 } from 'navigation/rootNavigation';
 import {postSignup} from 'apis/userApi';
 import {useNavigation} from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
+import { colors } from 'assets/colors';
+import { fonts } from 'assets/fonts';
 
 const BirthdaySelectPage = () => {
   const [changeDateState, setChangeDateState] = useState<Date>(new Date());
@@ -30,25 +32,21 @@ const BirthdaySelectPage = () => {
       password: password,
     });
   };
-
+      {/* Re-style  by Baseer */}
   return (
-    <View style={{backgroundColor: 'white', flex: 1}}>
+    <SafeAreaView style={{backgroundColor: 'white', flex: 1}}>
       <BackHeader />
       <View style={{flex: 1, paddingHorizontal: 28, marginTop: 16}}>
         <Text
-          style={{
-            fontWeight: '700',
-            fontSize: 28,
-            paddingBottom: 64,
-            color: 'black',
-          }}>
+          style={styles.title}>
           {i18n.t('Login.birthday_title')}
         </Text>
         <View
           style={{
-            width: '100%',
+            flex:1,
             justifyContent: 'center',
             alignItems: 'center',
+            paddingBottom:"10%"
           }}>
           <DatePicker
             textColor="black"
@@ -69,8 +67,19 @@ const BirthdaySelectPage = () => {
         }}>
         <CircleButton disabled={false} onPress={onNext} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 export default BirthdaySelectPage;
+
+const styles = StyleSheet.create({
+  title:{
+    fontSize: 28,
+    lineHeight:35,
+    color: colors.GRAY_100,
+    fontFamily: fonts.Pretendard_Bold,
+    paddingTop:12,
+    paddingBottom: 64,
+  }
+});

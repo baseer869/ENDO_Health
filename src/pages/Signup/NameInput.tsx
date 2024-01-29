@@ -5,7 +5,7 @@ import Home from 'pages/Home/Home';
 import React, {useState} from 'react';
 import CircleButton from '../../components/common/CircleArrowButton';
 import useKeyboard from 'hooks/useKeyboard';
-import {Platform} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import CancelTextInput from 'components/common/CancelTextInput';
 import {useNavigation} from '@react-navigation/core';
 import {
@@ -14,6 +14,7 @@ import {
 } from 'navigation/rootNavigation';
 import {colors} from 'assets/colors';
 import {RouteProp, useRoute} from '@react-navigation/native';
+import { fonts } from 'assets/fonts';
 
 const NameInput = () => {
   const [keyboardHeight] = useKeyboard();
@@ -23,15 +24,10 @@ const NameInput = () => {
   const {email, password} = route.params;
   return (
     <View style={{paddingHorizontal: 28, backgroundColor: 'white', flex: 1}}>
+     {/* Re-style the title View by Baseer */}
       <View style={{flex: 1}}>
         <Text
-          style={{
-            fontWeight: '700',
-            fontSize: 28,
-            paddingBottom: 64,
-            color: 'black',
-          }}
-          className="font-bold text-[28px] pb-16 text-black">
+          style={styles.title}>
           {i18n.t('Login.login_title')}
         </Text>
         <CancelTextInput
@@ -55,3 +51,14 @@ const NameInput = () => {
 };
 
 export default NameInput;
+
+const styles = StyleSheet.create({
+  title:{
+    fontSize: 28,
+    lineHeight:35,
+    color: 'black',
+    fontFamily: fonts.Pretendard_Bold,
+    paddingTop:12,
+    paddingBottom: 64,
+  }
+});
