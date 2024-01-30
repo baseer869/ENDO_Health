@@ -1,9 +1,8 @@
-// AIChatScreen.tsx
-
 import { colors } from 'assets/colors';
 import icons from 'components/icons';
 import React, { useState, useEffect, useRef,  } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet,Image } from 'react-native';
+import { format } from 'date-fns';
 
 interface Message {
   text: string;
@@ -25,19 +24,25 @@ const AIChatScreen: React.FC = () => {
 
   const handleSendMessage = () => {
     if (inputText.trim() === '') return;
-
+  
     const newUserMessage: Message = { text: inputText, fromUser: true };
     setUserMessages((prevUserMessages) => [...prevUserMessages, newUserMessage]);
-
+  
     setInputText('');
-
+  
+    // Automatically scroll to the end after adding a new user message
+    scrollToBottom();
+  
     // Simulate AI response after a brief delay
     setTimeout(() => {
-      const aiResponse: Message = { text: 'How can I assist you today?', fromUser: false };
+      const aiResponse: Message = { text: 'I am Endo, your friendly medical assistant.?', fromUser: false };
       setUserMessages((prevUserMessages) => [...prevUserMessages, aiResponse]);
+  
+      // Automatically scroll to the end after adding new AI messages
       scrollToBottom();
     }, 1000);
   };
+  
   const handleInputChange = (text: string) => {
     setInputText(text);
     setSendButtonStyle({
@@ -50,20 +55,35 @@ const AIChatScreen: React.FC = () => {
       flatListRef.current.scrollToEnd({ animated: true });
     }
   };
+  const timestamp = 1640774400000; // Replace this with timestamp in milliseconds
+  const formattedDate = format(new Date(timestamp), "EEEE, MMMM do");
+let load = true;
 
   return (
     <View style={styles.container}>
+     
       <FlatList
         ref={(ref) => (flatListRef.current = ref)}
         data={userMessages}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View style={item.fromUser ? styles.userMessageContainer : styles.aiMessageContainer}>
-            <View style={item.fromUser ? styles.userMessage : styles.aiMessage}>
-              <Text>{item.text}</Text>
+            {  !item.fromUser && <Image source={icons.AIChat} style={{ width: 40, height: 40}} />}
+             <View style={item.fromUser ? styles.userMessage : styles.aiMessage}>
+                <Text style={item?.fromUser ? styles.userMessageText: styles.aiMessageText}>{item.text}</Text>
             </View>
+            {/* <Text style={item?.fromUser ? styles.sentTimeUser : styles.sentTime}>{'Now'}</Text> */}
           </View>
         )}
+        ListHeaderComponent={()=>{
+          return(
+            <View style={{minHeight:100, bottom:10, alignItems:'center', justifyContent:'center'}}>
+               <Text style={styles.date}>{formattedDate}</Text>
+            </View>
+          )
+        }}
+        ListFooterComponent={()=> <View style={{ marginVertical:30}} />}
+        showsVerticalScrollIndicator={false}
       />
       <View style={styles.inputContainer}>
         <TextInput
@@ -74,7 +94,7 @@ const AIChatScreen: React.FC = () => {
           placeholderTextColor={colors.GRAY_40}
           cursorColor={colors.PRIMARY_BLUE}
         />
-        <TouchableOpacity style={{...styles.sendButton,...sendButtonStyle }} onPress={handleSendMessage}>
+        <TouchableOpacity style={{...styles.sendButton,...sendButtonStyle }} activeOpacity={0.7} onPress={handleSendMessage}>
           <Image source={icons.icon_direction_up_line_30} style={{width: 18, height:18, resizeMode:'contain' }} />
         </TouchableOpacity>
       </View>
@@ -92,29 +112,67 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginBottom: 8,
+    columnGap:4,
+    marginVertical:12,
+    width:204,
+    alignSelf:'flex-end',
   },
   aiMessageContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginBottom: 8,
+    columnGap:4,
+    width:204,
+    marginVertical:4,
   },
   userMessage: {
-    backgroundColor: '#DCF8C5',
-    padding: 8,
-    borderRadius: 8,
-    maxWidth: '70%',
+    backgroundColor: colors.PRIMARY_BLUE,
+    borderRadius: 20,
+    paddingTop: 8.5,
+    paddingRight: 17,
+    paddingBottom: 8.5,
+    paddingLeft: 16,
+    position: 'relative', // Set position relative for absolute positioning inside
+  },
+  userMessageText:{
+    color: colors.GRAY_0,
+    fontSize: 16,
+    lineHeight:24,
+    // fontFamily: "",
+    fontWeight:"400"
   },
   aiMessage: {
-    backgroundColor: '#E6E6E6',
+    backgroundColor: colors.GRAY_0,
     padding: 8,
-    borderRadius: 8,
-    maxWidth: '70%',
+    borderTopRightRadius:20,
+    borderBottomRightRadius:20,
+    borderBottomLeftRadius:20,
+    textAlign:'center',
+    paddingTop: 8.5,
+    paddingRight: 16,
+    paddingBottom: 8.5,
+    paddingLeft: 17,
+  },
+  aiMessageText:{
+    color: colors.GRAY_100,
+    fontSize: 16,
+    lineHeight:24,
+    // fontFamily: "",
+    fontWeight:"400"
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    bottom:20,
-    paddingHorizontal:20,
+    bottom:0,
+    paddingHorizontal:12,
+    height:82
+  },
+  sentTimeUser: {
+    position: 'absolute',
+    bottom: 0,
+    right: 12,
+    color: colors.GRAY_50,
+    fontSize: 12,
   },
   input: {
     flex: 1,
@@ -128,7 +186,8 @@ const styles = StyleSheet.create({
     fontFamily:"",
     lineHeight: 20.4,
     fontWeight:'400',
-    color: colors.GRAY_100
+    color: colors.GRAY_100,
+    paddingRight:50
   },
   sendButton: {
     height:30,
@@ -136,7 +195,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.GRAY_30,
     borderRadius: 20,
     position:'absolute',
-    right:30,
+    right:22,
     justifyContent:'center',
     alignItems:'center',
     padding:6,
@@ -144,6 +203,20 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: 'white',
   },
+  date:{
+    fontSize:12,
+    lineHeight:14.33,
+    color: colors.GRAY_70,
+    fontWeight:'400'
+  },
+  sentTime:{
+    fontSize:9,
+    lineHeight:11,
+    color: colors.GRAY_50,
+    fontStyle:'normal',
+    // fontFamily:""
+    alignSelf:'flex-end',
+  }
 });
 
 export default AIChatScreen;
