@@ -1,8 +1,9 @@
 import { colors } from 'assets/colors';
 import icons from 'components/icons';
 import React, { useState, useEffect, useRef,  } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet,Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet,Image, StatusBar } from 'react-native';
 import { format } from 'date-fns';
+import Header from './Header';
 
 interface Message {
   text: string;
@@ -13,6 +14,7 @@ const AIChatScreen: React.FC = () => {
   const [userMessages, setUserMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [sendButtonStyle, setSendButtonStyle] = useState({ backgroundColor: colors.GRAY_30 });
+  const [aiName, setAiName] = useState('Endo'); //from onboarding
 
   const flatListRef = useRef<FlatList | null>(null);
 
@@ -57,11 +59,13 @@ const AIChatScreen: React.FC = () => {
   };
   const timestamp = 1640774400000; // Replace this with timestamp in milliseconds
   const formattedDate = format(new Date(timestamp), "EEEE, MMMM do");
-let load = true;
+
 
   return (
     <View style={styles.container}>
-     
+      <StatusBar backgroundColor={colors.GRAY_0} barStyle={"dark-content"} />
+     <Header aiName={aiName} />
+      {/* AI Responses */}
       <FlatList
         ref={(ref) => (flatListRef.current = ref)}
         data={userMessages}
@@ -77,18 +81,21 @@ let load = true;
         )}
         ListHeaderComponent={()=>{
           return(
-            <View style={{minHeight:100, bottom:10, alignItems:'center', justifyContent:'center'}}>
+            <View style={{minHeight:80, bottom:10, alignItems:'center', justifyContent:'center'}}>
                <Text style={styles.date}>{formattedDate}</Text>
             </View>
           )
         }}
-        ListFooterComponent={()=> <View style={{ marginVertical:30}} />}
+        ListFooterComponent={()=> <View style={{  marginVertical:30}} />}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{padding:6,}}
       />
+      
+      {/* ASK AI */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
-          placeholder="Ask Endo"
+          placeholder={`Ask ${aiName}`}
           value={inputText}
           onChangeText={handleInputChange}
           placeholderTextColor={colors.GRAY_40}
@@ -105,7 +112,6 @@ let load = true;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 6,
     backgroundColor: colors.GRAY_10
   },
   userMessageContainer: {
