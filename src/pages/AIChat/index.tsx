@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef,  } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet,Image, StatusBar } from 'react-native';
 import { format } from 'date-fns';
 import Header from './Header';
+import Onboarding from './OnBoarding';
 
 interface Message {
   text: string;
@@ -105,6 +106,7 @@ const AIChatScreen: React.FC = () => {
           <Image source={icons.icon_direction_up_line_30} style={{width: 18, height:18, resizeMode:'contain' }} />
         </TouchableOpacity>
       </View>
+      <Onboarding />
     </View>
   );
 };
