@@ -1,6 +1,4 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
-import {setToken} from 'apis/apiConstants';
-import {postSignup} from 'apis/userApi';
 import {colors} from 'assets/colors';
 import {RightArrow, TermIcon} from 'assets/svgIcons';
 import axios from 'axios';

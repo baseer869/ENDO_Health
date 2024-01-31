@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StackNavigationProp,
   createStackNavigator,
@@ -19,7 +19,7 @@ import NameInputPage from 'pages/Signup/NameInput';
 import EmailInputPage from 'pages/Signup';
 import PasswordInputPage from 'pages/Signup/PasswordInputPage';
 import SignupDonePage from 'pages/Signup/SignupDonePage';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'reducers';
 import TermWebView from 'pages/TermWebView';
 import MedicalInfo from 'pages/MedicalInfo';
@@ -31,6 +31,10 @@ import MyAccount from 'pages/Account';
 import WithDraw from 'pages/Account/WithDraw';
 import PrivacyPolicyAgreePage from 'pages/Signup/PrivacyPolicyAgreePage';
 import WithDrawResult from 'pages/WithDrawResult';
+import {setToken} from 'apis/apiConstants';
+import {getUserInfo} from 'apis/userApi';
+import tokenStorage from 'storages/tokenStorage';
+import {setUserInfo} from 'stores/UserInfoStore';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -258,9 +262,35 @@ const NotAuthGroup = () => (
 );
 
 const Navigator = () => {
+  const [isLoad, setIsLoad] = useState(false);
+  const dispatch = useDispatch();
   const userInfo = useSelector(
     (state: RootState) => state.userInfoStore.userInfo,
   );
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await tokenStorage.get().then(async token => {
+          if (token) {
+            setToken(token);
+            const userInfoRes = await getUserInfo();
+            await dispatch(setUserInfo(userInfoRes));
+          }
+        });
+        setIsLoad(true);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setIsLoad(true);
+      }
+    })();
+  }, [dispatch]);
+
+  // TODO: 로그인되어있는지 안되어있는지 확인하는동안 빈화면
+  if (!isLoad) {
+    return <View />;
+  }
 
   return (
     <Stack.Navigator

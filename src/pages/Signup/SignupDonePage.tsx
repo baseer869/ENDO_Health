@@ -13,6 +13,7 @@ import {
 import React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import {useDispatch} from 'react-redux';
+import tokenStorage from 'storages/tokenStorage';
 import {setUserInfo} from 'stores/UserInfoStore';
 
 export default function SignupDonePage() {
@@ -32,7 +33,10 @@ export default function SignupDonePage() {
         password: password,
       });
       dispatch(setUserInfo(res));
-      if (res.accessToken) setToken(res.accessToken);
+      if (res.accessToken) {
+        tokenStorage.set(res.accessToken);
+        setToken(res.accessToken);
+      }
     } catch (e) {}
   };
 
