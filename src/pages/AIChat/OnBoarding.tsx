@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import { BottomSheetModal, } from '@gorhom/bottom-sheet';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet ,KeyboardAvoidingView, Platform, ScrollView} from 'react-native';
+import { BottomSheetModal,BottomSheetBackdrop } from '@gorhom/bottom-sheet';
 import icons from 'components/icons';
 import { colors } from 'assets/colors';
 
@@ -40,13 +40,25 @@ const Onboarding = () => {
         }
     };
 
+    const renderBackdrop = useCallback(
+		(props) => (
+			<BottomSheetBackdrop
+				{...props}
+				disappearsOnIndex={1}
+				appearsOnIndex={2}
+			/>
+		),
+		[]
+	);
     return (
         <BottomSheetModal
             ref={bottomSheetModalRef}
             snapPoints={[currentScreen == 2 ? "57%" : '65%', '100%']}
             backgroundStyle={{ backgroundColor: 'white' }}
             index={0}
-        >
+            handleIndicatorStyle={{ backgroundColor: colors.GRAY_20 }}
+            backdropComponent={renderBackdrop}
+            >
             {/* Screen 1 */}
             {currentScreen === 1 && (
                 <View>
@@ -59,7 +71,7 @@ const Onboarding = () => {
             )}
             {/* Screen 2 */}
             {currentScreen === 2 && (
-                <View style={{ paddingHorizontal: 20 }}>
+                <View style={{ flex:1, paddingHorizontal: 20 }}>
                     <View style={styles.headerContainer}>
                         <TouchableOpacity onPress={handleBack}>
                             <Image source={icons.icon_direction_back_line_30} style={{ width: 24, height: 24 }} />
@@ -81,6 +93,7 @@ const Onboarding = () => {
                         <Image source={icons.direction_forward_line_30} style={{ width: 16, height: 16 }} />
                     </TouchableOpacity>
                 </View>
+
             )}
         </BottomSheetModal>
     );
