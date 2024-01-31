@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {StyleSheet,Image, TouchableOpacity} from 'react-native';
 import NfcManager, {
   Nfc15693RequestFlagIOS,
@@ -26,6 +26,9 @@ import {InsightOverviewCard} from './components/InsightOverviewCard';
 import {InsightCard} from './components/InsightCard';
 import { colors } from 'assets/colors';
 import icons from 'components/icons';
+import { fonts } from 'assets/fonts';
+import CGMScanBottomSheet from './components/CGMScanBottomSheet';
+import CGMScanModal from './components/CGMScanModal';
 
 // Define a type for your component's props if needed
 type HomeProps = {
@@ -36,6 +39,7 @@ const {MyNativeModule} = NativeModules;
 
 const 
 Home: React.FC<HomeProps> = () => {
+  const bottomSheetModalRef = useRef(null);
   const navigation = useNavigation<RootStackScreenProps>();
 
   useEffect(() => {
@@ -228,8 +232,15 @@ Home: React.FC<HomeProps> = () => {
     await NfcManager.unregisterTagEvent();
   };
   const onSortByDate = () =>{};
+
+  const onScanHandle = () => {
+    if (bottomSheetModalRef.current) {
+        bottomSheetModalRef.current.present();
+    }
+};
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <ScrollView 
       horizontal={true} 
       showsHorizontalScrollIndicator={false} 
@@ -290,6 +301,12 @@ Home: React.FC<HomeProps> = () => {
           {'' + userInfo.userInfo?.accessToken}
         </Text>
       </TouchableOpacity> */}
+      {/* Scan Button */}
+      <TouchableOpacity  onPress={()=> onScanHandle()} style={styles.scanButton} activeOpacity={0.5}>
+        <Image  source={icons.icon_scan2_line_30} style={{width: 36, height: 36}}/>
+      </TouchableOpacity>
+      <CGMScanBottomSheet bottomSheetModalRef={bottomSheetModalRef}/>
+      <CGMScanModal isVisible={true} />
     </ScrollView>
   );
 };
@@ -306,7 +323,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'scroll',
     paddingHorizontal:20,
-    paddingTop:33,
+    paddingTop:0,
   },
   cardContainer: {
     flexDirection: 'row',
@@ -322,7 +339,6 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'space-between',
     paddingHorizontal:20,
-    paddingTop:25
   },
   InSight:{
     backgroundColor: colors.GREEN_10,
@@ -345,7 +361,7 @@ const styles = StyleSheet.create({
     color: colors.PRIMARY_GREEN,
     lineHeight:15.6,
     textAlign:'center',
-    fontWeight: "700"
+    fontFamily: fonts.Pretendard_Bold
   },
   icon:{
     width:16,
@@ -354,12 +370,32 @@ const styles = StyleSheet.create({
   date:{
     fontSize:17,
     fontStyle:'normal',
-    fontWeight:'700',
     lineHeight:20.4,
     color: colors.GRAY_50,
-    // fontFamily:"",
+    fontFamily: fonts.Pretendard_Bold,
     paddingLeft:6
-  }
+  },
+  scanButton: {
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 0,
+    display: 'flex',
+    // iOS
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 16.97,
+    // Android
+    elevation: 4, 
+    backgroundColor: "#fff",
+    borderRadius: 100,
+    position:'absolute',
+    bottom:25,
+    right: 25,
+  },
+  
 });
 
 export default Home;
