@@ -1,6 +1,8 @@
 import {colors} from 'assets/colors';
+import {RightArrowIcon} from 'assets/svgIcons';
+import icons from 'components/icons';
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import {Svg, Path} from 'react-native-svg';
 
 interface DropdownListItemProps {
@@ -9,32 +11,60 @@ interface DropdownListItemProps {
   subText?: string;
   disabled?: boolean;
   onPress?: () => void;
+  radioPosition?: 'right' | 'left';
 }
 
 export default function RadioListItem(props: DropdownListItemProps) {
-  const {title, isSelected, disabled, subText, onPress} = props;
+  const {
+    title,
+    isSelected,
+    disabled,
+    subText,
+    onPress,
+    radioPosition = 'right',
+  } = props;
   const styles = isSelected ? selectedStyles : defaultStyles;
   return (
     <TouchableOpacity
       style={[styles.container, disabled ? styles.disabled : undefined]}
       disabled={disabled}
       onPress={onPress}>
+      {radioPosition === 'left' && (
+        <View
+          style={[
+            styles.rightContainer,
+            {
+              marginRight: 5,
+              backgroundColor: isSelected ? colors.PRIMARY_BLUE : 'transparent',
+            },
+          ]}>
+          <View
+            style={[
+              styles.smallCircle,
+              {borderColor: isSelected ? colors.GRAY_30 : 'transparent'},
+            ]}></View>
+        </View>
+      )}
       <View style={styles.leftContainer}>
         <Text style={styles.title}>{title}</Text>
         {/* {!!subText && <Text style={styles.subText}>{subText}</Text>} */}
       </View>
 
-      <View
-        style={[
-          styles.rightContainer,
-          {backgroundColor: isSelected ? colors.PRIMARY_BLUE : 'transparent'},
-        ]}>
+      {radioPosition === 'right' ? (
         <View
           style={[
-            styles.smallCircle,
-            {borderColor: isSelected ? colors.GRAY_30 : 'transparent'},
-          ]}></View>
-      </View>
+            styles.rightContainer,
+            {backgroundColor: isSelected ? colors.PRIMARY_BLUE : 'transparent'},
+          ]}>
+          <View
+            style={[
+              styles.smallCircle,
+              {borderColor: isSelected ? colors.GRAY_30 : 'transparent'},
+            ]}></View>
+        </View>
+      ) : (
+        <RightArrowIcon />
+      )}
     </TouchableOpacity>
   );
 }

@@ -56,3 +56,15 @@ export const addWarningChartPoints = (
 
   return result;
 };
+
+export function isPasswordValid(password: string): boolean {
+  const minLength = 8;
+  const hasNumber = /\d/.test(password);
+  const hasLetter = /[a-zA-Z]/.test(password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+  const validConditions = [hasNumber, hasLetter, hasSpecialChar].filter(
+    Boolean,
+  ).length;
+
+  return password.length >= minLength && validConditions >= 2;
+}

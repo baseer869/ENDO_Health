@@ -1,45 +1,85 @@
-import { colors } from 'assets/colors';
+import {colors} from 'assets/colors';
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import {
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+} from 'react-native';
 import ProfileView from './components/ProfileView';
 import icons from 'components/icons';
-import { commonStyles } from 'utils/styles/commonStyles';
+import {commonStyles} from 'utils/styles/commonStyles';
 import AppSettingItem from './components/AppSettingItem';
+import {useNavigation} from '@react-navigation/native';
+import {RootStackScreenProps} from 'navigation/rootNavigation';
 
-const MenuTitle = ({ title }) => <Text style={styles.title}>{title}</Text>
+const MenuTitle = ({title}) => <Text style={styles.title}>{title}</Text>;
 
 const MyAccount: React.FC = () => {
+  const navigation = useNavigation<RootStackScreenProps>();
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView style={{ padding: 20, }} showsVerticalScrollIndicator={false}>
+      <ScrollView style={{padding: 20}} showsVerticalScrollIndicator={false}>
         <Text style={styles.text}>Account</Text>
 
         {/* render user profile */}
-        <ProfileView username={"Chloe Mörets"} email={"chloe.hamilton@gmail.com"} />
+        <ProfileView
+          username={'Chloe Mörets'}
+          email={'chloe.hamilton@gmail.com'}
+        />
         <View style={styles.seperator} />
 
         {/* section */}
-        <View style={{ paddingVertical: 10 }}>
+        <View style={{paddingVertical: 10}}>
           {/* Manage Medical Data */}
-          <TouchableOpacity style={{ ...commonStyles.rowWithSpaceBetween, height: 52 }}>
-            <View style={{ ...commonStyles.row, columnGap: 12 }}>
-              <Image source={icons.icon_profile_line_30} style={{ width: 18, height: 18 }} />
+          <TouchableOpacity
+            style={{...commonStyles.rowWithSpaceBetween, height: 52}}>
+            <View style={{...commonStyles.row, columnGap: 12}}>
+              <Image
+                source={icons.icon_profile_line_30}
+                style={{width: 18, height: 18}}
+              />
               <Text style={styles.label}>Manage medical data</Text>
             </View>
-            <Image source={icons.icon_arrow_forward_line_30} style={{ width: 16, height: 16 }} />
+            <Image
+              source={icons.icon_arrow_forward_line_30}
+              style={{width: 16, height: 16}}
+            />
           </TouchableOpacity>
           {/* App Settings */}
           <View style={styles.appSettingContainer}>
             <MenuTitle title={'App settings'} />
-            <AppSettingItem label={'Notification'} settingStatus={'On'} icon={icons.icon_notification_on_line_30} arrowForward={true} />
+            <AppSettingItem
+              label={'Notification'}
+              settingStatus={'On'}
+              icon={icons.icon_notification_on_line_30}
+              arrowForward={true}
+            />
 
-            <AppSettingItem label={'Connected Device'} settingStatus={'Abcott Lifestyle'} icon={icons.icon_scan2_line_30} arrowForward={true} />
+            <AppSettingItem
+              label={'Connected Device'}
+              settingStatus={'Abcott Lifestyle'}
+              icon={icons.icon_scan2_line_30}
+              arrowForward={true}
+            />
           </View>
           {/* support */}
           <View style={styles.appSettingContainer}>
             <MenuTitle title={'Information and Support'} />
-            <AppSettingItem label={'Announcements'} icon={icons.icon_notice_line_30} arrowForward={false} />
-            <AppSettingItem label={'Help Center'} subLable={'Ask for help or give feedbacks'} icon={icons.icon_information_line_30} arrowForward={false} />
+            <AppSettingItem
+              label={'Announcements'}
+              icon={icons.icon_notice_line_30}
+              arrowForward={false}
+            />
+            <AppSettingItem
+              label={'Help Center'}
+              subLable={'Ask for help or give feedbacks'}
+              icon={icons.icon_information_line_30}
+              arrowForward={false}
+            />
           </View>
           {/* Terms  */}
           <View style={styles.appSettingContainer}>
@@ -57,10 +97,14 @@ const MyAccount: React.FC = () => {
           <View style={styles.appSettingContainer}>
             <MenuTitle title={'Login'} />
             <AppSettingItem label={'Logout'} arrowForward={false} />
-            <AppSettingItem label={'Delete account'} arrowForward={false} />
+            <AppSettingItem
+              label={'Delete account'}
+              arrowForward={false}
+              onPress={() => navigation.push('WithDraw')}
+            />
           </View>
         </View>
-        <View style={{ height: 50}}/>
+        <View style={{height: 50}} />
       </ScrollView>
     </SafeAreaView>
   );
@@ -78,12 +122,12 @@ const styles = StyleSheet.create({
     fontStyle: 'normal',
     fontWeight: '700',
     lineHeight: 35,
-    color: colors.GRAY_80
+    color: colors.GRAY_80,
   },
   seperator: {
     height: 1,
     backgroundColor: colors.GRAY_20,
-    marginTop: 20
+    marginTop: 20,
   },
   label: {
     fontSize: 17,
@@ -91,7 +135,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     lineHeight: 20.4,
     // fontFamily:"",
-    color: colors.GRAY_90
+    color: colors.GRAY_90,
   },
   title: {
     fontSize: 15,
@@ -100,26 +144,25 @@ const styles = StyleSheet.create({
     lineHeight: 21.62,
     // fontFamily:"",
     color: colors.GRAY_50,
-    paddingBottom: 17
+    paddingBottom: 17,
   },
   appSettingContainer: {
-    paddingTop: 40
+    paddingTop: 40,
   },
-  version:{
+  version: {
     fontSize: 17,
     fontStyle: 'normal',
     fontWeight: '400',
     lineHeight: 20.4,
     // fontFamily:"",
-    color: colors.GRAY_90
+    color: colors.GRAY_90,
   },
-  versionNumber:{
+  versionNumber: {
     fontSize: 16,
     fontStyle: 'normal',
     fontWeight: '400',
     lineHeight: 19.2,
     // fontFamily:"",
     color: colors.GRAY_50,
-  }
-
+  },
 });

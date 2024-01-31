@@ -155,5 +155,5 @@ export default {
   Content,
   icon_arrow_forward_line_30,
   icon_profile_line_30,
-  icon_scan2_line_30
+  icon_scan2_line_30,
 };

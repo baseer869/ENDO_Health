@@ -2,6 +2,8 @@ import {colors} from 'assets/colors';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {Svg, Path} from 'react-native-svg';
+import Checkbox from './Checkbox';
+import {RightArrowIcon} from 'assets/svgIcons';
 
 interface DropdownListItemProps {
   isSelected?: boolean;
@@ -9,36 +11,49 @@ interface DropdownListItemProps {
   subText?: string;
   disabled?: boolean;
   onPress?: () => void;
+  radioPosition?: 'right' | 'left';
+  isRightArrow?: boolean;
+  rightOnPress?: () => void;
 }
 
 export default function CheckboxListItem(props: DropdownListItemProps) {
-  const {title, isSelected, disabled, subText, onPress} = props;
+  const {
+    title,
+    isSelected,
+    disabled,
+    subText,
+    onPress,
+    radioPosition,
+    isRightArrow = true,
+    rightOnPress,
+  } = props;
   const styles = isSelected ? selectedStyles : defaultStyles;
   return (
-    <TouchableOpacity
-      style={[styles.container, disabled ? styles.disabled : undefined]}
-      disabled={disabled}
-      onPress={onPress}>
-      <View style={styles.leftContainer}>
-        <Text style={styles.title}>{title}</Text>
-        {/* {!!subText && <Text style={styles.subText}>{subText}</Text>} */}
-      </View>
-
-      <View
-        style={[
-          styles.rightContainer,
-          {backgroundColor: isSelected ? colors.PRIMARY_BLUE : 'transparent'},
-        ]}>
-        <Svg width="11" height="8" viewBox="0 0 11 8" fill="none">
-          <Path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M10.9224 0.925624C11.0005 1.00373 11.0005 1.13036 10.9224 1.20847L4.23938 7.89148C4.16128 7.96959 4.03464 7.96959 3.95654 7.89148L0.858261 4.79321C0.780156 4.7151 0.780156 4.58847 0.858261 4.51036L1.35324 4.01539C1.43134 3.93728 1.55797 3.93728 1.63608 4.01539L4.09796 6.47727L10.1446 0.430649C10.2227 0.352544 10.3493 0.352544 10.4274 0.430649L10.9224 0.925624Z"
-            fill={'white'}
-          />
-        </Svg>
-      </View>
-    </TouchableOpacity>
+    <View style={[styles.container, disabled ? styles.disabled : undefined]}>
+      <TouchableOpacity
+        style={{flex: 1, flexDirection: 'row'}}
+        disabled={disabled}
+        onPress={onPress}>
+        {radioPosition === 'left' && (
+          <View style={{marginRight: 16}}>
+            <Checkbox isSelected={isSelected} />
+          </View>
+        )}
+        <View style={styles.leftContainer}>
+          <Text style={styles.title}>{title}</Text>
+          {/* {!!subText && <Text style={styles.subText}>{subText}</Text>} */}
+        </View>
+      </TouchableOpacity>
+      {radioPosition === 'right' ? (
+        <Checkbox isSelected={isSelected} />
+      ) : (
+        isRightArrow && (
+          <TouchableOpacity onPress={rightOnPress}>
+            <RightArrowIcon />
+          </TouchableOpacity>
+        )
+      )}
+    </View>
   );
 }
 const commomStyle = StyleSheet.create({

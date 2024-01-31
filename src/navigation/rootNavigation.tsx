@@ -28,6 +28,8 @@ import MedicalInfoStep3 from 'pages/MedicalInfo/MedicalInfoStep3';
 import RecommendSelectPage from 'pages/MedicalInfo/RecommendSelectPage';
 import icons from 'components/icons';
 import MyAccount from 'pages/Account';
+import WithDraw from 'pages/Account/WithDraw';
+import PrivacyPolicyAgreePage from 'pages/Signup/PrivacyPolicyAgreePage';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -45,6 +47,13 @@ export type RootStackParamList = {
     name: string;
     gender: string;
   };
+  PrivacyPolicyAgree: {
+    email: string;
+    password: string;
+    name: string;
+    gender: string;
+    birthday: Date;
+  };
   SignupDone: {
     email: string;
     password: string;
@@ -52,7 +61,7 @@ export type RootStackParamList = {
     gender: string;
     birthday: Date;
   };
-  TermWebView: undefined;
+  TermWebView: {url: string};
   MedicalInfo: undefined;
   MedicalInfoStep2: {
     height: string;
@@ -70,6 +79,7 @@ export type RootStackParamList = {
   };
   RecommendSelectPage: undefined;
   label: String;
+  WithDraw: undefined;
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -184,6 +194,11 @@ const AuthGroup = () => (
       }}
     />
     <Stack.Screen name="Main" component={Main} />
+    <Stack.Screen
+      name="WithDraw"
+      component={WithDraw}
+      options={{headerShown: false}}
+    />
   </Stack.Group>
 );
 
@@ -215,6 +230,11 @@ const NotAuthGroup = () => (
     <Stack.Screen
       name="BirthdaySelect"
       component={BirthdaySelectPage}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="PrivacyPolicyAgree"
+      component={PrivacyPolicyAgreePage}
       options={{headerShown: false}}
     />
     <Stack.Screen
