@@ -41,7 +41,7 @@ const Onboarding = () => {
     };
 
     const renderBackdrop = useCallback(
-		(props) => (
+		(props:any) => (
 			<BottomSheetBackdrop
 				{...props}
 				disappearsOnIndex={-1}
@@ -58,6 +58,8 @@ const Onboarding = () => {
             index={0}
             handleIndicatorStyle={{ backgroundColor: colors.GRAY_20 }}
             backdropComponent={renderBackdrop}
+            keyboardBehavior="interactive"
+            keyboardBlurBehavior="restore"
             >
             {/* Screen 1 */}
             {currentScreen === 1 && (
