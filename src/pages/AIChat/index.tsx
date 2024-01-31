@@ -1,7 +1,7 @@
 import { colors } from 'assets/colors';
 import icons from 'components/icons';
 import React, { useState, useEffect, useRef,  } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet,Image, StatusBar } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet,Image, StatusBar, SafeAreaView } from 'react-native';
 import { format } from 'date-fns';
 import Header from './Header';
 import Onboarding from './OnBoarding';
@@ -63,7 +63,7 @@ const AIChatScreen: React.FC = () => {
 
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={colors.GRAY_0} barStyle={"dark-content"} />
      <Header aiName={aiName} />
       {/* AI Responses */}
@@ -107,7 +107,7 @@ const AIChatScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
       <Onboarding />
-    </View>
+    </SafeAreaView>
   );
 };
 

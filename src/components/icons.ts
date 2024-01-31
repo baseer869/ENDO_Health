@@ -64,6 +64,7 @@ import icon_warning_solid from '../assets/icons/icon_warning_solid.png';
 import icon_direction_back_line_30 from '../assets/icons/icon_direction_back_line_30.png';
 import loadingImage from '../assets/images/loadingImage.png';
 import direction_forward_line_30 from '../assets/icons/direction_forward_line_30.png';
+import icon_arrow_forward_line_30 from '../assets/icons/icon_arrow_forward_line_30.png';
 import icon_arrow_down_line_30 from '../assets/icons/icon_arrow_down_line_30.png';
 import icon_calendar_solid from '../assets/icons/icon_calendar_solid.png';
 import icon_star_solid from '../assets/icons/icon_star_solid.png';
@@ -73,6 +74,8 @@ import icon_direction_up_line_30 from '../assets/icons/icon_direction_up_line_30
 import AIChat from '../assets/icons/AIChat.png';
 import AskAIContent from '../assets/icons/AskAIContent.png';
 import Content from '../assets/icons/Content.png';
+import icon_profile_line_30 from '../assets/icons/icon_profile_line_30.png';
+import icon_scan2_line_30 from '../assets/icons/icon_scan2_line_30.png';
 
 export default {
   icon_block_line_30,
@@ -150,4 +153,7 @@ export default {
   AIChat,
   AskAIContent,
   Content,
+  icon_arrow_forward_line_30,
+  icon_profile_line_30,
+  icon_scan2_line_30
 };

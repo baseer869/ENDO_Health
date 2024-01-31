@@ -27,6 +27,7 @@ import MedicalInfoStep2 from 'pages/MedicalInfo/MedicalInfoStep2';
 import MedicalInfoStep3 from 'pages/MedicalInfo/MedicalInfoStep3';
 import RecommendSelectPage from 'pages/MedicalInfo/RecommendSelectPage';
 import icons from 'components/icons';
+import MyAccount from 'pages/Account';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -155,7 +156,7 @@ const Tabs = () => {
         />
         <Tab.Screen
           name="Account"
-          component={Home}
+          component={MyAccount}
           options={{
             tabBarIcon: ({focused}) => (
               <TabIcon

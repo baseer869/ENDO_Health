@@ -41,11 +41,11 @@ const Onboarding = () => {
     };
 
     const renderBackdrop = useCallback(
-		(props) => (
+		(props:any) => (
 			<BottomSheetBackdrop
 				{...props}
-				disappearsOnIndex={1}
-				appearsOnIndex={2}
+				disappearsOnIndex={-1}
+				appearsOnIndex={0}
 			/>
 		),
 		[]
@@ -53,11 +53,13 @@ const Onboarding = () => {
     return (
         <BottomSheetModal
             ref={bottomSheetModalRef}
-            snapPoints={[currentScreen == 2 ? "57%" : '65%', '100%']}
+            snapPoints={[currentScreen == 2 ? Platform.OS == 'android'? "57%" : "61%" : Platform.OS == 'android'? '65%':"73%", '100%']}
             backgroundStyle={{ backgroundColor: 'white' }}
             index={0}
             handleIndicatorStyle={{ backgroundColor: colors.GRAY_20 }}
             backdropComponent={renderBackdrop}
+            keyboardBehavior="interactive"
+            keyboardBlurBehavior="restore"
             >
             {/* Screen 1 */}
             {currentScreen === 1 && (
