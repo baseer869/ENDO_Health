@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Ethnicity, Gender} from 'apis/userApi';
+import axios from 'axios';
 
 interface Profile {
   id?: number;
@@ -27,8 +28,7 @@ const userInfoSlice = createSlice({
   initialState,
   reducers: {
     clearUserInfo(state: UserInfoStore) {
-      // axios.defaults.headers.common.Authorization = ''; // 헤더초기화 or 로그인 토큰초기화
-      console.log('STATE', state);
+      axios.defaults.headers.common.Authorization = '';
       return {
         ...state,
         userInfo: undefined,

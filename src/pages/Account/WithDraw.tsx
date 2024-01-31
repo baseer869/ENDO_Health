@@ -20,6 +20,7 @@ import {
   Alert,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
+import tokenStorage from 'storages/tokenStorage';
 import {clearUserInfo} from 'stores/UserInfoStore';
 
 const items = [
@@ -51,6 +52,7 @@ export default function WithDraw() {
     } else {
       await userWithDraw({reason});
     }
+    tokenStorage.set('');
     // dispatch(clearUserInfo());
     navigation.push('WithDrawResult');
     bottomSheetRef.current?.close();

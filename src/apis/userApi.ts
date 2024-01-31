@@ -126,7 +126,7 @@ export const getUserInfo = async (): Promise<UserResponseDto> => {
     } else {
       console.error('Error Message:', error.message);
     }
-    return Promise.resolve(error);
+    return Promise.reject(error);
   }
 };
 

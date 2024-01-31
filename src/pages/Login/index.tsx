@@ -15,6 +15,8 @@ import {useDispatch} from 'react-redux';
 import {setUserInfo} from 'stores/UserInfoStore';
 import {setToken} from 'apis/apiConstants';
 import {isPasswordValid} from 'utils/numbers';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import tokenStorage from 'storages/tokenStorage';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -83,7 +85,11 @@ const Login = () => {
   const login = async () => {
     const res = await postLogin({email, password});
     dispatch(setUserInfo(res));
-    if (res.accessToken) setToken(res.accessToken);
+
+    if (res.accessToken) {
+      tokenStorage.set(res.accessToken);
+      setToken(res.accessToken);
+    }
   };
 
   return (

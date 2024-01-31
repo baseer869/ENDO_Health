@@ -18,6 +18,7 @@ import {RootStackScreenProps} from 'navigation/rootNavigation';
 import {clearUserInfo} from 'stores/UserInfoStore';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'reducers';
+import tokenStorage from 'storages/tokenStorage';
 
 const MenuTitle = ({title}: {title: string}) => (
   <Text style={styles.title}>{title}</Text>
@@ -110,6 +111,7 @@ const MyAccount: React.FC = () => {
               label={'Logout'}
               arrowForward={false}
               onPress={() => {
+                tokenStorage.set('');
                 dispatch(clearUserInfo());
               }}
             />

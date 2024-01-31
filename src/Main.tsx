@@ -28,11 +28,11 @@ function Main() {
       : iosRequestPermission();
   }, []);
 
-  useEffect(() => {
-    if (userInfo?.accessToken) {
-      setToken(userInfo.accessToken);
-    }
-  }, [userInfo, userInfo?.accessToken]);
+  // useEffect(() => {
+  //   if (userInfo?.accessToken) {
+  //     setToken(userInfo.accessToken);
+  //   }
+  // }, [userInfo, userInfo?.accessToken]);
 
   // ios 사용자에게 알림권한 요청
   const iosRequestPermission = async () => {
@@ -64,7 +64,7 @@ function Main() {
   // Android 사용자에게 알림권한 요청
   const androidRequestPermission = async () => {
     const authorizationStatus = await messaging().requestPermission();
-    console.log('authorizationStatus:', authorizationStatus);
+
     try {
       const fcmToken = await firebaseMessaging.getToken();
       console.log('userInfo:', userInfo);
