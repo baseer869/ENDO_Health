@@ -59,7 +59,9 @@ export default function SignupDonePage() {
         <Text
           style={styles.subText}
           onPress={() => {
-            navigation.push('TermWebView');
+            navigation.push('TermWebView', {
+              url: 'https://app.termly.io/document/privacy-policy/2355b0db-3909-43c1-a00c-cd0b4a7b7f69',
+            });
           }}>
           <Text style={styles.read}>Read</Text> what we do to keep you private
         </Text>
