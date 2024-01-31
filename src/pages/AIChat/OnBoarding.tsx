@@ -44,8 +44,8 @@ const Onboarding = () => {
 		(props) => (
 			<BottomSheetBackdrop
 				{...props}
-				disappearsOnIndex={1}
-				appearsOnIndex={2}
+				disappearsOnIndex={-1}
+				appearsOnIndex={0}
 			/>
 		),
 		[]
