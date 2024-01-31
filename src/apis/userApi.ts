@@ -181,11 +181,34 @@ export const postLogin = async (data: {
   }
 };
 
-axios.interceptors.request.use(function (config) {
-  console.log('interpecec', JSON.stringify(config, null, 2));
+export const userWithDraw = async (data: {reason: string}): Promise<any> => {
+  const options: AxiosRequestConfig = {
+    url: `${api.users.withdraw}`,
+    method: 'DELETE',
+    data,
+  };
+  try {
+    const result = await axios.request(options);
 
-  return config;
-});
+    return result.data;
+  } catch (error: any) {
+    if (error.response) {
+      console.error('Error Response Status:', error.response);
+      // console.log('Error Response Headers:', error.response.headers);
+    } else if (error.request) {
+      console.error('Error Request:', error.request);
+    } else {
+      console.error('Error Message:', error.message);
+    }
+    return Promise.reject(error);
+  }
+};
+
+// axios.interceptors.request.use(function (config) {
+//   console.log('interpecec', JSON.stringify(config, null, 2));
+
+//   return config;
+// });
 export type UserGlucoseInsightResponseDto = {
   insightCards: InsightCard[];
 };

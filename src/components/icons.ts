@@ -83,7 +83,6 @@ import icon_plus_line_30 from '../assets/icons/icon_plus_line_30.png';
 import icon_retry_connection from '../assets/icons/icon_retry_connection.png';
 import icon_no_interent_connection from '../assets/icons/icon_no_interent_connection.png';
 
-
 export default {
   icon_block_line_30,
   icon_block_solid,
@@ -168,5 +167,5 @@ export default {
   icon_scan2_white_line_30,
   icon_plus_line_30,
   icon_retry_connection,
-  icon_no_interent_connection
+  icon_no_interent_connection,
 };

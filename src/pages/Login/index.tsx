@@ -14,6 +14,7 @@ import {postLogin} from 'apis/userApi';
 import {useDispatch} from 'react-redux';
 import {setUserInfo} from 'stores/UserInfoStore';
 import {setToken} from 'apis/apiConstants';
+import {isPasswordValid} from 'utils/numbers';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -61,11 +62,13 @@ const Login = () => {
       setPasswordError('Please enter your password');
       return false;
     }
-    if (password.length > 4) {
+    if (isPasswordValid(text)) {
       setPasswordError('');
       return true;
     }
-    setPasswordError('Please enter correct password format.');
+    setPasswordError(
+      'Password must be 8 characters or longer. It must have numbers, characters or special characters.',
+    );
 
     return false;
   };
@@ -86,7 +89,18 @@ const Login = () => {
   return (
     <View style={{backgroundColor: 'white', flex: 1}}>
       <BackHeader />
+
       <View style={{paddingHorizontal: 28, backgroundColor: 'white', flex: 1}}>
+        <Text
+          style={{
+            fontSize: 28,
+            color: colors.GRAY_100,
+            fontWeight: '700',
+            marginBottom: 66,
+            marginTop: 10,
+          }}>
+          Sign in with email
+        </Text>
         <View style={{}}>
           <Text style={{fontSize: 13, color: colors.GRAY_60}}>Email</Text>
           <CancelTextInput

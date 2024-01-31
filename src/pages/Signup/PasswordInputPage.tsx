@@ -14,6 +14,7 @@ import {
 } from 'navigation/rootNavigation';
 import {colors} from 'assets/colors';
 import {RouteProp, useRoute} from '@react-navigation/native';
+import {isPasswordValid} from 'utils/numbers';
 
 const PasswordInputPage = () => {
   const [keyboardHeight] = useKeyboard();
@@ -24,16 +25,18 @@ const PasswordInputPage = () => {
   const route = useRoute<RouteProp<RootStackParamList, 'PasswordInput'>>();
 
   const checkPassword = (text?: string): boolean => {
-    console.log('checkpasword', text);
     if (!text) {
       setPasswordError('Please enter your password');
       return false;
     }
-    if (password.length > 4) {
+
+    if (isPasswordValid(text)) {
       setPasswordError('');
       return true;
     }
-    setPasswordError('Please enter correct password format.');
+    setPasswordError(
+      'Password must be 8 characters or longer. It must have numbers, characters or special characters.',
+    );
 
     return false;
   };

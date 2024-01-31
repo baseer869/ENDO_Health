@@ -1,26 +1,45 @@
 import {colors} from 'assets/colors';
 import {RightArrow} from 'assets/svgIcons';
-import {TouchableOpacity, View, Text} from 'react-native';
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  StyleProp,
+  ViewStyle,
+  TextStyle,
+} from 'react-native';
 
 interface Props {
   onPress: () => void;
   text: string;
   isRightArrow?: boolean;
   disabled?: boolean;
+  containerStyle?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
 }
 
 const RoundButton = (props: Props) => {
-  const {onPress, text, isRightArrow = true, disabled = false} = props;
+  const {
+    onPress,
+    text,
+    isRightArrow = true,
+    disabled = false,
+    containerStyle,
+    textStyle,
+  } = props;
 
   return (
     <TouchableOpacity
-      style={{
-        backgroundColor: disabled ? colors.GRAY_5 : colors.PRIMARY_BLUE,
-        borderRadius: 24,
-        paddingHorizontal: 20,
-        paddingVertical: 12,
-        width: '100%',
-      }}
+      style={[
+        {
+          backgroundColor: disabled ? colors.GRAY_5 : colors.PRIMARY_BLUE,
+          borderRadius: 24,
+          paddingHorizontal: 20,
+          paddingVertical: 12,
+          width: '100%',
+        },
+        containerStyle,
+      ]}
       onPress={onPress}>
       <View
         style={{
@@ -29,7 +48,11 @@ const RoundButton = (props: Props) => {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Text style={{color: 'white', fontWeight: '700', fontSize: 17}}>
+        <Text
+          style={[
+            {color: 'white', fontWeight: '700', fontSize: 17},
+            textStyle,
+          ]}>
           {text}
         </Text>
         {isRightArrow && <RightArrow className="ml-2 " />}

@@ -30,7 +30,9 @@ import icons from 'components/icons';
 import MyAccount from 'pages/Account';
 import PersonalInformation from 'pages/Account/PersonalInformatio';
 import UpdatePassword from 'pages/Account/UpdatePassword';
-import { fonts } from 'assets/fonts';
+import {fonts} from 'assets/fonts';
+import WithDraw from 'pages/Account/WithDraw';
+import PrivacyPolicyAgreePage from 'pages/Signup/PrivacyPolicyAgreePage';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -39,8 +41,8 @@ export type RootStackParamList = {
   Main: undefined;
   Tabs: undefined;
   Signup: undefined;
-  PersonalInformation: undefined,
-  UpdatePassword: undefined,
+  PersonalInformation: undefined;
+  UpdatePassword: undefined;
   PasswordInput: {email: string};
   NameInput: {email: string; password: string};
   GenderSelect: {email: string; password: string; name: string};
@@ -50,6 +52,13 @@ export type RootStackParamList = {
     name: string;
     gender: string;
   };
+  PrivacyPolicyAgree: {
+    email: string;
+    password: string;
+    name: string;
+    gender: string;
+    birthday: Date;
+  };
   SignupDone: {
     email: string;
     password: string;
@@ -57,7 +66,7 @@ export type RootStackParamList = {
     gender: string;
     birthday: Date;
   };
-  TermWebView: undefined;
+  TermWebView: {url: string};
   MedicalInfo: undefined;
   MedicalInfoStep2: {
     height: string;
@@ -75,6 +84,7 @@ export type RootStackParamList = {
   };
   RecommendSelectPage: undefined;
   label: String;
+  WithDraw: undefined;
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -131,18 +141,18 @@ const Tabs = () => {
                 focused={focused}
               />
             ),
-            headerTitle: 'Home', 
+            headerTitle: 'Home',
             headerTitleAlign: 'left',
             headerTitleStyle: {
               fontFamily: fonts.Pretendard_Bold,
-              fontSize: 28, 
+              fontSize: 28,
               lineHeight: 35,
-              color: colors.GRAY_80
+              color: colors.GRAY_80,
             },
             headerRight: () => (
               <Image
                 source={icons.icon_notification_on_line_30}
-                style={{ width: 24, height: 24, margin:16 }}
+                style={{width: 24, height: 24, margin: 16}}
               />
             ),
           }}
@@ -204,8 +214,21 @@ const AuthGroup = () => (
     />
     <Stack.Screen name="Main" component={Main} />
     {/* Account information */}
-    <Stack.Screen name="PersonalInformation" options={{ headerShown: true, headerTitle: 'Personal Information',}} component={PersonalInformation} />
-    <Stack.Screen name="UpdatePassword" options={{ headerShown: true, headerTitle: 'Update Password',}} component={UpdatePassword} />
+    <Stack.Screen
+      name="PersonalInformation"
+      options={{headerShown: true, headerTitle: 'Personal Information'}}
+      component={PersonalInformation}
+    />
+    <Stack.Screen
+      name="UpdatePassword"
+      options={{headerShown: true, headerTitle: 'Update Password'}}
+      component={UpdatePassword}
+    />
+    <Stack.Screen
+      name="WithDraw"
+      component={WithDraw}
+      options={{headerShown: false}}
+    />
   </Stack.Group>
 );
 
@@ -237,6 +260,11 @@ const NotAuthGroup = () => (
     <Stack.Screen
       name="BirthdaySelect"
       component={BirthdaySelectPage}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="PrivacyPolicyAgree"
+      component={PrivacyPolicyAgreePage}
       options={{headerShown: false}}
     />
     <Stack.Screen

@@ -21,7 +21,7 @@ const BirthdaySelectPage = () => {
   const {email, password, name, gender} = route.params;
 
   const onNext = async () => {
-    navigation.push('SignupDone', {
+    navigation.push('PrivacyPolicyAgree', {
       name,
       email: email,
       birthday: changeDateState,
