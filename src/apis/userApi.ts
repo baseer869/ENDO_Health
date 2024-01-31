@@ -193,7 +193,10 @@ export const userWithDraw = async (data: {reason: string}): Promise<any> => {
     return result.data;
   } catch (error: any) {
     if (error.response) {
-      console.error('Error Response Status:', error.response);
+      console.error(
+        'Error Response Status:',
+        JSON.stringify(error.response, null, 2),
+      );
       // console.log('Error Response Headers:', error.response.headers);
     } else if (error.request) {
       console.error('Error Request:', error.request);

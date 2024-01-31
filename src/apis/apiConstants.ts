@@ -26,7 +26,7 @@ export const api = {
     user: '/user',
     referral: '/user/referral',
     glucose_insights: '/user/glucose-insights',
-    withdraw: '/user/me',
+    withdraw: '/auth/user/me',
   },
   alarm: {},
 };

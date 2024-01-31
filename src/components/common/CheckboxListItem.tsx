@@ -23,7 +23,7 @@ export default function CheckboxListItem(props: DropdownListItemProps) {
     disabled,
     subText,
     onPress,
-    radioPosition,
+    radioPosition = 'right',
     isRightArrow = true,
     rightOnPress,
   } = props;
@@ -45,7 +45,9 @@ export default function CheckboxListItem(props: DropdownListItemProps) {
         </View>
       </TouchableOpacity>
       {radioPosition === 'right' ? (
-        <Checkbox isSelected={isSelected} />
+        <TouchableOpacity onPress={onPress}>
+          <Checkbox isSelected={isSelected} />
+        </TouchableOpacity>
       ) : (
         isRightArrow && (
           <TouchableOpacity onPress={rightOnPress}>

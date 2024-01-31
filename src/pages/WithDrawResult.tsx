@@ -1,38 +1,49 @@
+import {colors} from 'assets/colors';
+import {Image, SafeAreaView} from 'components/common';
+import BackHeader from 'components/common/BackHeader';
+import RoundButton from 'components/common/RoundButton';
+import icons from 'components/icons';
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import {useDispatch} from 'react-redux';
+import {clearUserInfo} from 'stores/UserInfoStore';
 
 export default function WidthDrawResult() {
+  const dispatch = useDispatch();
+
   return (
-    <View style={styles.frame525439362}>
-      <View style={styles.graphic_construction}></View>
-      <View style={styles.frame525439363}>
-        <View style={styles.frame525439272}>
-          <View style={styles.frame4368}>
-            <View style={styles.frame4369}>
-              <View style={styles.frame4371}>
-                <Text style={styles.weresorrytoseeyougo}>
-                  {`We’re sorry to see you go`}
-                </Text>
-              </View>
-            </View>
-            <Text
-              style={
-                styles.youraccounthasbeendeletedandyourDatawillbewipedoutindaysFeelfreetocontactus
-              }>
-              {`Your account has been deleted and your\nData will be wiped out in days.\nFeel free to contact us.`}
-            </Text>
-          </View>
-        </View>
-        {/* Vigma RN:: can be replaced with <Button_H34Icon_text props={"Error while retrieving the variants of your Figma component-set. Might be caused by special characters such as commas in the variant names."} /> */}
-        <View style={styles.button_H34Icon_text}>
-          {/* Vigma RN:: can be replaced with <Icon_mail_line_30  /> */}
-          <View style={styles.icon_mail_line_30}></View>
-          <View style={styles.text}>
-            <Text style={styles.label}>{`Send your experience`}</Text>
-          </View>
-        </View>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Image
+          style={{width: 150, height: 150}}
+          source={icons.widthDrawImage}
+        />
+        <Text style={{fontWeight: '700', fontSize: 20, color: colors.GRAY_100}}>
+          We’re sorry to see you go
+        </Text>
+        <Text
+          style={{
+            fontSize: 15,
+            color: colors.GRAY_100,
+            lineHeight: 22,
+            textAlign: 'center',
+            marginTop: 11,
+          }}>
+          {
+            'Your account has been deleted and your\nData will be wiped out in days.\nFeel free to contact us.'
+          }
+        </Text>
       </View>
-    </View>
+      <View style={{marginVertical: 50, paddingHorizontal: 30}}>
+        <RoundButton
+          text="Done"
+          onPress={() => {
+            dispatch(clearUserInfo());
+          }}
+          isRightArrow={false}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 

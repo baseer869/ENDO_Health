@@ -30,6 +30,7 @@ import icons from 'components/icons';
 import MyAccount from 'pages/Account';
 import WithDraw from 'pages/Account/WithDraw';
 import PrivacyPolicyAgreePage from 'pages/Signup/PrivacyPolicyAgreePage';
+import WithDrawResult from 'pages/WithDrawResult';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -80,6 +81,7 @@ export type RootStackParamList = {
   RecommendSelectPage: undefined;
   label: String;
   WithDraw: undefined;
+  WithDrawResult: undefined;
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -197,6 +199,11 @@ const AuthGroup = () => (
     <Stack.Screen
       name="WithDraw"
       component={WithDraw}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="WithDrawResult"
+      component={WithDrawResult}
       options={{headerShown: false}}
     />
   </Stack.Group>

@@ -76,6 +76,7 @@ import AskAIContent from '../assets/icons/AskAIContent.png';
 import Content from '../assets/icons/Content.png';
 import icon_profile_line_30 from '../assets/icons/icon_profile_line_30.png';
 import icon_scan2_line_30 from '../assets/icons/icon_scan2_line_30.png';
+import widthDrawImage from '../assets/images/widthDrawImage.png';
 
 export default {
   icon_block_line_30,
@@ -156,4 +157,5 @@ export default {
   icon_arrow_forward_line_30,
   icon_profile_line_30,
   icon_scan2_line_30,
+  widthDrawImage,
 };
