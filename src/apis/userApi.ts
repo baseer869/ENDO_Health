@@ -6,9 +6,6 @@ export const userPatchPreference = async (
   accessToken: string,
   requestBody: UserPreferenceRequestDto,
 ): Promise<UserResponseDto> => {
-  // Platform.OS === 'android'
-  //   ? setBaseUrl('http://10.0.2.2:3000')
-  //   : setBaseUrl('http://localhost:3000');
   const options: AxiosRequestConfig = {
     url: `${api.users.preference}`,
     headers: {
@@ -189,6 +186,23 @@ axios.interceptors.request.use(function (config) {
 
   return config;
 });
+export type UserGlucoseInsightResponseDto = {
+  insightCards: InsightCard[];
+};
+
+export type InsightCard = {
+  type: 'OVERVIEW' | 'INSIGHT_CARD';
+  graph?: InsightCardGraph;
+  title: string;
+  description: string;
+  image?: string;
+  link?: string;
+};
+
+export type InsightCardGraph = {
+  type: 'PROGRESS_CIRCLE';
+  value: number;
+};
 
 export type UserResponseDto = {
   id?: number;

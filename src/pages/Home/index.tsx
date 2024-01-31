@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet,Image, TouchableOpacity} from 'react-native';
 import NfcManager, {
   Nfc15693RequestFlagIOS,
-  NfcAdapter,
   NfcEvents,
   NfcTech,
   nfcManager,
@@ -14,10 +13,19 @@ import {toHexNumber} from '../../utils/numbers';
 import {rawGlucoseDataParseToReadingData, readRaw} from '../../utils/nfc/data';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../reducers';
-import {Button, Text, View} from 'components/common';
-import {clearUserInfo} from 'stores/UserInfoStore';
-import {LineChart} from 'react-native-wagmi-charts';
-import {colors} from 'assets/colors';
+import {Text, View} from 'components/common';
+import GlucoseLineChart from 'components/charts/GlucoseLineChart';
+import {RootStackScreenProps} from 'navigation/rootNavigation';
+import {useNavigation} from '@react-navigation/native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {
+  UserGlucoseInsightResponseDto,
+  getUserGlucoseInsights,
+} from 'apis/userApi';
+import {InsightOverviewCard} from './components/InsightOverviewCard';
+import {InsightCard} from './components/InsightCard';
+import { colors } from 'assets/colors';
+import icons from 'components/icons';
 
 // Define a type for your component's props if needed
 type HomeProps = {
@@ -26,10 +34,70 @@ type HomeProps = {
 
 const {MyNativeModule} = NativeModules;
 
-const Home: React.FC<HomeProps> = () => {
+const 
+Home: React.FC<HomeProps> = () => {
+  const navigation = useNavigation<RootStackScreenProps>();
+
+  useEffect(() => {
+    navigation.setOptions({headerShown: true});
+  });
+
   const [hasNfc, setHasNFC] = useState<boolean | null>(null);
+  const [glucoseInsights, setGlucoseInsights] =
+    useState<UserGlucoseInsightResponseDto | null>(null);
   const userInfo = useSelector((state: RootState) => state.userInfoStore);
   const dispatch = useDispatch();
+
+  const getGlucoseInsights = async () => {
+    // const res = await getUserGlucoseInsights();
+    const res: UserGlucoseInsightResponseDto = {
+      insightCards: [
+        {
+          type: 'OVERVIEW',
+          graph: {
+            type: 'PROGRESS_CIRCLE',
+            value: 0.5,
+          },
+          title: 'Daily Score',
+          description: 'Awesome',
+        },
+        {
+          type: 'OVERVIEW',
+          title: 'Time in Range',
+          description: '89%',
+        },
+        {
+          type: 'OVERVIEW',
+          title: 'Time in Range',
+          description: '89%',
+        },
+        {
+          type: 'INSIGHT_CARD',
+          title: 'Glucose Improved!',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        },
+        {
+          type: 'INSIGHT_CARD',
+          title: 'Glucose Improved!',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        },
+        {
+          type: 'INSIGHT_CARD',
+          title: 'Glucose Improved22!',
+          description:
+            '222 Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+        },
+      ],
+    };
+    setGlucoseInsights(res);
+  };
+
+  useEffect(() => {
+    getGlucoseInsights();
+  }, []);
+
   useEffect(() => {
     const checkIsSupported = async () => {
       const deviceIsSupported = await NfcManager.isSupported();
@@ -159,69 +227,70 @@ const Home: React.FC<HomeProps> = () => {
     await NfcManager.cancelTechnologyRequest();
     await NfcManager.unregisterTagEvent();
   };
-
-  const data = [
-    {
-      timestamp: 1,
-      value: 33575.25,
-    },
-    {
-      timestamp: 2,
-      value: 33545.25,
-    },
-    {
-      timestamp: 3,
-      value: 33510.25,
-    },
-    {
-      timestamp: 4,
-      value: 33345.84,
-    },
-    {
-      timestamp: 5,
-      value: 33215.25,
-    },
-  ];
-
-  if (!hasNfc) {
-    return (
-      <View className="flex flex-col justify-around w-full h-5/6 pl-10">
-        <Text>NFC not supported</Text>
-        <LineChart.Provider data={data}>
-          <LineChart width={300} height={300}>
-            <LineChart.Path>
-              <LineChart.Highlight color="red" from={0} to={1} />
-              <LineChart.Highlight color="red" from={3} to={4} />
-              <LineChart.HorizontalLine at={{value: 33545.84}} />
-              <LineChart.HorizontalLine at={{value: 33345.84}} />
-            </LineChart.Path>
-            <LineChart.CursorCrosshair>
-              <LineChart.Tooltip />
-            </LineChart.CursorCrosshair>
-          </LineChart>
-          <LineChart.PriceText />
-          <LineChart.DatetimeText />
-        </LineChart.Provider>
-      </View>
-    );
-  }
-
+  const onSortByDate = () =>{};
   return (
-    <View style={styles.container}>
-      <Text>Hello world usename:{userInfo.userInfo?.name}</Text>
-      <TouchableOpacity onPress={readTag}>
+    <ScrollView style={styles.container}>
+      <ScrollView 
+      horizontal={true} 
+      showsHorizontalScrollIndicator={false} 
+      contentContainerStyle={styles.insightContainer}
+      >
+        {glucoseInsights?.insightCards
+          ?.filter(v => v.type === 'OVERVIEW')
+          .map((insightCard, index, array) => {
+            return (
+              <InsightOverviewCard
+                index={index}
+                title={insightCard.title}
+                description={insightCard.description}
+                graph={insightCard.graph}
+                length={array.length}
+              />
+            );
+          })}
+      </ScrollView>
+      <View style={styles.dateView}>
+        <View style={{flexDirection:'row', alignItems:'center',}}>
+          <Image source={icons.icon_calendar_solid} style={styles.icon} />
+          <Text style={styles.date}>Jan 24</Text>
+          <TouchableOpacity onPress={onSortByDate} activeOpacity={0.7} style={{paddingLeft:4}}>
+            <Image source={icons.icon_arrow_down_line_30} style={styles.icon} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.InSight}>
+          <View style={styles.dot}/>
+          <Text style={styles.inSightText}>Doing Great</Text>
+        </View>
+      </View>
+      <GlucoseLineChart />
+      <ScrollView
+        contentContainerStyle={styles.cardContainer}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}>
+        {glucoseInsights?.insightCards
+          ?.filter(v => v.type === 'INSIGHT_CARD')
+          .map((insightCard, index, array) => {
+            return (
+               <InsightCard
+                 title={insightCard.title}
+                 description={insightCard.description}
+               />
+            );
+          })}
+      </ScrollView>
+      {/* <TouchableOpacity onPress={readTag}>
         <Text>Scan Tag</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={cancelReadTag}>
         <Text>Cancel Scan</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => dispatch(clearUserInfo())}>
+      </TouchableOpacity> */}
+      {/* <TouchableOpacity onPress={() => dispatch(clearUserInfo())}>
         <Text style={{color: 'black'}}>
           로그아웃
           {'' + userInfo.userInfo?.accessToken}
         </Text>
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+    </ScrollView>
   );
 };
 
@@ -229,13 +298,68 @@ const Home: React.FC<HomeProps> = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    alignContent: 'center',
+    backgroundColor: 'white',
+  },
+  insightContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
+    overflow: 'scroll',
+    paddingHorizontal:20,
+    paddingTop:33,
+  },
+  cardContainer: {
+    flexDirection: 'row',
+    overflow: 'scroll',
+    paddingHorizontal:20,
   },
   text: {
     fontSize: 20,
     marginBottom: 10,
   },
+  dateView:{
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent:'space-between',
+    paddingHorizontal:20,
+    paddingTop:25
+  },
+  InSight:{
+    backgroundColor: colors.GREEN_10,
+    paddingHorizontal:10,
+    paddingVertical:5,
+    flexDirection:'row',
+    alignItems:'center',
+    display:'flex',
+    borderRadius:28,
+    columnGap:7,
+  },
+  dot:{
+    width:10,
+    height:10,
+    backgroundColor: colors.PRIMARY_GREEN,
+    borderRadius:10
+  },
+  inSightText:{
+    fontSize: 13,
+    color: colors.PRIMARY_GREEN,
+    lineHeight:15.6,
+    textAlign:'center',
+    fontWeight: "700"
+  },
+  icon:{
+    width:16,
+    height:16
+  },
+  date:{
+    fontSize:17,
+    fontStyle:'normal',
+    fontWeight:'700',
+    lineHeight:20.4,
+    color: colors.GRAY_50,
+    // fontFamily:"",
+    paddingLeft:6
+  }
 });
 
 export default Home;

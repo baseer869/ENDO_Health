@@ -1,14 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {
   StackNavigationProp,
   createStackNavigator,
 } from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {Platform, View} from 'react-native';
+import {Platform, View, Text, Image, StyleSheet} from 'react-native';
 
 import {colors} from 'assets/colors';
 import Home from 'pages/Home';
+import AIChat from 'pages/AIChat';
 import Main from 'pages/Main';
 import Login from 'pages/Login';
 import GenderSelectPage from 'pages/Signup/GenderSelectPage';
@@ -25,6 +26,7 @@ import MedicalInfo from 'pages/MedicalInfo';
 import MedicalInfoStep2 from 'pages/MedicalInfo/MedicalInfoStep2';
 import MedicalInfoStep3 from 'pages/MedicalInfo/MedicalInfoStep3';
 import RecommendSelectPage from 'pages/MedicalInfo/RecommendSelectPage';
+import icons from 'components/icons';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -66,6 +68,7 @@ export type RootStackParamList = {
     dailyMedicationCount: number;
   };
   RecommendSelectPage: undefined;
+  label: String;
 };
 
 export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
@@ -73,21 +76,41 @@ export type RootStackScreenProps = StackNavigationProp<RootStackParamList>;
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
+interface TabIconProps {
+  icon: any;
+  label: string;
+  focused: boolean;
+}
+
+const TabIcon: React.FC<TabIconProps> = ({icon, label, focused}) => {
+  return (
+    <View style={{alignItems: 'center', rowGap: 2}}>
+      <Image
+        source={icon}
+        style={{
+          ...styles.icon,
+          tintColor: focused ? colors.GRAY_80 : undefined,
+        }}
+      />
+      <Text
+        style={{...styles.label, color: focused ? colors.GRAY_80 : undefined}}>
+        {label}
+      </Text>
+    </View>
+  );
+};
+
 const Tabs = () => {
   return (
     <View style={{flex: 1}}>
       <Tab.Navigator
         screenOptions={{
-          tabBarActiveTintColor: colors.YELLOW_100,
           headerShown: false,
           tabBarStyle: {
-            height: Platform.OS === 'ios' ? 90 : 80,
-
-            paddingTop: 7,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            position: 'absolute',
+            height: Platform.OS === 'ios' ? 46 : 56,
             bottom: 0,
+            minHeight: 1,
+            borderTopColor: colors.GRAY_5,
           },
           tabBarShowLabel: false,
         }}>
@@ -95,96 +118,52 @@ const Tabs = () => {
           name="Home"
           component={Home}
           options={{
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <View
-                  style={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: colors.YELLOW_100,
-                  }}
-                />
-              ) : (
-                <View
-                  style={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: colors.ALPHA_BLACK_12,
-                  }}
-                />
-              ),
+            tabBarIcon: ({focused}) => (
+              <TabIcon
+                icon={icons.icon_home_solid}
+                label={'Home'}
+                focused={focused}
+              />
+            ),
           }}
         />
         <Tab.Screen
-          name="Home2"
+          name="Goals"
           component={Main}
           options={{
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <View
-                  style={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: colors.YELLOW_100,
-                  }}
-                />
-              ) : (
-                <View
-                  style={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: colors.ALPHA_BLACK_12,
-                  }}
-                />
-              ),
+            tabBarIcon: ({focused}) => (
+              <TabIcon
+                icon={icons.icon_star_solid}
+                label={'Goals'}
+                focused={focused}
+              />
+            ),
           }}
         />
         <Tab.Screen
-          name="Home3"
-          component={Home}
+          name="AIChat"
+          component={AIChat}
           options={{
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <View
-                  style={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: colors.YELLOW_100,
-                  }}
-                />
-              ) : (
-                <View
-                  style={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: colors.ALPHA_BLACK_12,
-                  }}
-                />
-              ),
+            tabBarIcon: ({focused}) => (
+              <TabIcon
+                icon={icons.icon_aichat_solid}
+                label={'AI Chat'}
+                focused={focused}
+              />
+            ),
           }}
         />
         <Tab.Screen
-          name="Home4"
+          name="Account"
           component={Home}
           options={{
-            tabBarIcon: ({focused}) =>
-              focused ? (
-                <View
-                  style={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: colors.YELLOW_100,
-                  }}
-                />
-              ) : (
-                <View
-                  style={{
-                    width: 25,
-                    height: 25,
-                    backgroundColor: colors.ALPHA_BLACK_12,
-                  }}
-                />
-              ),
+            tabBarIcon: ({focused}) => (
+              <TabIcon
+                icon={icons.icon_user_solid}
+                label={'Account'}
+                focused={focused}
+              />
+            ),
           }}
         />
       </Tab.Navigator>
@@ -195,7 +174,14 @@ const Tabs = () => {
 const AuthGroup = () => (
   <Stack.Group>
     <Stack.Screen name="Tabs" component={Tabs} options={{headerShown: false}} />
-    <Stack.Screen name="Home" component={Home} />
+    <Stack.Screen
+      name="Home"
+      component={Home}
+      options={{
+        headerShown: true,
+        headerTitle: 'Home',
+      }}
+    />
     <Stack.Screen name="Main" component={Main} />
   </Stack.Group>
 );
@@ -268,3 +254,19 @@ const Navigator = () => {
 };
 
 export default Navigator;
+
+const styles = StyleSheet.create({
+  label: {
+    fontSize: 10,
+    fontStyle: 'normal',
+    lineHeight: 10,
+    color: colors.GRAY_40,
+    textAlign: 'center',
+    // fontFamily:""
+  },
+  icon: {
+    width: 22,
+    height: 22,
+    resizeMode: 'contain',
+  },
+});

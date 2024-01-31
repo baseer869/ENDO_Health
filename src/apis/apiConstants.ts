@@ -25,6 +25,7 @@ export const api = {
     moreInfo: '/user/more-info',
     user: '/user',
     referral: '/user/referral',
+    glucose_insights: '/user/glucose-insights',
   },
   alarm: {},
 };

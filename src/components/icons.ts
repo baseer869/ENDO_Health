@@ -63,6 +63,16 @@ import icon_warning_line_30 from '../assets/icons/icon_warning_line_30.png';
 import icon_warning_solid from '../assets/icons/icon_warning_solid.png';
 import icon_direction_back_line_30 from '../assets/icons/icon_direction_back_line_30.png';
 import loadingImage from '../assets/images/loadingImage.png';
+import direction_forward_line_30 from '../assets/icons/direction_forward_line_30.png';
+import icon_arrow_down_line_30 from '../assets/icons/icon_arrow_down_line_30.png';
+import icon_calendar_solid from '../assets/icons/icon_calendar_solid.png';
+import icon_star_solid from '../assets/icons/icon_star_solid.png';
+import icon_user_solid from '../assets/icons/icon_user_solid.png';
+import icon_aichat_solid from '../assets/icons/icon_aichat_solid.png';
+import icon_direction_up_line_30 from '../assets/icons/icon_direction_up_line_30.png';
+import AIChat from '../assets/icons/AIChat.png';
+import AskAIContent from '../assets/icons/AskAIContent.png';
+import Content from '../assets/icons/Content.png';
 
 export default {
   icon_block_line_30,
@@ -130,4 +140,14 @@ export default {
   icon_warning_solid,
   icon_direction_back_line_30,
   loadingImage,
+  direction_forward_line_30,
+  icon_arrow_down_line_30,
+  icon_calendar_solid,
+  icon_aichat_solid,
+  icon_user_solid,
+  icon_star_solid,
+  icon_direction_up_line_30,
+  AIChat,
+  AskAIContent,
+  Content,
 };
