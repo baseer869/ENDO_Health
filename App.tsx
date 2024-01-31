@@ -18,6 +18,7 @@ import {setBaseUrl} from 'apis/apiConstants';
 
 setBaseUrl('https://api.endohealth.co');
 import Main from 'Main';
+import {useCodePush} from 'hooks/useCodepush';
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -26,6 +27,7 @@ const theme = {
 };
 
 function App(): React.JSX.Element {
+  let codePushStatus = useCodePush();
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
@@ -36,7 +38,8 @@ function App(): React.JSX.Element {
 }
 
 const codePushOptions: CodePushOptions = {
-  checkFrequency: CodePush.CheckFrequency.MANUAL,
+  checkFrequency: CodePush.CheckFrequency.ON_APP_RESUME,
+  installMode: CodePush.InstallMode.IMMEDIATE,
 };
 
 export default CodePush(codePushOptions)(withExpoSnack(App));

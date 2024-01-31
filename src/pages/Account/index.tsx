@@ -16,7 +16,8 @@ import AppSettingItem from './components/AppSettingItem';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackScreenProps} from 'navigation/rootNavigation';
 import {clearUserInfo} from 'stores/UserInfoStore';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from 'reducers';
 
 const MenuTitle = ({title}: {title: string}) => (
   <Text style={styles.title}>{title}</Text>
@@ -24,6 +25,9 @@ const MenuTitle = ({title}: {title: string}) => (
 
 const MyAccount: React.FC = () => {
   const navigation = useNavigation<RootStackScreenProps>();
+  const userInfo = useSelector(
+    (state: RootState) => state.userInfoStore.userInfo,
+  );
   const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.container}>
@@ -32,8 +36,8 @@ const MyAccount: React.FC = () => {
 
         {/* render user profile */}
         <ProfileView
-          username={'Chloe Mörets'}
-          email={'chloe.hamilton@gmail.com'}
+          username={userInfo?.username ?? ''}
+          email={userInfo?.email ?? ''}
         />
         <View style={styles.seperator} />
 
