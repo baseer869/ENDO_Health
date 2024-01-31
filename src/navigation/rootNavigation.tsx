@@ -24,6 +24,7 @@ import {RootState} from 'reducers';
 import TermWebView from 'pages/TermWebView';
 import MedicalInfo from 'pages/MedicalInfo';
 import icons from 'components/icons';
+import MyAccount from 'pages/Account';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -108,7 +109,7 @@ const Tabs = () => {
         />
         <Tab.Screen
           name="Account"
-          component={Home}
+          component={MyAccount}
           options={{
             tabBarIcon: ({ focused }) => <TabIcon icon={icons.icon_user_solid} label={"Account"} focused={focused}  />,
           }}
