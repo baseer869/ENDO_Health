@@ -15,6 +15,8 @@ import {commonStyles} from 'utils/styles/commonStyles';
 import AppSettingItem from './components/AppSettingItem';
 import {useNavigation} from '@react-navigation/native';
 import {RootStackScreenProps} from 'navigation/rootNavigation';
+import {clearUserInfo} from 'stores/UserInfoStore';
+import {useDispatch} from 'react-redux';
 
 const MenuTitle = ({title}: {title: string}) => (
   <Text style={styles.title}>{title}</Text>
@@ -22,6 +24,7 @@ const MenuTitle = ({title}: {title: string}) => (
 
 const MyAccount: React.FC = () => {
   const navigation = useNavigation<RootStackScreenProps>();
+  const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{padding: 20}} showsVerticalScrollIndicator={false}>
@@ -99,7 +102,13 @@ const MyAccount: React.FC = () => {
           {/* Account */}
           <View style={styles.appSettingContainer}>
             <MenuTitle title={'Login'} />
-            <AppSettingItem label={'Logout'} arrowForward={false} />
+            <AppSettingItem
+              label={'Logout'}
+              arrowForward={false}
+              onPress={() => {
+                dispatch(clearUserInfo());
+              }}
+            />
             <AppSettingItem
               label={'Delete account'}
               arrowForward={false}

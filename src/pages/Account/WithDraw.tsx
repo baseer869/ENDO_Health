@@ -47,11 +47,13 @@ export default function WithDraw() {
 
   const onWithDraw = async (reason: string) => {
     if (isOtherReason) {
-      //   await userWithDraw({reason: otherReason});
+      await userWithDraw({reason: otherReason});
     } else {
-      //   await userWithDraw({reason});
+      await userWithDraw({reason});
     }
-    dispatch(clearUserInfo());
+    // dispatch(clearUserInfo());
+    navigation.push('WithDrawResult');
+    bottomSheetRef.current?.close();
   };
   return (
     <View style={styles.container}>
