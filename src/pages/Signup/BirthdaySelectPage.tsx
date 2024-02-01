@@ -15,7 +15,9 @@ import {postSignup} from 'apis/userApi';
 import {useNavigation} from '@react-navigation/native';
 
 const BirthdaySelectPage = () => {
-  const [changeDateState, setChangeDateState] = useState<Date>(new Date());
+  const [changeDateState, setChangeDateState] = useState<Date>(
+    new Date(1980, 1, 1),
+  );
   const route = useRoute<RouteProp<RootStackParamList, 'BirthdaySelect'>>();
   const navigation = useNavigation<RootStackScreenProps>();
   const {email, password, name, gender} = route.params;
