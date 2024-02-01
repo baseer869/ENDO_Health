@@ -29,6 +29,7 @@ import RecommendSelectPage from 'pages/MedicalInfo/RecommendSelectPage';
 import icons from 'components/icons';
 import MyAccount from 'pages/Account';
 import PersonalInformation from 'pages/Account/PersonalInformatio';
+import UpdatePassword from 'pages/Account/UpdatePassword';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -38,6 +39,7 @@ export type RootStackParamList = {
   Tabs: undefined;
   Signup: undefined;
   PersonalInformation: undefined,
+  UpdatePassword: undefined,
   PasswordInput: {email: string};
   NameInput: {email: string; password: string};
   GenderSelect: {email: string; password: string; name: string};
@@ -187,11 +189,9 @@ const AuthGroup = () => (
     />
     <Stack.Screen name="Main" component={Main} />
     {/* Account information */}
-    <Stack.Screen name="PersonalInformation" options={{
-        headerShown: true,
-        headerTitle: 'Personal Information',
-      }}
-      component={PersonalInformation} />
+    <Stack.Screen name="PersonalInformation" options={{ headerShown: true, headerTitle: 'Personal Information',}} component={PersonalInformation} />
+    <Stack.Screen name="UpdatePassword" options={{ headerShown: true, headerTitle: 'Update Password',}} component={UpdatePassword} />
+
   </Stack.Group>
 );
 

@@ -25,8 +25,12 @@ const MenuItem: React.FC<MenuItemProps> = ({ title, email, onPress }) => {
   );
 };
 
+//--//
+const PersonalInformation: React.FC = ({navigation}) => {
 
-const PersonalInformation: React.FC = () => {
+  const navigateTo = (route) =>{
+    navigation.navigate(route);
+  }
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={colors.GRAY_0} barStyle={'dark-content'} />
@@ -42,7 +46,7 @@ const PersonalInformation: React.FC = () => {
         <Text style={styles.label}>Account</Text>
         <View style={{paddingVertical:15}}>
           <MenuItem title={'Email'} email={'chloe.hamilton@gmail.com'} />
-         <MenuItem title={'Password'} email={'Change password'} />
+          <MenuItem title={'Password'} email={'Change password'} onPress={()=> navigateTo('UpdatePassword')} />
         </View>
       </View>
     </View>
