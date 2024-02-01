@@ -267,12 +267,11 @@ const Navigator = () => {
           paddingLeft: Platform.OS === 'ios' ? 24 : 10,
         },
       }}>
-      {/* {userInfo
+      {userInfo
         ? userInfo.completed
           ? AuthGroup()
           : AuthGroupNotMedicalInfo()
-        : NotAuthGroup()} */}
-        {AuthGroup()}
+        : NotAuthGroup()}
     </Stack.Navigator>
   );
 };
