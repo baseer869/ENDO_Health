@@ -1,5 +1,5 @@
 import React, {useRef, useEffect, useState} from 'react';
-import {StyleSheet,Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, Image, TouchableOpacity} from 'react-native';
 import NfcManager, {
   Nfc15693RequestFlagIOS,
   NfcEvents,
@@ -24,9 +24,9 @@ import {
 } from 'apis/userApi';
 import {InsightOverviewCard} from './components/InsightOverviewCard';
 import {InsightCard} from './components/InsightCard';
-import { colors } from 'assets/colors';
+import {colors} from 'assets/colors';
 import icons from 'components/icons';
-import { fonts } from 'assets/fonts';
+import {fonts} from 'assets/fonts';
 import CGMScanBottomSheet from './components/CGMScanBottomSheet';
 import CGMScanModal from './components/CGMScanModal';
 
@@ -37,8 +37,7 @@ type HomeProps = {
 
 const {MyNativeModule} = NativeModules;
 
-const 
-Home: React.FC<HomeProps> = () => {
+const Home: React.FC<HomeProps> = () => {
   const bottomSheetModalRef = useRef(null);
   const navigation = useNavigation<RootStackScreenProps>();
 
@@ -231,21 +230,20 @@ Home: React.FC<HomeProps> = () => {
     await NfcManager.cancelTechnologyRequest();
     await NfcManager.unregisterTagEvent();
   };
-  const onSortByDate = () =>{};
+  const onSortByDate = () => {};
 
   const onScanHandle = () => {
     if (bottomSheetModalRef.current) {
-        bottomSheetModalRef.current.present();
+      bottomSheetModalRef.current.present();
     }
-};
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <ScrollView 
-      horizontal={true} 
-      showsHorizontalScrollIndicator={false} 
-      contentContainerStyle={styles.insightContainer}
-      >
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.insightContainer}>
         {glucoseInsights?.insightCards
           ?.filter(v => v.type === 'OVERVIEW')
           .map((insightCard, index, array) => {
@@ -261,15 +259,18 @@ Home: React.FC<HomeProps> = () => {
           })}
       </ScrollView>
       <View style={styles.dateView}>
-        <View style={{flexDirection:'row', alignItems:'center',}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <Image source={icons.icon_calendar_solid} style={styles.icon} />
           <Text style={styles.date}>Jan 24</Text>
-          <TouchableOpacity onPress={onSortByDate} activeOpacity={0.7} style={{paddingLeft:4}}>
+          <TouchableOpacity
+            onPress={onSortByDate}
+            activeOpacity={0.7}
+            style={{paddingLeft: 4}}>
             <Image source={icons.icon_arrow_down_line_30} style={styles.icon} />
           </TouchableOpacity>
         </View>
         <View style={styles.InSight}>
-          <View style={styles.dot}/>
+          <View style={styles.dot} />
           <Text style={styles.inSightText}>Doing Great</Text>
         </View>
       </View>
@@ -282,10 +283,10 @@ Home: React.FC<HomeProps> = () => {
           ?.filter(v => v.type === 'INSIGHT_CARD')
           .map((insightCard, index, array) => {
             return (
-               <InsightCard
-                 title={insightCard.title}
-                 description={insightCard.description}
-               />
+              <InsightCard
+                title={insightCard.title}
+                description={insightCard.description}
+              />
             );
           })}
       </ScrollView>
@@ -302,10 +303,16 @@ Home: React.FC<HomeProps> = () => {
         </Text>
       </TouchableOpacity> */}
       {/* Scan Button */}
-      <TouchableOpacity  onPress={()=> onScanHandle()} style={styles.scanButton} activeOpacity={0.5}>
-        <Image  source={icons.icon_scan2_line_30} style={{width: 36, height: 36}}/>
+      <TouchableOpacity
+        onPress={() => onScanHandle()}
+        style={styles.scanButton}
+        activeOpacity={0.5}>
+        <Image
+          source={icons.icon_scan2_line_30}
+          style={{width: 36, height: 36}}
+        />
       </TouchableOpacity>
-      <CGMScanBottomSheet bottomSheetModalRef={bottomSheetModalRef}/>
+      <CGMScanBottomSheet bottomSheetModalRef={bottomSheetModalRef} />
     </ScrollView>
   );
 };
@@ -321,58 +328,58 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     overflow: 'scroll',
-    paddingHorizontal:20,
-    paddingTop:0,
+    paddingHorizontal: 20,
+    paddingTop: 0,
   },
   cardContainer: {
     flexDirection: 'row',
     overflow: 'scroll',
-    paddingHorizontal:20,
+    paddingHorizontal: 20,
   },
   text: {
     fontSize: 20,
     marginBottom: 10,
   },
-  dateView:{
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-between',
-    paddingHorizontal:20,
+  dateView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
   },
-  InSight:{
+  InSight: {
     backgroundColor: colors.GREEN_10,
-    paddingHorizontal:10,
-    paddingVertical:5,
-    flexDirection:'row',
-    alignItems:'center',
-    display:'flex',
-    borderRadius:28,
-    columnGap:7,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    display: 'flex',
+    borderRadius: 28,
+    columnGap: 7,
   },
-  dot:{
-    width:10,
-    height:10,
+  dot: {
+    width: 10,
+    height: 10,
     backgroundColor: colors.PRIMARY_GREEN,
-    borderRadius:10
+    borderRadius: 10,
   },
-  inSightText:{
+  inSightText: {
     fontSize: 13,
     color: colors.PRIMARY_GREEN,
-    lineHeight:15.6,
-    textAlign:'center',
-    fontFamily: fonts.Pretendard_Bold
+    lineHeight: 15.6,
+    textAlign: 'center',
+    fontFamily: fonts.Pretendard_Bold,
   },
-  icon:{
-    width:16,
-    height:16
+  icon: {
+    width: 16,
+    height: 16,
   },
-  date:{
-    fontSize:17,
-    fontStyle:'normal',
-    lineHeight:20.4,
+  date: {
+    fontSize: 17,
+    fontStyle: 'normal',
+    lineHeight: 20.4,
     color: colors.GRAY_50,
     fontFamily: fonts.Pretendard_Bold,
-    paddingLeft:6
+    paddingLeft: 6,
   },
   scanButton: {
     width: 60,
@@ -383,18 +390,17 @@ const styles = StyleSheet.create({
     display: 'flex',
     // iOS
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 16.97,
     // Android
-    elevation: 4, 
-    backgroundColor: "#fff",
+    elevation: 4,
+    backgroundColor: '#fff',
     borderRadius: 100,
-    position:'absolute',
-    bottom:25,
+    position: 'absolute',
+    bottom: 25,
     right: 25,
   },
-  
 });
 
 export default Home;

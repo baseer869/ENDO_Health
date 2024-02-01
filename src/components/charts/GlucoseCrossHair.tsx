@@ -21,7 +21,6 @@ const GlucoseCrossHair = () => {
           style={styles.tooltip}
           format={({value}) => {
             'worklet';
-            console.log(value);
             if (parseFloat(value) === GLUCOSE_NONE_DATA) {
               return 'No Data';
             }

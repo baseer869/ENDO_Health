@@ -5,9 +5,9 @@ import {
   StyleSheet,
   TouchableOpacityProps,
 } from 'react-native';
-import { RightArrow } from 'assets/svgIcons';
-import { colors } from 'assets/colors';
-import { fonst, fonts } from 'assets/fonts';
+import {RightArrow} from 'assets/svgIcons';
+import {colors} from 'assets/colors';
+import {fonst, fonts} from 'assets/fonts';
 
 // Common Action Button, by Baseer //
 interface CustomButtonProps extends TouchableOpacityProps {
@@ -15,9 +15,12 @@ interface CustomButtonProps extends TouchableOpacityProps {
   arrow: boolean;
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({onPress, label, arrow,}) => {
+const CustomButton: React.FC<CustomButtonProps> = ({onPress, label, arrow}) => {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={[styles.button, !arrow && { height: 44 }]} >
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={0.7}
+      style={[styles.button, !arrow && {height: 44}]}>
       <Text style={styles.buttonText}>{label}</Text>
       {arrow && <RightArrow style={styles.icon} />}
     </TouchableOpacity>
@@ -33,12 +36,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: 48
+    minHeight: 48,
   },
   buttonText: {
     color: 'white',
     fontFamily: fonts.Pretendard_Bold,
-    lineHeight:20.4,
+    lineHeight: 20.4,
     fontSize: 17,
   },
   icon: {

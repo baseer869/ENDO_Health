@@ -1,13 +1,13 @@
-import { colors } from 'assets/colors';
+import {colors} from 'assets/colors';
 import icons from 'components/icons';
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import {StyleSheet, Text, View, Image} from 'react-native';
 
 interface HeaderProps {
   aiName: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ aiName }) => {
+const Header: React.FC<HeaderProps> = ({aiName}) => {
   return (
     <View style={styles.header}>
       {/* AI Name */}
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 20,
-    columnGap:8
+    columnGap: 8,
   },
   aiName: {
     fontSize: 22,
