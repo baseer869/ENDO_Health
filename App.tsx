@@ -30,8 +30,7 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        {/* <Main /> */}
-        <NoInternetConnection />
+        <Main />
       </PaperProvider>
     </Provider>
   );

@@ -30,6 +30,7 @@ import icons from 'components/icons';
 import MyAccount from 'pages/Account';
 import PersonalInformation from 'pages/Account/PersonalInformatio';
 import UpdatePassword from 'pages/Account/UpdatePassword';
+import { fonts } from 'assets/fonts';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -130,6 +131,20 @@ const Tabs = () => {
                 focused={focused}
               />
             ),
+            headerTitle: 'Home', 
+            headerTitleAlign: 'left',
+            headerTitleStyle: {
+              fontFamily: fonts.Pretendard_Bold,
+              fontSize: 28, 
+              lineHeight: 35,
+              color: colors.GRAY_80
+            },
+            headerRight: () => (
+              <Image
+                source={icons.icon_notification_on_line_30}
+                style={{ width: 24, height: 24, margin:16 }}
+              />
+            ),
           }}
         />
         <Tab.Screen
@@ -191,7 +206,6 @@ const AuthGroup = () => (
     {/* Account information */}
     <Stack.Screen name="PersonalInformation" options={{ headerShown: true, headerTitle: 'Personal Information',}} component={PersonalInformation} />
     <Stack.Screen name="UpdatePassword" options={{ headerShown: true, headerTitle: 'Update Password',}} component={UpdatePassword} />
-
   </Stack.Group>
 );
 

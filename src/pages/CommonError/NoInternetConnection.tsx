@@ -7,18 +7,21 @@ import { fonts } from 'assets/fonts'
 import CustomButton from 'components/common/ActionButton'
 
 const NoInternetConnection = () => {
+
+    const onOk = () =>{};
+    const onRetry = () =>{};
     return (
         <View style={{ ...commonStyles.container, padding: 20 }}>
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
                 <Image source={icons.icon_no_interent_connection} style={{ width: 140, height: 140 }} />
                 <Text style={styles.title}>We cannot connect to the Internet</Text>
                 <Text style={styles.description}>Please try again in a few minutes.</Text>
-                <TouchableOpacity style={styles.retryButton}>
+                <TouchableOpacity onPress={onRetry} activeOpacity={0.7} style={styles.retryButton}>
                     <Image source={icons.icon_retry_connection} style={{ width: 16, height: 16 }} />
                     <Text style={styles.retry}>Retry</Text>
                 </TouchableOpacity>
             </View>
-            <CustomButton label='Ok' arrow={false} />
+            <CustomButton label='Ok' arrow={false} onPress={onOk} />
         </View>
     )
 }
