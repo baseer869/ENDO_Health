@@ -28,6 +28,7 @@ import MedicalInfoStep3 from 'pages/MedicalInfo/MedicalInfoStep3';
 import RecommendSelectPage from 'pages/MedicalInfo/RecommendSelectPage';
 import icons from 'components/icons';
 import MyAccount from 'pages/Account';
+import PersonalInformation from 'pages/Account/PersonalInformatio';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -36,6 +37,7 @@ export type RootStackParamList = {
   Main: undefined;
   Tabs: undefined;
   Signup: undefined;
+  PersonalInformation: undefined,
   PasswordInput: {email: string};
   NameInput: {email: string; password: string};
   GenderSelect: {email: string; password: string; name: string};
@@ -184,6 +186,12 @@ const AuthGroup = () => (
       }}
     />
     <Stack.Screen name="Main" component={Main} />
+    {/* Account information */}
+    <Stack.Screen name="PersonalInformation" options={{
+        headerShown: true,
+        headerTitle: 'Personal Information',
+      }}
+      component={PersonalInformation} />
   </Stack.Group>
 );
 

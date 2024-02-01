@@ -306,7 +306,6 @@ Home: React.FC<HomeProps> = () => {
         <Image  source={icons.icon_scan2_line_30} style={{width: 36, height: 36}}/>
       </TouchableOpacity>
       <CGMScanBottomSheet bottomSheetModalRef={bottomSheetModalRef}/>
-      <CGMScanModal isVisible={true} />
     </ScrollView>
   );
 };

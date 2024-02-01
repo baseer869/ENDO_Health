@@ -8,20 +8,24 @@ import AppSettingItem from './components/AppSettingItem';
 
 const MenuTitle = ({ title }) => <Text style={styles.title}>{title}</Text>
 
-const MyAccount: React.FC = () => {
+const MyAccount: React.FC = ({navigation}) => {
+
+  const navigateTo = (route) =>{
+    navigation.navigate(route);
+  }
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={{ padding: 20, }} showsVerticalScrollIndicator={false}>
         <Text style={styles.text}>Account</Text>
 
         {/* render user profile */}
-        <ProfileView username={"Chloe Mörets"} email={"chloe.hamilton@gmail.com"} />
+        <ProfileView  username={"Chloe Mörets"} email={"chloe.hamilton@gmail.com"} onPress={()=> navigateTo('PersonalInformation')} />
         <View style={styles.seperator} />
 
         {/* section */}
         <View style={{ paddingVertical: 10 }}>
           {/* Manage Medical Data */}
-          <TouchableOpacity style={{ ...commonStyles.rowWithSpaceBetween, height: 52 }}>
+          <TouchableOpacity  style={{ ...commonStyles.rowWithSpaceBetween, height: 52 }}>
             <View style={{ ...commonStyles.row, columnGap: 12 }}>
               <Image source={icons.icon_profile_line_30} style={{ width: 18, height: 18 }} />
               <Text style={styles.label}>Manage medical data</Text>

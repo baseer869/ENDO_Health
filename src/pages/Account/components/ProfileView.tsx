@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TouchableHighlight } from 'react-native';
 import React from 'react';
 import icons from 'components/icons';
 import { colors } from 'assets/colors';
@@ -8,7 +8,7 @@ interface ProfileViewProps {
   email: string;
 }
 
-const ProfileView: React.FC<ProfileViewProps> = ({ username, email }) => {
+const ProfileView: React.FC<ProfileViewProps> = ({ onPress, username, email }) => {
   return (
     <View style={styles.profileContainer}>
       <View style={{ flexDirection: 'row', alignItems: 'center', columnGap: 16 }}>
@@ -20,7 +20,11 @@ const ProfileView: React.FC<ProfileViewProps> = ({ username, email }) => {
           <Text style={styles.email}>{email}</Text>
         </View>
       </View>
-      <Image source={icons.icon_arrow_forward_line_30} style={{ width: 16, height: 16 }} />
+      <TouchableHighlight activeOpacity={0.7}
+        underlayColor={colors.GRAY_10}
+        style={{ padding: 4, borderRadius: 50 }} onPress={() => onPress()}>
+        <Image source={icons.icon_arrow_forward_line_30} style={{ width: 16, height: 16 }} />
+      </TouchableHighlight>
     </View>
   );
 };
