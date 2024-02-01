@@ -80,6 +80,8 @@ import image_cgm_graphic from '../assets/icons/image_cgm_graphic.png';
 import icon_edit_line_30 from '../assets/icons/icon_edit_line_30.png';
 import icon_scan2_white_line_30 from '../assets/icons/icon_scan2_white_line_30.png';
 import icon_plus_line_30 from '../assets/icons/icon_plus_line_30.png';
+import icon_retry_connection from '../assets/icons/icon_retry_connection.png';
+import icon_no_interent_connection from '../assets/icons/icon_no_interent_connection.png';
 
 
 export default {
@@ -164,5 +166,7 @@ export default {
   image_cgm_graphic,
   icon_edit_line_30,
   icon_scan2_white_line_30,
-  icon_plus_line_30
+  icon_plus_line_30,
+  icon_retry_connection,
+  icon_no_interent_connection
 };

@@ -1,6 +1,11 @@
+import { colors } from 'assets/colors';
 import { StyleSheet } from 'react-native';
 
 export const commonStyles = StyleSheet.create({
+  container:{
+    flex:1,
+    backgroundColor: colors.GRAY_0
+  },
   row: {
     flexDirection: 'row',
     alignItems:'center',

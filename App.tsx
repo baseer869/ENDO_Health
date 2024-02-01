@@ -18,6 +18,7 @@ import {setBaseUrl} from 'apis/apiConstants';
 
 setBaseUrl('https://api.endohealth.co');
 import Main from 'Main';
+import NoInternetConnection from 'pages/CommonError/NoInternetConnection';
 const theme = {
   ...DefaultTheme,
   colors: {
@@ -29,7 +30,8 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
       <PaperProvider theme={theme}>
-        <Main />
+        {/* <Main /> */}
+        <NoInternetConnection />
       </PaperProvider>
     </Provider>
   );
