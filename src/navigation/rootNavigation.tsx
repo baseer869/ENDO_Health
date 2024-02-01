@@ -163,7 +163,7 @@ const Tabs = () => {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Goals"
           component={Main}
           options={{
@@ -175,7 +175,7 @@ const Tabs = () => {
               />
             ),
           }}
-        />
+        /> */}
         <Tab.Screen
           name="AIChat"
           component={AIChat}
