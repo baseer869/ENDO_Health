@@ -1,9 +1,7 @@
-import {StyledCommonProps, Text, View, Image} from '.';
+import {StyledCommonProps} from '.';
 import {colors} from 'assets/colors';
-import {styled} from 'nativewind';
+import {Text} from 'react-native';
 import {Button as OriginalButton} from 'react-native-paper';
-
-const Btn = styled(OriginalButton);
 
 const typeStyles: Record<string, any> = {
   solid: {
@@ -86,7 +84,6 @@ type StyledButtonProps = {
 };
 
 export function Button({
-  className,
   children,
   size,
   type,
@@ -100,19 +97,23 @@ export function Button({
   const {fontSize, paddingVertical, paddingHorizontal, iconSize, gap} =
     sizeStyles[size || '48'];
   const disabled = type === 'disabled';
-  let buttonType = 'contained';
-  if (type == 'solid') buttonType = 'contained';
-  if (type == 'sub') buttonType = 'contained-tonal';
-  if (type == 'sub_gray') buttonType = 'evevated';
-  if (type == 'sub_white') buttonType = 'outlined';
-  if (type == 'sub_border') buttonType = 'outlined';
+  let buttonType:
+    | 'text'
+    | 'outlined'
+    | 'contained'
+    | 'elevated'
+    | 'contained-tonal' = 'contained';
+  if (type === 'solid') buttonType = 'contained';
+  if (type === 'sub') buttonType = 'contained-tonal';
+  if (type === 'sub_gray') buttonType = 'elevated';
+  if (type === 'sub_white') buttonType = 'outlined';
+  if (type === 'sub_border') buttonType = 'outlined';
 
   return (
-    <Btn
-      className={className}
+    <OriginalButton
       disabled={disabled}
       icon={icon}
-      mode="contained"
+      mode={buttonType}
       buttonColor={buttonColor}
       labelStyle={{
         color: textColor,
@@ -132,8 +133,8 @@ export function Button({
         paddingVertical,
       }}
       onPress={onPress}>
-      <Text className="font-bold">{title}</Text>
+      <Text>{title}</Text>
       {children}
-    </Btn>
+    </OriginalButton>
   );
 }
