@@ -24,7 +24,7 @@ export const InsightOverviewCard = ({
       {graph && (
         <ProgressCircle
           style={{height: 37, width: 38}}
-          progress={0.8}
+          progress={graph?.value}
           progressColor={graph?.color || colors.PRIMARY_BLUE}
         />
       )}
