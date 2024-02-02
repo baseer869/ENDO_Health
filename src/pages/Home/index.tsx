@@ -20,7 +20,6 @@ import {useNavigation} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {
   UserGlucoseInsightResponseDto,
-  getUserGlucoseInsights,
 } from 'apis/userApi';
 import {InsightOverviewCard} from './components/InsightOverviewCard';
 import {InsightCard} from './components/InsightCard';
@@ -29,6 +28,8 @@ import icons from 'components/icons';
 import {fonts} from 'assets/fonts';
 import CGMScanBottomSheet from './components/CGMScanBottomSheet';
 import CGMScanModal from './components/CGMScanModal';
+import { getGlucoseInsights } from 'apis/insightApi';
+import { setInsightCards } from 'stores/InsightStore';
 
 // Define a type for your component's props if needed
 type HomeProps = {
@@ -49,58 +50,21 @@ const Home: React.FC<HomeProps> = () => {
   const [glucoseInsights, setGlucoseInsights] =
     useState<UserGlucoseInsightResponseDto | null>(null);
   const userInfo = useSelector((state: RootState) => state.userInfoStore);
+  const insightInfo = useSelector((state: RootState) => state.insightStore);
+
   const dispatch = useDispatch();
 
-  const getGlucoseInsights = async () => {
-    // const res = await getUserGlucoseInsights();
-    const res: UserGlucoseInsightResponseDto = {
-      insightCards: [
-        {
-          type: 'OVERVIEW',
-          graph: {
-            type: 'PROGRESS_CIRCLE',
-            value: 0.5,
-          },
-          title: 'Daily Score',
-          description: 'Awesome',
-        },
-        {
-          type: 'OVERVIEW',
-          title: 'Time in Range',
-          description: '89%',
-        },
-        {
-          type: 'OVERVIEW',
-          title: 'Time in Range',
-          description: '89%',
-        },
-        {
-          type: 'INSIGHT_CARD',
-          title: 'Glucose Improved!',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        },
-        {
-          type: 'INSIGHT_CARD',
-          title: 'Glucose Improved!',
-          description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        },
-        {
-          type: 'INSIGHT_CARD',
-          title: 'Glucose Improved22!',
-          description:
-            '222 Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        },
-      ],
-    };
-    setGlucoseInsights(res);
+  const getInsights = async () => {
+    
+      const accessToken = userInfo?.accessToken || '';
+      const res = await getGlucoseInsights(accessToken);
+      dispatch(setInsightCards(res));
   };
 
   useEffect(() => {
-    getGlucoseInsights();
+    getInsights();
   }, []);
-
+  
   useEffect(() => {
     const checkIsSupported = async () => {
       const deviceIsSupported = await NfcManager.isSupported();
@@ -244,7 +208,7 @@ const Home: React.FC<HomeProps> = () => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.insightContainer}>
-        {glucoseInsights?.insightCards
+        {insightInfo?.insightCards
           ?.filter(v => v.type === 'OVERVIEW')
           .map((insightCard, index, array) => {
             return (
@@ -279,11 +243,12 @@ const Home: React.FC<HomeProps> = () => {
         contentContainerStyle={styles.cardContainer}
         horizontal={true}
         showsHorizontalScrollIndicator={false}>
-        {glucoseInsights?.insightCards
+        {insightInfo?.insightCards
           ?.filter(v => v.type === 'INSIGHT_CARD')
           .map((insightCard, index, array) => {
             return (
               <InsightCard
+                key={index}
                 title={insightCard.title}
                 description={insightCard.description}
               />
