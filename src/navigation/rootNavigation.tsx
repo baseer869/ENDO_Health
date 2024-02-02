@@ -16,8 +16,6 @@ import GenderSelectPage from 'pages/Signup/GenderSelectPage';
 import BirthdaySelectPage from 'pages/Signup/BirthdaySelectPage';
 import EntrancePage from 'pages/Login/EntrancePage';
 import NameInputPage from 'pages/Signup/NameInput';
-import EmailInputPage from 'pages/Signup';
-import PasswordInputPage from 'pages/Signup/PasswordInputPage';
 import SignupDonePage from 'pages/Signup/SignupDonePage';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'reducers';
@@ -38,6 +36,7 @@ import {setToken} from 'apis/apiConstants';
 import {getUserInfo} from 'apis/userApi';
 import tokenStorage from 'storages/tokenStorage';
 import {setUserInfo} from 'stores/UserInfoStore';
+import Signup from 'pages/Signup';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -260,8 +259,7 @@ const NotAuthGroup = () => (
       component={Login}
       options={{headerShown: false}}
     />
-    <Stack.Screen name="Signup" component={EmailInputPage} />
-    <Stack.Screen name="PasswordInput" component={PasswordInputPage} />
+    <Stack.Screen name="Signup" component={Signup}/>
     <Stack.Screen name="NameInput" component={NameInputPage} />
     <Stack.Screen
       name="GenderSelect"
