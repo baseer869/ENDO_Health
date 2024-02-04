@@ -28,7 +28,7 @@ export const api = {
     referral: '/user/referral',
     glucose_insights: '/user/glucose-insights',
     withdraw: '/auth/user/me',
-    glucoseInsights :'/user/glucose-insights'
+    glucoseInsights: '/user/glucose-insights',
   },
   alarm: {},
   medical: {

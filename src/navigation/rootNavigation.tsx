@@ -260,7 +260,7 @@ const NotAuthGroup = () => (
       component={Login}
       options={{headerShown: false}}
     />
-    <Stack.Screen name="Signup" component={Signup}/>
+    <Stack.Screen name="Signup" component={Signup} />
     <Stack.Screen name="NameInput" component={NameInputPage} />
     <Stack.Screen
       name="GenderSelect"

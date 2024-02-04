@@ -131,7 +131,6 @@ export default function MedicalInfoStep2() {
     (async () => {
       const res = await getMoreInfo();
       setMedicationArray(res.currentMedication);
-      console.log('resasd', res);
     })();
   }, []);
 

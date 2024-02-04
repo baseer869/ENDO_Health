@@ -1,7 +1,9 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { api, setBaseUrl } from './apiConstants';
+import axios, {AxiosRequestConfig} from 'axios';
+import {api, setBaseUrl} from './apiConstants';
 
-export const getGlucoseInsights = async (accessToken: string): Promise<InsightCard[]> => {
+export const getGlucoseInsights = async (
+  accessToken: string,
+): Promise<InsightCard[]> => {
   const options: AxiosRequestConfig = {
     url: `${api.users.glucoseInsights}`,
     method: 'GET',
@@ -15,7 +17,7 @@ export const getGlucoseInsights = async (accessToken: string): Promise<InsightCa
     return result.data.insightCards as InsightCard[];
   } catch (error: any) {
     // Handle errors here
-    console.error('Error:', error.message);
+    console.error('Error: api.users.glucoseInsights : ', error.message);
     return Promise.reject(error);
   }
 };
