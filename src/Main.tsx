@@ -67,7 +67,6 @@ function Main() {
 
     try {
       const fcmToken = await firebaseMessaging.getToken();
-      console.log('userInfo:', userInfo);
       const accessToken = userInfo?.accessToken || '';
       if (Platform.OS === 'android') {
         console.log('get android FCM Token:', fcmToken);

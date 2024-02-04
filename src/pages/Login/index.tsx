@@ -1,7 +1,6 @@
-import {SafeAreaView, Text, View} from 'components/common';
+import {Text, View} from 'components/common';
 
-import React, {useState} from 'react';
-import CircleButton from '../../components/common/CircleArrowButton';
+import React from 'react';
 import useKeyboard from 'hooks/useKeyboard';
 import {Platform, StyleSheet} from 'react-native';
 import CancelTextInput from 'components/common/CancelTextInput';
@@ -14,81 +13,57 @@ import {postLogin} from 'apis/userApi';
 import {useDispatch} from 'react-redux';
 import {setUserInfo} from 'stores/UserInfoStore';
 import {setToken} from 'apis/apiConstants';
-import {isPasswordValid} from 'utils/numbers';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import tokenStorage from 'storages/tokenStorage';
+import {yupResolver} from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import {Controller, useForm} from 'react-hook-form';
 
+// login schema
+const passwordValidationRegex =
+  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+
+const schema = yup.object().shape({
+  email: yup.string().email().required('This is required.'),
+  password: yup
+    .string()
+    .required('This is required.')
+    .matches(
+      passwordValidationRegex,
+      'Password must be at least 8 characters long, include at least one number, and one special character.',
+    ),
+});
+//--//
 const Login = () => {
   const dispatch = useDispatch();
   const [keyboardHeight] = useKeyboard();
-  const [email, setEmail] = useState<string>('');
-  const [emailError, setEmailError] = useState('');
-  const [password, setPassword] = useState<string>('');
-  const [passwordError, setPasswordError] = useState('');
-  const [idValid, setIdValid] = useState<boolean>(true);
-  const [pwValid, setPwValid] = useState<boolean>(true);
   const navigation = useNavigation<RootStackScreenProps>();
 
-  const checkEmail = (text?: string): boolean => {
-    const emailReg =
-      /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-    if (!text) {
-      setEmailError('Please enter your e-mail');
-      return false;
-    }
-    const lastText = text?.slice(text.length - 1, text.length);
-    if (
-      emailReg.test(text) &&
-      (lastText === 'r' ||
-        lastText === 't' ||
-        lastText === 'g' ||
-        lastText === 'm')
-    ) {
-      setEmailError('');
-      return true;
-    }
-    setEmailError('Please enter correct email format.');
+  //--//
+  const {
+    control,
+    handleSubmit,
+    formState: {errors, isValid, isDirty},
+    reset,
+    setError,
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-    return false;
-  };
+  const login = async (formProps: any) => {
+    let payload = {
+      email: formProps.email,
+      password: formProps.password,
+    };
+    const res = await postLogin(payload);
 
-  const onChangeEmail = (text: string) => {
-    setEmail(text);
-
-    const check = checkEmail(text);
-    setIdValid(check);
-  };
-
-  const checkPassword = (text?: string): boolean => {
-    if (!text) {
-      setPasswordError('Please enter your password');
-      return false;
-    }
-    if (isPasswordValid(text)) {
-      setPasswordError('');
-      return true;
-    }
-    setPasswordError(
-      'Password must be 8 characters or longer. It must have numbers, characters or special characters.',
-    );
-
-    return false;
-  };
-
-  const onChangePw = (text: string) => {
-    setPassword(text);
-
-    const check = checkPassword(text);
-    setPwValid(check);
-  };
-
-  const login = async () => {
-    const res = await postLogin({email, password});
-    dispatch(setUserInfo(res));
-
-    if (res.accessToken) {
+    if (res?.accessToken) {
+      dispatch(setUserInfo(res));
       tokenStorage.set(res.accessToken);
       setToken(res.accessToken);
+      return;
+    } else if (res?.statusCode === 401) {
+      setError('password', {message: res.message?.body});
+      return;
     }
   };
 
@@ -109,36 +84,58 @@ const Login = () => {
         </Text>
         <View style={{}}>
           <Text style={{fontSize: 13, color: colors.GRAY_60}}>Email</Text>
-          <CancelTextInput
-            value={email}
-            onChangeText={onChangeEmail}
-            placeholder={'name@example.com'}
-            placeholderTextColor={colors.GRAY_30}
-            isValid={idValid}
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <CancelTextInput
+                value={value}
+                onChangeText={onChange}
+                placeholder={'name@example.com'}
+                placeholderTextColor={colors.GRAY_30}
+                isValid={!errors.email}
+              />
+            )}
+            name="email"
           />
 
-          {!idValid && <Text style={styles.errorText}>{emailError}</Text>}
+          {errors.email && (
+            <Text style={styles.errorText}>{errors.email.message}</Text>
+          )}
         </View>
 
         <View style={{marginTop: 34}}>
           <Text style={{fontSize: 13, color: colors.GRAY_60}}>Password</Text>
-          <CancelTextInput
-            value={password}
-            onChangeText={onChangePw}
-            placeholder={'Enter password'}
-            placeholderTextColor={colors.GRAY_30}
-            isValid={pwValid}
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <CancelTextInput
+                value={value}
+                onChangeText={onChange}
+                placeholder={'Enter password'}
+                placeholderTextColor={colors.GRAY_30}
+                secureTextEntry={true}
+                isValid={!errors.password}
+              />
+            )}
+            name="password"
           />
-
-          {!pwValid && <Text style={styles.errorText}>{passwordError}</Text>}
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password.message}</Text>
+          )}
         </View>
       </View>
       <View style={{marginHorizontal: 20, marginBottom: 30}}>
         <RoundButton
           text="Sign in"
-          onPress={login}
+          onPress={handleSubmit(login)}
           isRightArrow={false}
-          disabled={!idValid || !pwValid || !email || !password}
+          disabled={!isValid}
         />
       </View>
 
