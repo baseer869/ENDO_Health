@@ -54,7 +54,7 @@ export const postSignup = async (
     if (error.response) {
       console.error('Error Response Status:', JSON.stringify(error.response));
       // console.log('Error Response Headers:', error.response.headers);
-      return   error?.response.data
+      return error?.response.data;
     } else if (error.request) {
       console.error('Error Request:', error.request);
     } else {
@@ -173,7 +173,7 @@ export const postLogin = async (data: {
       // console.error('Error Response Status:', error.response.data);
       // console.log('Error Response Headers:', error.response.headers);
       // console.log('error.response',error.response);
-      return   error?.response.data
+      return error?.response.data;
     } else if (error.request) {
       console.error('Error Request:', error.request);
     } else {

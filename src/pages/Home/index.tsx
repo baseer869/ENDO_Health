@@ -18,9 +18,7 @@ import GlucoseLineChart from 'components/charts/GlucoseLineChart';
 import {RootStackScreenProps} from 'navigation/rootNavigation';
 import {useNavigation} from '@react-navigation/native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {
-  UserGlucoseInsightResponseDto,
-} from 'apis/userApi';
+import {UserGlucoseInsightResponseDto} from 'apis/userApi';
 import {InsightOverviewCard} from './components/InsightOverviewCard';
 import {InsightCard} from './components/InsightCard';
 import {colors} from 'assets/colors';
@@ -28,8 +26,8 @@ import icons from 'components/icons';
 import {fonts} from 'assets/fonts';
 import CGMScanBottomSheet from './components/CGMScanBottomSheet';
 import CGMScanModal from './components/CGMScanModal';
-import { getGlucoseInsights } from 'apis/insightApi';
-import { setInsightCards } from 'stores/InsightStore';
+import {getGlucoseInsights} from 'apis/insightApi';
+import {setInsightCards} from 'stores/InsightStore';
 
 // Define a type for your component's props if needed
 type HomeProps = {
@@ -49,22 +47,21 @@ const Home: React.FC<HomeProps> = () => {
   const [hasNfc, setHasNFC] = useState<boolean | null>(null);
   const [glucoseInsights, setGlucoseInsights] =
     useState<UserGlucoseInsightResponseDto | null>(null);
-  const userInfo = useSelector((state: RootState) => state.userInfoStore);
+  const {userInfo} = useSelector((state: RootState) => state.userInfoStore);
   const insightInfo = useSelector((state: RootState) => state.insightStore);
 
   const dispatch = useDispatch();
 
   const getInsights = async () => {
-    
-      const accessToken = userInfo?.accessToken || '';
-      const res = await getGlucoseInsights(accessToken);
-      dispatch(setInsightCards(res));
+    const accessToken = userInfo?.accessToken || '';
+    const res = await getGlucoseInsights(accessToken);
+    dispatch(setInsightCards(res));
   };
 
   useEffect(() => {
     getInsights();
   }, []);
-  
+
   useEffect(() => {
     const checkIsSupported = async () => {
       const deviceIsSupported = await NfcManager.isSupported();

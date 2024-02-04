@@ -1,36 +1,38 @@
-import { Text, View } from 'components/common';
+import {Text, View} from 'components/common';
 
 import React from 'react';
 import useKeyboard from 'hooks/useKeyboard';
-import { Platform, ScrollView, StyleSheet } from 'react-native';
+import {Platform, ScrollView, StyleSheet} from 'react-native';
 import CancelTextInput from 'components/common/CancelTextInput';
-import { useNavigation } from '@react-navigation/core';
-import { RootStackScreenProps } from 'navigation/rootNavigation';
-import { colors } from 'assets/colors';
-import { useDispatch } from 'react-redux';
-import { setUserInfo } from 'stores/UserInfoStore';
-import { setToken } from 'apis/apiConstants';
+import {useNavigation} from '@react-navigation/core';
+import {RootStackScreenProps} from 'navigation/rootNavigation';
+import {colors} from 'assets/colors';
+import {useDispatch} from 'react-redux';
+import {setUserInfo} from 'stores/UserInfoStore';
+import {setToken} from 'apis/apiConstants';
 import tokenStorage from 'storages/tokenStorage';
-import { yupResolver } from '@hookform/resolvers/yup';
+import {yupResolver} from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Controller, useForm, } from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import CircleButton from 'components/common/CircleArrowButton';
 
 // login schema
-const passwordValidationRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+const passwordValidationRegex =
+  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
 
 const schema = yup.object().shape({
   email: yup.string().email().required('Enter your email.'),
-  password: yup.string()
+  password: yup
+    .string()
     .required('This is required.')
     .matches(
       passwordValidationRegex,
-      'Password must be at least 8 characters long, include at least one number, and one special character.'
+      'Password must be at least 8 characters long, include at least one number, and one special character.',
     ),
-    confirmPassword: yup
+  confirmPassword: yup
     .string()
     .required('Please retype your password.')
-    .oneOf([yup.ref('password')], 'Password does not match.')
+    .oneOf([yup.ref('password')], 'Password does not match.'),
 });
 
 //--//
@@ -43,16 +45,18 @@ const Signup = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
     reset,
     setError,
-
   } = useForm({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = async (formProps: any) => {
-    navigation.push('NameInput', { email: formProps.email, password: formProps.password})
+    navigation.push('NameInput', {
+      email: formProps.email,
+      password: formProps.password,
+    });
 
     // const res = await postLogin(payload);
     // console.log('\n\response:', res);
@@ -69,8 +73,8 @@ const Signup = () => {
   };
 
   return (
-    <View style={{ paddingHorizontal: 28,   backgroundColor: 'white', flex: 1 }}>
-      <ScrollView showsVerticalScrollIndicator={false} style={{ flex: 1 }}>
+    <View style={{paddingHorizontal: 28, backgroundColor: 'white', flex: 1}}>
+      <ScrollView showsVerticalScrollIndicator={false} style={{flex: 1}}>
         <Text
           style={{
             fontSize: 28,
@@ -82,78 +86,90 @@ const Signup = () => {
           {`Sign up with\nemail`}
         </Text>
         <View style={{}}>
-          <Text style={{ fontSize: 13, color: colors.GRAY_60 }}>Email</Text>
+          <Text style={{fontSize: 13, color: colors.GRAY_60}}>Email</Text>
           <Controller
             control={control}
             rules={{
               required: true,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({field: {onChange, onBlur, value}}) => (
               <CancelTextInput
                 value={value}
                 onChangeText={onChange}
                 placeholder={'name@example.com'}
                 placeholderTextColor={colors.GRAY_30}
-                isValid={!(errors.email)}
+                isValid={!errors.email}
               />
             )}
             name="email"
           />
 
-          {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
+          {errors.email && (
+            <Text style={styles.errorText}>{errors.email.message}</Text>
+          )}
         </View>
 
-        <View style={{ marginTop: 34 }}>
-          <Text style={{ fontSize: 13, color: colors.GRAY_60 }}>Password</Text>
+        <View style={{marginTop: 34}}>
+          <Text style={{fontSize: 13, color: colors.GRAY_60}}>Password</Text>
           <Controller
             control={control}
             rules={{
               required: true,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({field: {onChange, onBlur, value}}) => (
               <CancelTextInput
                 value={value}
                 onChangeText={onChange}
                 placeholder={'Enter password'}
                 placeholderTextColor={colors.GRAY_30}
                 secureTextEntry={true}
-                isValid={!(errors.password)}
+                isValid={!errors.password}
               />
             )}
             name="password"
           />
-          {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
+          {errors.password && (
+            <Text style={styles.errorText}>{errors.password.message}</Text>
+          )}
         </View>
-        <View style={{ marginTop: 34 }}>
-          <Text style={{ fontSize: 13, color: colors.GRAY_60 }}>Confirm Password</Text>
+        <View style={{marginTop: 34}}>
+          <Text style={{fontSize: 13, color: colors.GRAY_60}}>
+            Confirm Password
+          </Text>
           <Controller
             control={control}
             rules={{
               required: true,
             }}
-            render={({ field: { onChange, onBlur, value } }) => (
+            render={({field: {onChange, onBlur, value}}) => (
               <CancelTextInput
                 value={value}
                 onChangeText={onChange}
                 placeholder={'Re-enter password'}
                 placeholderTextColor={colors.GRAY_30}
                 secureTextEntry={true}
-                isValid={!(errors.confirmPassword)}
+                isValid={!errors.confirmPassword}
               />
             )}
             name="confirmPassword"
           />
-          {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
+          {errors.confirmPassword && (
+            <Text style={styles.errorText}>
+              {errors.confirmPassword.message}
+            </Text>
+          )}
         </View>
       </ScrollView>
 
       <View className="w-full items-end pb-5">
-         <CircleButton
-           disabled={!!(errors.email || errors.password || errors.confirmPassword)}
-           onPress={handleSubmit(onSubmit)}
-          />
-       </View>
-      {Platform.OS === 'ios' && <View style={{ height: keyboardHeight }} />}
+        <CircleButton
+          disabled={
+            !!(errors.email || errors.password || errors.confirmPassword)
+          }
+          onPress={handleSubmit(onSubmit)}
+        />
+      </View>
+      {Platform.OS === 'ios' && <View style={{height: keyboardHeight}} />}
     </View>
   );
 };
