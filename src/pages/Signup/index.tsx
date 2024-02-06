@@ -29,7 +29,7 @@ const schema = yup.object().shape({
     ),
     confirmPassword: yup
     .string()
-    .required('Please retype your password.')
+    .required('Please Re-enter your password.')
     .oneOf([yup.ref('password')], 'Password does not match.')
 });
 

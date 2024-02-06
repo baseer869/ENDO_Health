@@ -21,6 +21,7 @@ export const api = {
   users: {
     signup: '/auth/registration',
     signIn: '/auth/login',
+    updatePassword:"/auth/password/me",
     preference: '/user/preference',
     moreInfo: '/user/more-info',
     user: '/user',
@@ -30,4 +31,8 @@ export const api = {
     glucoseInsights :'/user/glucose-insights'
   },
   alarm: {},
+  medical: {
+    chat: "/message/chat/medical",
+    chatHistory: "/message"
+  }
 };

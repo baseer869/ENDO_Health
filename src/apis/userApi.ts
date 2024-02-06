@@ -209,6 +209,32 @@ export const userWithDraw = async (data: {reason: string}): Promise<any> => {
   }
 };
 
+export const updatePassword = async (data: {
+  password: string;
+}): Promise<any> => {
+  const options: AxiosRequestConfig = {
+    url: `${api.users.updatePassword}`,
+    method: 'PATCH',
+    data,
+  };
+  try {
+    const result = await axios.request(options);
+    return result.data;
+  } catch (error: any) {
+    if (error.response) {
+      // console.error('Error Response Status:', error.response.data);
+      // console.log('Error Response Headers:', error.response.headers);
+      // console.log('error.response',error.response);
+      return   error?.response.data
+    } else if (error.request) {
+      console.error('Error Request:', error.request);
+    } else {
+      console.error('Error Message:', error.message);
+    }
+    return Promise.reject(error);
+  }
+};
+
 // axios.interceptors.request.use(function (config) {
 //   console.log('interpecec', JSON.stringify(config, null, 2));
 

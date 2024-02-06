@@ -179,6 +179,7 @@ const Tabs = () => {
           name="AIChat"
           component={AIChat}
           options={{
+            tabBarHideOnKeyboard: true,
             tabBarIcon: ({focused}) => (
               <TabIcon
                 icon={icons.icon_aichat_solid}
@@ -330,7 +331,7 @@ const Navigator = () => {
           paddingLeft: Platform.OS === 'ios' ? 24 : 10,
         },
       }}>
-      {userInfo
+          {userInfo
         ? userInfo.completed
           ? AuthGroup()
           : AuthGroupNotMedicalInfo()

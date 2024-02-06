@@ -8,11 +8,32 @@ import {
 } from 'react-native';
 import React, {useState, useRef} from 'react';
 import {colors} from 'assets/colors';
-import BasicInput from '../../components/common/BasicInput';
 import {fonts} from 'assets/fonts';
-import icons from 'components/icons';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { Controller, useForm, } from 'react-hook-form';
+import { updatePassword } from '../../apis/userApi'
+import ArrowButton from 'components/common/ArrowButton';
+import SampleTextInput from 'components/common/SampleTextInput';
+//--//
 
-const UpdatePassword = () => {
+// login schema
+const passwordValidationRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
+
+export const schema = yup.object().shape({
+  password: yup.string()
+    .required('This is required.')
+    .matches(
+      passwordValidationRegex,
+      'Password must be at least 8 characters long, include at least one number, and one special character.'
+    ),
+    confirmPassword: yup
+    .string()
+    .required('Please Re-enter your password.')
+    .oneOf([yup.ref('password')], 'Password does not match.')
+});
+
+const UpdatePassword = ({ navigation}) => {
   const [isFocus, setIsFocus] = useState(false);
   const [password, setPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
@@ -31,58 +52,84 @@ const UpdatePassword = () => {
       inputRef.current.focus();
     }
   };
-
-  const onSubmit = () => {};
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid, isDirty },
+    reset,
+    setError,
+    
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const onSubmit = async (formProps:any) => {
+    let payload = { "password": formProps.password };
+    let response = await updatePassword(payload);
+    console.log('\nresponse of updatee password:',response);
+    if(response == 'ok'){
+      return navigation.goBack();
+    } else if(response?.statusCode == 400){
+      setError('confirmPassword', { message: response.message?.body });
+      return;
+    }
+    
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
         <View>
           <Text style={styles.inputLabel}>New password</Text>
-          <BasicInput
-            // ref={passwordRef}
-            onFocus={() => handleFocus(passwordRef)}
-            onBlur={handleBlur}
-            style={styles.input}
-            isValid={true}
-            placeholder="Enter password"
-            secureTextEntry
-            value={password}
-            onChangeText={text => setPassword(text)}
-          />
+          <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur,  value } }) => (
+                <SampleTextInput
+                   onFocus={() => handleFocus(passwordRef)}
+                   onBlur={handleBlur}
+                   placeholder="Enter password"
+                   secureTextEntry
+                   value={value}
+                   onChangeText={onChange}
+                  isValid={!(errors.password)}
+                />
+              )}
+               name="password"
+           />
+          {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
         </View>
         {/* confirm pass */}
         <View style={{paddingTop: 30}}>
           <Text style={styles.inputLabel}>Re-enter new password</Text>
-          <BasicInput
-            ref={confirmPasswordRef}
+          <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+          <SampleTextInput
             onFocus={() => handleFocus(confirmPasswordRef)}
             onBlur={handleBlur}
-            style={styles.input}
-            isValid={true}
             placeholder="Enter password once more"
             secureTextEntry
-            value={confirmPassword}
-            onChangeText={text => setConfirmPassword(text)}
+            value={value}
+            onChangeText={onChange}
+            isValid={!(errors.confirmPassword)}
           />
+          )}
+          name="confirmPassword"
+        />
+          {errors.confirmPassword && <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>}
         </View>
       </View>
       {/* handle Submit */}
-      <TouchableOpacity
-        ref={buttonRef}
-        activeOpacity={0.7}
-        style={
-          password && confirmPassword
-            ? {...styles.onButton}
-            : {...styles.onButton, ...styles.offButton}
-        }
-        onPress={() => onSubmit()}>
-        <Text style={styles.Btnlabel}>Get Started</Text>
-        <Image
-          source={icons.direction_forward_line_30}
-          style={{width: 16, height: 16}}
-        />
-      </TouchableOpacity>
+      <ArrowButton
+          text="Get Started"
+          onPress={handleSubmit(onSubmit)}
+          disabled={isValid}
+       />
     </View>
   );
 };
@@ -96,13 +143,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     padding: 20,
-  },
-  input: {
-    borderBottomWidth: 2,
-    borderColor: colors.GRAY_20,
-    fontSize: 17,
-    color: colors.GRAY_90,
-    paddingVertical: 4,
   },
   inputLabel: {
     fontSize: 14,
@@ -134,5 +174,11 @@ const styles = StyleSheet.create({
   },
   offButton: {
     backgroundColor: colors.GRAY_5,
+  },
+  errorText: {
+    color: colors.PRIMARY_RED,
+    fontSize: 12,
+    marginTop: 8,
+    paddingLeft: 2,
   },
 });
