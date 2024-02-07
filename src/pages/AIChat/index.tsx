@@ -1,6 +1,6 @@
-import {colors} from 'assets/colors';
+import { colors } from 'assets/colors';
 import icons from 'components/icons';
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
@@ -12,100 +12,100 @@ import {
   StatusBar,
   SafeAreaView,
   KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 import Header from './Header';
 import Onboarding from './OnBoarding';
 import EventSource, { EventSourceListener } from "react-native-sse";
 import { chatHistory } from 'apis/AiMedicalApi';
 import { useSelector } from 'react-redux';
-import {RootState} from 'reducers';
+import { RootState } from 'reducers';
+import UserMessageView from './components/UserMessageView';
+import AIMessageView from './components/AIMessageView';
+import { api } from 'apis/apiConstants';
 
 interface Message {
   text: string;
   author: string;
   createdAt: string,
-  done:boolean,
+  done: boolean,
   updatedAt: string
 }
 
 const AIChatScreen: React.FC = () => {
   const [userMessages, setUserMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
-  const [sendButtonStyle, setSendButtonStyle] = useState({backgroundColor: colors.GRAY_30, });
+  const [sendButtonStyle, setSendButtonStyle] = useState({ backgroundColor: colors.GRAY_30, });
   const [aiName, setAiName] = useState('Endo'); //from onboarding
   const listRef = useRef<FlatList | null>(null);
   const userInfo = useSelector(
     (state: RootState) => state.userInfoStore.userInfo,
   );
 
-function getAiMsg(){
+  function getAiMsg(text: any) {
 
-  const url = new URL(`https://api.endohealth.co/message/chat/medical?text=heello`);
-
-  const es = new EventSource(url, {
-    method: 'GET', 
-    headers: {
-      Authorization: {
-        toString: function () {
-          return "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNzEwNTMyMSwiZXhwIjoxNzE1NzQ1MzIxfQ.NOTe6DK3dmmUkdTL6yv53FaYQBhXQuobhik6C7MtrIk";
+    const url = new URL(`https://api.endohealth.co${api.medical.chat}?text=${text}`);
+    
+    const es = new EventSource(url, {
+      method: 'GET',
+      headers: {
+        Authorization: {
+          toString: function () {
+            return "Bearer " + userInfo?.accessToken || "";
+          },
         },
       },
-    },
-    pollingInterval: 0,
-    debug: false,
-  });
+      pollingInterval: 0,
+      debug: false,
+    });
 
-  const listener: EventSourceListener = (event) => {
-  
-    if (event.type === "message") {
-      const message = JSON.parse(event.data) as Message;
-      if (!message.done) {
-        setUserMessages((prevMessages) => {
-          // Create a copy of the previous state
-          const newMessages = [...prevMessages];
-          // Find the last message in the array
-          const lastMessageIndex = newMessages.length - 1;
-  
-          if (lastMessageIndex >= 0 && newMessages[lastMessageIndex].author === "assistant") {
-            // Concatenate the partial message to the last message's text
-            newMessages[lastMessageIndex].text += message.text;
-            newMessages[lastMessageIndex].loading = false;
-            // Uncomment if you have a function to scroll to the bottom
-            // scrollToBottom();
-          }
-          // Return the new state
-          return newMessages;
-        });
+    const listener: EventSourceListener = (event) => {
+
+      if (event.type === "message") {
+        const message = JSON.parse(event.data) as Message;
+        if (!message.done) {
+          setUserMessages((prevMessages) => {
+            // Create a copy of the previous state
+            const newMessages = [...prevMessages];
+            // Find the last message in the array
+            const lastMessageIndex = newMessages.length - 1;
+
+            if (lastMessageIndex >= 0 && newMessages[lastMessageIndex].author === "assistant") {
+              // Concatenate the partial message to the last message's text
+              newMessages[lastMessageIndex].text += message.text;
+            }
+            // Return the new state
+            return newMessages;
+          });
+        }
+      } else if (event.type === "error") {
+        console.error("Connection error:", event.message);
+      } else if (event.type === "exception") {
+        console.error("Error:", event.message, event.error);
       }
-    } else if (event.type === "error") {
-      console.error("Connection error:", event.message);
-    } else if (event.type === "exception") {
-      console.error("Error:", event.message, event.error);
+    };
+
+    es.addEventListener("open", listener);
+    es.addEventListener("message", listener);
+    es.addEventListener("error", listener);
+
+    return () => {
+      es.removeAllEventListeners();
+      es.close();
+    };
+  }
+
+  const gitChatHistory = async () => {
+    let payload = {
+      afterDate: "12-02-2023",
+      accessToken: userInfo?.accessToken || ""
+      // accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0QGdtYWlsLmNvbSIsImlhdCI6MTcwNzEwNTMyMSwiZXhwIjoxNzE1NzQ1MzIxfQ.NOTe6DK3dmmUkdTL6yv53FaYQBhXQuobhik6C7MtrIk"
     }
-  };
-  
-  es.addEventListener("open", listener);
-  es.addEventListener("message", listener);
-  es.addEventListener("error", listener);
-
-  return () => {
-    es.removeAllEventListeners();
-    es.close();
- };
-}
-
- const gitChatHistory =  async() =>{
-      let payload ={
-        afterDate : "12-02-2023",
-        accessToken: userInfo?.accessToken || ""
-      }
-      let response = await chatHistory(payload);
-      // console.log('response===>', response);
-      setUserMessages(response);
-     listRef.current?.scrollToEnd();
- }
+    let response = await chatHistory(payload);
+    // console.log('response===>', response);
+    setUserMessages(response);
+    listRef.current?.scrollToEnd();
+  }
 
   useEffect(() => {
     gitChatHistory();
@@ -113,28 +113,34 @@ function getAiMsg(){
 
   const handleSendMessage = () => {
     if (inputText.trim() === '') return;
-
+  
     const newUserMessage: Message = {
-        text: inputText,
-        author: "user",
-        done: true,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+      text: inputText,
+      author: "user",
+      done: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
-
+  
     const newAssistantMessage: Message = {
-        text: "",
-        author: "assistant",
-        done: false,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
+      text: "",
+      author: "assistant",
+      done: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
-
-    setUserMessages(prevUserMessages => [...prevUserMessages, newUserMessage, newAssistantMessage]);
+  
+    setUserMessages(prevUserMessages => {
+      if (Array.isArray(prevUserMessages)) {
+        return prevUserMessages.concat(newUserMessage, newAssistantMessage);
+      } else {
+        return [newUserMessage, newAssistantMessage];
+      }
+    });
+    getAiMsg(inputText);
     setInputText('');
-    getAiMsg();
     listRef.current?.scrollToEnd();
-   };
+  };
 
   const handleInputChange = (text: string) => {
     setInputText(text);
@@ -142,94 +148,80 @@ function getAiMsg(){
       backgroundColor: text ? colors.PRIMARY_BLUE : colors.GRAY_30,
     });
   };
- 
+
   const timestamp = 1640774400000; // Replace this with timestamp in milliseconds
   const formattedDate = format(new Date(timestamp), 'EEEE, MMMM do');
-  
   return (
     <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1 }}
-      >
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={colors.GRAY_0} barStyle={'dark-content'} />
-      <Header aiName={aiName} />
-      {/* AI Responses */}
-      <FlatList
-         ref={listRef}
-        data={userMessages}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => { 
-          return(
-          <View
-            style={
-              item.author =="user"
-                ? styles.userMessageContainer
-                : styles.aiMessageContainer
-            }>
-            {item.author  === "assistant" && (
-              <Image source={icons.AIChat} style={{width: 40, height: 40}} />
-               )}
-            <View style={item.author =="user" ? styles.userMessage : styles.aiMessage}>
-              <Text
-                style={
-                  item?.author == "user" ? styles.userMessageText : styles.aiMessageText
-                }>
-                {item.text}
-              </Text>
-            </View>  
-             {/* <Text
-                style={
-                  item?.fromUser ? styles.userMessageText : styles.aiMessageText
-                }>
-                {item.text}
-              </Text> */}
-            {/* <Text style={item?.fromUser ? styles.sentTimeUser : styles.sentTime}>{'Now'}</Text> */}
-          </View>
-        )
-      }
-      
-      }
-        ListHeaderComponent={() => {
-          return (
-            <View
-              style={{
-                minHeight: 80,
-                bottom: 10,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text style={styles.date}>{formattedDate}</Text>
-            </View>
-          );
-        }}
-        ListFooterComponent={() => <View style={{marginVertical: 30}} />}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{padding: 6}}
-      />
-      {/* ASK AI */}
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder={`Ask ${aiName}`}
-          value={inputText}
-          onChangeText={handleInputChange}
-          placeholderTextColor={colors.GRAY_40}
-          cursorColor={colors.PRIMARY_BLUE}
+      behavior={'padding'}
+      style={{ flex: 1 }}
+    >
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor={colors.GRAY_0} barStyle={'dark-content'} />
+        <Header aiName={aiName} />
+        {/* AI Responses */}
+        <FlatList
+          ref={listRef}
+          data={userMessages}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => {
+            return (
+              <View>
+                {item.author == "user" ?
+                  <View style={{ alignSelf: 'flex-end' }}>
+                    <UserMessageView
+                      {...item}
+                    />
+                  </View>
+                  :
+                  <AIMessageView
+                    {...item}
+                  />
+                }
+              </View>
+            )
+          }
+          }
+          ListHeaderComponent={() => {
+            return (
+              <View
+                style={{
+                  minHeight: 80,
+                  bottom: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text style={styles.date}>{formattedDate}</Text>
+              </View>
+            );
+          }}
+          ListFooterComponent={() => <View style={{ marginVertical: 30 }} />}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ padding: 6 }}
         />
-        <TouchableOpacity
-          style={{...styles.sendButton, ...sendButtonStyle}}
-          activeOpacity={0.7}
-          onPress={handleSendMessage}>
-          <Image
-            source={icons.icon_direction_up_line_30}
-            style={{width: 18, height: 18, resizeMode: 'contain'}}
+        {/* ASK AI */}
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder={`Ask ${aiName}`}
+            value={inputText}
+            onChangeText={handleInputChange}
+            placeholderTextColor={colors.GRAY_40}
+            cursorColor={colors.PRIMARY_BLUE}
           />
-        </TouchableOpacity>
-      </View>
-      <Onboarding />
-    </SafeAreaView>
-   </KeyboardAvoidingView>
+          <TouchableOpacity
+            style={{ ...styles.sendButton, ...sendButtonStyle }}
+            activeOpacity={0.7}
+            onPress={handleSendMessage}>
+            <Image
+              source={icons.icon_direction_up_line_30}
+              style={{ width: 18, height: 18, resizeMode: 'contain' }}
+            />
+          </TouchableOpacity>
+        </View>
+        <Onboarding />
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
