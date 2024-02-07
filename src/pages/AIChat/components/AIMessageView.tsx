@@ -1,31 +1,57 @@
-import { colors } from 'assets/colors';
+import {colors} from 'assets/colors';
 import icons from 'components/icons';
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { formatTimestamp } from 'utils/strings';
+import React, {useEffect} from 'react';
+import {StyleSheet, Text, View, Image} from 'react-native';
+import {formatTimestamp} from 'utils/strings';
+import TypeWriterEffect from 'react-native-typewriter-effect';
 import LoadingData from './LoadingData';
 
-const AIMessageView: React.FC = ({ text, createdAt }: any) => {
+type AIMessageProps = {
+  text?: string;
+  loading: boolean;
+  createdAt: string;
+  onTypingEnd?: () => void;
+};
 
+const AIMessageView = ({
+  text,
+  loading,
+  createdAt,
+  onTypingEnd,
+}: AIMessageProps) => {
   const formattedDate = formatTimestamp(createdAt);
   return (
     <View style={styles.container}>
-      <Image source={icons.AIChat} style={{ width: 40, height: 40 }} />
-      <View style={[styles.aiMessageContainer, text && {width: 204}  ]}>
-        <Text style={styles.aiMessageText}>{text ? text : LoadingData() }</Text>
+      <Image source={icons.AIChat} style={{width: 40, height: 40}} />
+      <View style={[styles.aiMessageContainer, text ? {width: 204} : {}]}>
+        <Text style={styles.aiMessageText}>
+          {text ? (
+            loading ? (
+              <TypeWriterEffect
+                content={text}
+                minDelay={5}
+                maxDelay={20}
+                onTypingEnd={onTypingEnd}
+              />
+            ) : (
+              text
+            )
+          ) : (
+            LoadingData()
+          )}
+        </Text>
       </View>
       <Text style={styles.sentTime}>{formattedDate}</Text>
     </View>
   );
 };
 
-export default AIMessageView;
+export default React.memo(AIMessageView);
 
 const styles = StyleSheet.create({
-  container:{
-  flexDirection:'row',
-  marginVertical:4,
-
+  container: {
+    flexDirection: 'row',
+    marginVertical: 4,
   },
   aiMessageContainer: {
     flexDirection: 'row',
@@ -39,7 +65,7 @@ const styles = StyleSheet.create({
     paddingRight: 17,
     paddingBottom: 8.5,
     paddingLeft: 16,
-    marginLeft:8
+    marginLeft: 8,
   },
   aiMessage: {
     backgroundColor: colors.GRAY_0,
@@ -61,10 +87,10 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   sentTime: {
-    alignSelf:'flex-end',
+    alignSelf: 'flex-end',
     color: colors.GRAY_50,
     fontSize: 12,
-    paddingBottom:12,
-    paddingLeft:6
+    paddingBottom: 12,
+    paddingLeft: 6,
   },
 });

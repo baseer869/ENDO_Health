@@ -1,31 +1,31 @@
-import { colors } from 'assets/colors';
-import React, { useRef, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import { formatTimestamp } from 'utils/strings';
+import {colors} from 'assets/colors';
+import React, {useRef, useEffect, useState} from 'react';
+import {StyleSheet, Text, View, Dimensions} from 'react-native';
+import {formatTimestamp} from 'utils/strings';
 
-const { width: screenWidth } = Dimensions.get('window');
+const {width: screenWidth} = Dimensions.get('window');
 
-const UserMessageView: React.FC = ({ text, createdAt }) => {
+type UserMessageProps = {
+  text: string;
+  loading?: boolean;
+  createdAt: string;
+};
+
+const UserMessageView = ({text, createdAt}: UserMessageProps) => {
   const formattedDate = formatTimestamp(createdAt);
 
   return (
     <View style={styles.container}>
       <Text style={styles.sentTime}>{formattedDate}</Text>
       <View
-        style={[
-          styles.userMessageContainer,
-          { maxWidth: screenWidth * 0.6, }, // Set maxWidth and width properties
-        ]}
-      >
-        <Text style={styles.userMessageText} >
-          {text}
-        </Text>
+        style={[styles.userMessageContainer, {maxWidth: screenWidth * 0.6}]}>
+        <Text style={styles.userMessageText}>{text}</Text>
       </View>
     </View>
   );
 };
 
-export default UserMessageView;
+export default React.memo(UserMessageView);
 
 const styles = StyleSheet.create({
   container: {

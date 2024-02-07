@@ -7764,6 +7764,11 @@ react-native-screens@^3.29.0:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
 
+react-native-sse@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-sse/-/react-native-sse-1.2.0.tgz#26838c912e934abcf10fedb20a0f87a130ae4d13"
+  integrity sha512-+A1CcxkpR4cpxFzqYB1bg4CL7Yy+XjD258LmasJPBWMdwpMknQxabknSZWzoMgk2MEgmc0uFfbHssk3fZyr+vQ==
+
 react-native-svg-charts@^5.4.0:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/react-native-svg-charts/-/react-native-svg-charts-5.4.0.tgz#3817a4714c276b7024e60ae5c9f13191614aecc8"
@@ -7801,6 +7806,11 @@ react-native-svg@^6.2.1:
     color "^2.0.1"
     lodash "^4.16.6"
     pegjs "^0.10.0"
+
+react-native-typewriter-effect@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-typewriter-effect/-/react-native-typewriter-effect-0.1.4.tgz#f7baa8d0365f111051914b3d2c81a89c9f759af9"
+  integrity sha512-/hCQ6rgQtpV9iNIHMBrx3KVJY2CoKxU0GExo/VvSjjm8wDJdw2Dy6pSh0ybzjJgN63PLflCET8OIJFQqP02Ylw==
 
 react-native-vector-icons@^10.0.3:
   version "10.0.3"
