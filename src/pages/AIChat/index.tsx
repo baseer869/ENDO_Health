@@ -11,14 +11,26 @@ import {
   Image,
   StatusBar,
   SafeAreaView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import {format} from 'date-fns';
 import Header from './Header';
 import Onboarding from './OnBoarding';
+import EventSource, {EventSourceListener} from 'react-native-sse';
+import {chatHistory} from 'apis/AiMedicalApi';
+import {useSelector} from 'react-redux';
+import {RootState} from 'reducers';
+import UserMessageView from './components/UserMessageView';
+import AIMessageView from './components/AIMessageView';
+import {api} from 'apis/apiConstants';
 
 interface Message {
   text: string;
-  fromUser: boolean;
+  author: string;
+  done: boolean;
+  loading: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const AIChatScreen: React.FC = () => {
@@ -27,38 +39,130 @@ const AIChatScreen: React.FC = () => {
   const [sendButtonStyle, setSendButtonStyle] = useState({
     backgroundColor: colors.GRAY_30,
   });
-  const [aiName, setAiName] = useState('Endo'); //from onboarding
+  const [scrollIndicator, setScrollIndicator] = useState(false);
 
-  const flatListRef = useRef<FlatList | null>(null);
+  const [aiName, setAiName] = useState('Endo'); //from onboarding
+  const listRef = useRef<FlatList | null>(null);
+  const userInfo = useSelector(
+    (state: RootState) => state.userInfoStore.userInfo,
+  );
+
+  function getAiMsg(text: any) {
+    const url = new URL(
+      `https://api.endohealth.co${api.medical.chat}?text=${text}`,
+    );
+
+    const es = new EventSource(url, {
+      method: 'GET',
+      headers: {
+        Authorization: {
+          toString: function () {
+            return 'Bearer ' + userInfo?.accessToken || '';
+          },
+        },
+      },
+      pollingInterval: 0,
+      debug: false,
+    });
+
+    const listener: EventSourceListener = event => {
+      if (event.type === 'message' && event.data) {
+        const message = JSON.parse(event.data) as Message;
+        if (!message.done) {
+          setUserMessages(prevMessages => {
+            // Create a copy of the previous state
+            const newMessages = [...prevMessages];
+
+            if (newMessages[0].author === 'assistant') {
+              newMessages[0].text += message.text;
+            }
+            // Return the new state
+            return newMessages;
+          });
+        }
+        if (message.done) {
+          setUserMessages(prevMessages => {
+            // Create a copy of the previous state
+            const newMessages = [...prevMessages];
+
+            if (newMessages[0].author === 'assistant') {
+              // Concatenate the partial message to the last message's text
+              newMessages[0].done = true;
+            }
+
+            return newMessages;
+          });
+        }
+      } else if (event.type === 'error') {
+        console.error('Connection error:', event.message);
+      } else if (event.type === 'exception') {
+        console.error('Error:', event.message, event.error);
+      }
+    };
+
+    es.addEventListener('open', listener);
+    es.addEventListener('message', listener);
+    es.addEventListener('error', listener);
+
+    return () => {
+      es.removeAllEventListeners();
+      es.close();
+    };
+  }
+
+  const gitChatHistory = async () => {
+    let payload = {
+      afterDate: '12-02-2023',
+      accessToken: userInfo?.accessToken || '',
+    };
+    let response = await chatHistory(payload);
+    response.map((item: any) => {
+      item.done = true;
+      item.loading = false;
+      return item;
+    });
+    response.sort((o1: any, o2: any) =>
+      o2.createdAt.localeCompare(o1.createdAt),
+    );
+    // console.log('response===>', response);
+    setUserMessages(response);
+  };
 
   useEffect(() => {
-    // Initial AI greeting when the component mounts
-    const initialAIMessage: Message = {text: 'Hi Chloe 👋🏻', fromUser: false};
-    setUserMessages([initialAIMessage]);
+    gitChatHistory();
   }, []);
 
   const handleSendMessage = () => {
+    setScrollIndicator(true);
     if (inputText.trim() === '') return;
 
-    const newUserMessage: Message = {text: inputText, fromUser: true};
-    setUserMessages(prevUserMessages => [...prevUserMessages, newUserMessage]);
+    const newUserMessage: Message = {
+      text: inputText,
+      author: 'user',
+      done: true,
+      loading: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
 
+    const newAssistantMessage: Message = {
+      text: '',
+      author: 'assistant',
+      done: false,
+      loading: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    setUserMessages(prevUserMessages => {
+      if (Array.isArray(prevUserMessages)) {
+        return [newAssistantMessage, newUserMessage, ...prevUserMessages];
+      } else {
+        return [newUserMessage, newAssistantMessage];
+      }
+    });
+    getAiMsg(inputText);
     setInputText('');
-
-    // Automatically scroll to the end after adding a new user message
-    scrollToBottom();
-
-    // Simulate AI response after a brief delay
-    setTimeout(() => {
-      const aiResponse: Message = {
-        text: 'I am Endo, your friendly medical assistant.?',
-        fromUser: false,
-      };
-      setUserMessages(prevUserMessages => [...prevUserMessages, aiResponse]);
-
-      // Automatically scroll to the end after adding new AI messages
-      scrollToBottom();
-    }, 1000);
   };
 
   const handleInputChange = (text: string) => {
@@ -68,84 +172,101 @@ const AIChatScreen: React.FC = () => {
     });
   };
 
-  const scrollToBottom = () => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToEnd({animated: true});
-    }
+  const handleMessageTypingEnd = (index: number) => {
+    setScrollIndicator(false);
+    const message = userMessages[index];
+    message.loading = false;
+    setUserMessages(prevMessages => {
+      prevMessages[index] = message;
+      return prevMessages;
+    });
   };
-  const timestamp = 1640774400000; // Replace this with timestamp in milliseconds
+
+  const latestMessageDate = userMessages[0]?.createdAt;
+  const timestamp = latestMessageDate || new Date().getTime();
   const formattedDate = format(new Date(timestamp), 'EEEE, MMMM do');
-
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={colors.GRAY_0} barStyle={'dark-content'} />
-      <Header aiName={aiName} />
-      {/* AI Responses */}
-      <FlatList
-        ref={ref => (flatListRef.current = ref)}
-        data={userMessages}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({item}) => (
-          <View
-            style={
-              item.fromUser
-                ? styles.userMessageContainer
-                : styles.aiMessageContainer
-            }>
-            {!item.fromUser && (
-              <Image source={icons.AIChat} style={{width: 40, height: 40}} />
-            )}
-            <View style={item.fromUser ? styles.userMessage : styles.aiMessage}>
-              <Text
-                style={
-                  item?.fromUser ? styles.userMessageText : styles.aiMessageText
-                }>
-                {item.text}
-              </Text>
-            </View>
-            {/* <Text style={item?.fromUser ? styles.sentTimeUser : styles.sentTime}>{'Now'}</Text> */}
-          </View>
-        )}
-        ListHeaderComponent={() => {
-          return (
-            <View
-              style={{
-                minHeight: 80,
-                bottom: 10,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text style={styles.date}>{formattedDate}</Text>
-            </View>
-          );
-        }}
-        ListFooterComponent={() => <View style={{marginVertical: 30}} />}
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{padding: 6}}
-      />
-
-      {/* ASK AI */}
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder={`Ask ${aiName}`}
-          value={inputText}
-          onChangeText={handleInputChange}
-          placeholderTextColor={colors.GRAY_40}
-          cursorColor={colors.PRIMARY_BLUE}
+    <KeyboardAvoidingView behavior={'padding'} style={{flex: 1}}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor={colors.GRAY_0} barStyle={'dark-content'} />
+        <Header aiName={aiName} />
+        {/* AI Responses */}
+        <FlatList
+          ref={listRef}
+          data={userMessages}
+          maxToRenderPerBatch={10}
+          initialNumToRender={10}
+          inverted
+          extraData={scrollIndicator}
+          keyExtractor={(item, index) => index.toString()}
+          onContentSizeChange={() => {
+            if (scrollIndicator) {
+              listRef.current?.scrollToIndex({
+                animated: true,
+                index: 0,
+              });
+            }
+          }}
+          renderItem={({item, index}) => {
+            return (
+              <View>
+                {item.author == 'user' ? (
+                  <View style={{alignSelf: 'flex-end'}}>
+                    <UserMessageView {...item} />
+                  </View>
+                ) : (
+                  <AIMessageView
+                    {...item}
+                    onTypingEnd={() => {
+                      handleMessageTypingEnd(index);
+                    }}
+                  />
+                )}
+              </View>
+            );
+          }}
+          ListHeaderComponent={() => {
+            return <></>;
+          }}
+          ListFooterComponent={() => {
+            return (
+              <View
+                style={{
+                  minHeight: 80,
+                  bottom: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text style={styles.date}>{formattedDate}</Text>
+              </View>
+            );
+          }}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{padding: 6}}
         />
-        <TouchableOpacity
-          style={{...styles.sendButton, ...sendButtonStyle}}
-          activeOpacity={0.7}
-          onPress={handleSendMessage}>
-          <Image
-            source={icons.icon_direction_up_line_30}
-            style={{width: 18, height: 18, resizeMode: 'contain'}}
+        {/* ASK AI */}
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            placeholder={`Ask ${aiName}`}
+            value={inputText}
+            onChangeText={handleInputChange}
+            placeholderTextColor={colors.GRAY_40}
+            cursorColor={colors.PRIMARY_BLUE}
           />
-        </TouchableOpacity>
-      </View>
-      <Onboarding />
-    </SafeAreaView>
+          <TouchableOpacity
+            style={{...styles.sendButton, ...sendButtonStyle}}
+            activeOpacity={0.7}
+            onPress={handleSendMessage}>
+            <Image
+              source={icons.icon_direction_up_line_30}
+              style={{width: 18, height: 18, resizeMode: 'contain'}}
+            />
+          </TouchableOpacity>
+        </View>
+        <Onboarding />
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -265,4 +386,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AIChatScreen;
+export default React.memo(AIChatScreen);

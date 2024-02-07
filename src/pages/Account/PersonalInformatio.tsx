@@ -36,8 +36,8 @@ const MenuItem: React.FC<MenuItemProps> = ({title, email, onPress}) => {
 };
 
 //--//
-const PersonalInformation: React.FC = ({navigation}) => {
-  const navigateTo = route => {
+const PersonalInformation: React.FC = ({navigation}: any) => {
+  const navigateTo = (route: any) => {
     navigation.navigate(route);
   };
   return (
